@@ -1,5 +1,8 @@
 .venv*/
 .venv-histotme/
+__pycache__/
+*.pyc
+*.egg-info/
 
 # HistoTME runtime artifacts
 models/
