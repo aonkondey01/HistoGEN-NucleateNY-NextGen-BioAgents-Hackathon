@@ -1,0 +1,2 @@
+# Download the gated GigaTIME weights from Hugging Face.
+huggingface_hub[hf_xet]>=0.24
