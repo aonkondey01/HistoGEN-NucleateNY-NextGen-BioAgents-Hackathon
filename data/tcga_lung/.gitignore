@@ -1,3 +1,6 @@
+__pycache__/
+*.pyc
+
 # Downloaded whole-slide images (hundreds of GB) — never commit
 WSI/
 *.svs
