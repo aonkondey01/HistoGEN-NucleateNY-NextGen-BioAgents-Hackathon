@@ -1,0 +1,3 @@
+[submodule "external/HistoTME"]
+	path = external/HistoTME
+	url = https://github.com/spatkar94/HistoTME.git
