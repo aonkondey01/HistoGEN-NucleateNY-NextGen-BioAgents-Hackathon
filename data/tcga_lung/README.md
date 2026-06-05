@@ -46,15 +46,19 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 
 ## Files in this directory
 
-| File                                | Description                                                       |
-| ----------------------------------- | ----------------------------------------------------------------- |
-| `generate_manifest.py`              | Queries the GDC API and (re)writes all manifests + metadata below |
-| `download.py`                       | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
-| `gdc_manifest.tcga_lung.txt`        | Combined gdc-client manifest (all 1,053 slides)                   |
-| `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
-| `gdc_manifest.TCGA-LUSC.txt`        | Per-project manifest (512 slides)                                 |
-| `slides_metadata.tcga_lung.json`    | Rich per-slide metadata (file id, md5, size, patient/case ids)    |
-| `summary.json`                      | Counts + total size for quick reference                           |
+| File                                      | Description                                                       |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| `generate_manifest.py`                    | Queries the GDC API and (re)writes all manifests + metadata below |
+| `fetch_clinical_metadata.py`              | Queries the GDC cases API for LUAD/LUSC clinical metadata         |
+| `download.py`                             | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
+| `gdc_manifest.tcga_lung.txt`              | Combined gdc-client manifest (all 1,053 slides)                   |
+| `gdc_manifest.TCGA-LUAD.txt`              | Per-project manifest (541 slides)                                 |
+| `gdc_manifest.TCGA-LUSC.txt`              | Per-project manifest (512 slides)                                 |
+| `slides_metadata.tcga_lung.json`          | Rich per-slide metadata (file id, md5, size, patient/case ids)    |
+| `clinical_metadata.tcga_lung.json`        | Full expanded GDC clinical case records for LUAD/LUSC             |
+| `clinical_patient_summary.tcga_lung.tsv`  | One-row-per-patient clinical summary for joins                    |
+| `clinical_summary.tcga_lung.json`         | Clinical cohort counts for quick inspection                       |
+| `summary.json`                            | Slide counts + total size for quick reference                     |
 
 The manifests and metadata are committed so you don't need network access just
 to inspect the cohort. Regenerate them any time with `generate_manifest.py`
@@ -67,6 +71,18 @@ to inspect the cohort. Regenerate them any time with `generate_manifest.py`
 ```bash
 python generate_manifest.py
 ```
+
+### 1b. (Optional) Refresh clinical metadata from GDC
+
+```bash
+python fetch_clinical_metadata.py
+```
+
+This writes the complete expanded GDC case records for all TCGA-LUAD/LUSC
+patients plus a flattened patient-level TSV. The raw JSON preserves nested
+demographic, diagnosis, treatment, exposure, follow-up, sample, and project
+metadata; the TSV adds `has_diagnostic_slide` and `n_diagnostic_slides` for
+joining back to the diagnostic-slide manifest.
 
 ### 2. Preview / pilot before committing ~824 GB
 
