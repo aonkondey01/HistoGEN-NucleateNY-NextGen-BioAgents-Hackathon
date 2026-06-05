@@ -1,0 +1,19 @@
+{
+  "projects": [
+    "TCGA-LUAD",
+    "TCGA-LUSC"
+  ],
+  "data_type": "Slide Image",
+  "experimental_strategy": "Diagnostic Slide (FFPE, H&E)",
+  "access": "open",
+  "slides_per_project": {
+    "TCGA-LUAD": 541,
+    "TCGA-LUSC": 512
+  },
+  "total_slides": 1053,
+  "unique_patients": 956,
+  "total_bytes": 823661558245,
+  "total_gb": 823.7,
+  "total_tb": 0.824,
+  "generated_unix": 1780684630
+}
