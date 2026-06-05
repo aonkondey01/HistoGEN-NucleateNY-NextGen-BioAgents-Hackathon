@@ -15,7 +15,7 @@ All scripts live under `data/tcga_lung/`. See `data/tcga_lung/README.md` for the
 | Python 3 | Yes | Stdlib only on `main` (`download.py`, `generate_manifest.py`) |
 | GDC API (`api.gdc.cancer.gov`) | For live fetch/download | Open access; no API key or token |
 | `gdc-client` | Optional | Auto-detected; falls back to built-in HTTP downloader |
-| `slide.py` + pip deps | Optional | On branch `cursor/tcga-lung-he-download-2dbe` only |
+| `slide.py` + pip deps | For slide IO/rendering | `pip install -r requirements.txt`; optional `openslide-tools` + `openslide-python` |
 
 No long-running services to start.
 
@@ -37,17 +37,23 @@ python3 download.py --manifest gdc_manifest.tcga_lung.txt --out-dir ./WSI --limi
 python3 generate_manifest.py --out-dir /tmp/tcga_manifest_test
 ```
 
-### Slide IO (feature branch)
+### Slide IO setup
 
-Branch `origin/cursor/tcga-lung-he-download-2dbe` adds `slide.py` and `requirements.txt` for thumbnails, crops, and tiling. After downloading at least one `.svs` into `WSI/`:
+`slide.py` and `requirements.txt` provide thumbnails, crops, and tiling. Install once per VM:
 
 ```bash
-pip install -r requirements.txt
-python slide.py info WSI/<file_id>/*.svs
-python slide.py thumbnail WSI/<file_id>/*.svs
+sudo apt-get install -y openslide-tools   # optional but preferred backend
+pip3 install -r data/tcga_lung/requirements.txt openslide-python
 ```
 
-Optional system package for the preferred reader: `sudo apt-get install -y openslide-tools` then `pip install openslide-python`.
+After downloading at least one `.svs` into `WSI/` (from `data/tcga_lung/`):
+
+```bash
+python3 slide.py info WSI/<file_id>/*.svs
+python3 slide.py thumbnail WSI/<file_id>/*.svs --out /tmp/thumb.png
+```
+
+`slide.py` auto-detects OpenSlide when installed; otherwise it falls back to `tifffile` + `zarr`.
 
 ### Gotchas
 
