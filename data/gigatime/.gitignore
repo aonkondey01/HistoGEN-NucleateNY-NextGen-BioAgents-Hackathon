@@ -1,0 +1,10 @@
+# Gated, non-redistributable model weights — never commit
+*.pth
+*.pt
+*.safetensors
+*.bin
+*.ckpt
+config.json
+README.md
+LICENSE
+__pycache__/
