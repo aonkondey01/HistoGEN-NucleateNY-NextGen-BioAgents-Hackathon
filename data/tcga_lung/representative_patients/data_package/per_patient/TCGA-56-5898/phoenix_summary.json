@@ -33,5 +33,16 @@
     "case_id": "6467bc69-4e89-49f6-8912-fa86d513cf51",
     "sample_type": "Primary Tumor",
     "sample_submitter_id": "TCGA-56-5898-01Z"
+  },
+  "registration": {
+    "directory": "data_package/per_patient/TCGA-56-5898/phoenix_registration",
+    "registered_cells_csv": "phoenix_cells_registered.csv",
+    "metrics": {
+      "tissue_overlap_affine": 0.9702085402184707,
+      "tissue_overlap_warped": 0.9880834160873883,
+      "icp_contour_error_px": 8.012980954701849,
+      "flow_mean_px": 4.243568420410156,
+      "flow_max_px": 22.650047302246094
+    }
   }
 }

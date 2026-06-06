@@ -1,0 +1,40 @@
+{
+  "case_id": "TCGA-L3-A524",
+  "affine_thumb": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "flow_crop_origin": [
+    112,
+    45
+  ],
+  "flow_shape": [
+    1228,
+    1298,
+    2
+  ],
+  "metrics": {
+    "tissue_overlap_affine": 0.97265625,
+    "tissue_overlap_warped": 0.98359375,
+    "icp_contour_error_px": 76.77888854313994,
+    "flow_mean_px": 1.8490668535232544,
+    "flow_max_px": 35.9461555480957
+  },
+  "coordinate_map": {
+    "magnification_scale": 2.0,
+    "swap_axes": true,
+    "offset_x": 0.0,
+    "offset_y": 0.0,
+    "flip_x": false,
+    "flip_y": false,
+    "notes": "PHOENIX obsm spatial is 20x pixels with axes swapped vs OpenSlide level-0: slide_x=phoenix_y*2, slide_y=phoenix_x*2"
+  }
+}

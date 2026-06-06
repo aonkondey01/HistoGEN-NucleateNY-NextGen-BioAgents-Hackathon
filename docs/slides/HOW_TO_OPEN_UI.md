@@ -13,8 +13,12 @@ After the deploy workflow runs on `main`:
 ### One-time setup (repo owner)
 
 1. GitHub repo → **Settings** → **Pages**
-2. **Build and deployment** → Source: **GitHub Actions**
-3. Push to `main` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
+2. **Build and deployment** → Source: **Deploy from a branch**
+3. Branch: **`gh-pages`** · folder: **`/ (root)`** — **not `main`**
+4. Save, then wait ~2 minutes (or re-run **Deploy Haiku UI to GitHub Pages** under Actions)
+
+The workflow builds Vite output and pushes it to **`gh-pages`**. The `main` branch
+holds source code and this README — it is **not** the built web app.
 
 Wait ~2–3 minutes after the workflow completes, then open the URL above.
 
@@ -60,10 +64,11 @@ https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026/blob/cursor/emma-resea
 
 | Problem | Fix |
 |---------|-----|
+| Only README / repo file listing | Pages source is **`main`** — switch to branch **`gh-pages`**, folder **`/ (root)`** |
 | Ports tab empty | Use GitHub Pages URL or run locally |
 | `npm not found` | Install Node.js |
 | Blank page on Pages | Wait for Actions workflow; hard-refresh browser |
-| "Data load failed" | Re-run `python3 ui/haiku-patient-explorer/scripts/generate_demo_data.py` |
+| "Data load failed" | Re-run `python3 ui/haiku-patient-explorer/scripts/generate_representative_ui_data.py` |
 
 ---
 
@@ -71,4 +76,4 @@ https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026/blob/cursor/emma-resea
 
 - **Left:** Targeted vs immunotherapy benefit if disease recurs
 - **Centre:** H&E slide placeholder
-- **Right:** UMAP plot with ~956 patients — click dots to explore
+- **Right:** UMAP plot with 20 representative patients — click dots to explore

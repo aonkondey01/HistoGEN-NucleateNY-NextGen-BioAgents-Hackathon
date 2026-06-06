@@ -1,0 +1,55 @@
+{
+  "case_submitter_id": "TCGA-70-6722",
+  "slide": "TCGA-70-6722-01Z-00-DX1.2f8498bb-bbd9-4eae-bb9e-6fe939ca0551.svs",
+  "phoenix_slide_id": "TCGA-70-6722",
+  "study": "TCGA-LUSC",
+  "phoenix_source": "/workspace/data/phoenix/atlas/tcga-atlas-nest-multi-cell-20x-discrete.h5ad",
+  "n_cells": 1280,
+  "n_genes": 377,
+  "spatial_extent": {
+    "x_min": 0.0,
+    "x_max": 32032.0,
+    "y_min": 896.0,
+    "y_max": 27552.0
+  },
+  "outputs": {
+    "cells": "phoenix_cells.csv",
+    "gene_summary": "phoenix_gene_summary.csv",
+    "tiles": "phoenix_tiles.json",
+    "spatial_heatmap": "phoenix_spatial_heatmap.json",
+    "slide_previews": []
+  },
+  "gdc_slide": {
+    "file_id": "691c34ee-8b95-4199-83e2-624a9e59470f",
+    "file_name": "TCGA-70-6722-01Z-00-DX1.2f8498bb-bbd9-4eae-bb9e-6fe939ca0551.svs",
+    "md5sum": "3c0a6607e6e9ac2fa8663f778b12690a",
+    "file_size": 504398283,
+    "state": "released",
+    "data_format": "SVS",
+    "project_id": "TCGA-LUSC",
+    "case_submitter_id": "TCGA-70-6722",
+    "case_id": "f7287eb4-c77d-4c67-a768-87fcccd668f5",
+    "sample_type": "Primary Tumor",
+    "sample_submitter_id": "TCGA-70-6722-01Z"
+  },
+  "coordinate_map": {
+    "magnification_scale": 2.0,
+    "swap_axes": true,
+    "offset_x": 0.0,
+    "offset_y": 0.0,
+    "flip_x": false,
+    "flip_y": false,
+    "notes": "PHOENIX obsm spatial is 20x pixels with axes swapped vs OpenSlide level-0: slide_x=phoenix_y*2, slide_y=phoenix_x*2"
+  },
+  "registration": {
+    "directory": "data_package/per_patient/TCGA-70-6722/phoenix_registration",
+    "registered_cells_csv": "phoenix_cells_registered.csv",
+    "metrics": {
+      "tissue_overlap_affine": 1.0,
+      "tissue_overlap_warped": 1.0,
+      "icp_contour_error_px": 0.0,
+      "flow_mean_px": 0.06536439806222916,
+      "flow_max_px": 9.646953582763672
+    }
+  }
+}

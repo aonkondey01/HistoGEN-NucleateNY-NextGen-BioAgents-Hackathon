@@ -6,7 +6,8 @@ PHOENIX ships TCGA pan-cancer data in the atlas AnnData file
 ``demo/demo.zarr`` SpatialData store uses the same 377-gene NEST readout
 panel in ``tables/{table,spots_55um_table,spots_100um_table}``.
 
-This script subsets atlas cells by slide ID and writes compact CSV/JSON
+This script subsets the atlas AnnData (``obs.slide`` holds TCGA case IDs such
+as ``TCGA-56-5898``, not full GDC filenames) and writes compact CSV/JSON
 artifacts suitable for merging into the representative-patient bundles.
 
 Usage:
