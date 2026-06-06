@@ -11,7 +11,7 @@ if [[ ! -f public/data/patients_embedding.json ]]; then
 fi
 echo ""
 echo "=============================================="
-echo "  Haiku UI →  http://localhost:5173"
+echo "  HistoGEN  →  http://localhost:5173"
 echo "=============================================="
 echo ""
 echo "HOW TO OPEN:"

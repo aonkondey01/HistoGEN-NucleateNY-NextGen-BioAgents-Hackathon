@@ -24,7 +24,7 @@ data/
   gigatime/      GigaTIME weights fetch helper (gated HF)
 ui/
   index.html              HistoGEN 4-panel dashboard prototype
-  haiku-patient-explorer/ Vite app — UMAP + TME heatmap (Haiku demo)
+  haiku-patient-explorer/ Vite app — recurrence therapy predictions (Taylor UI)
   CURSOR_PROMPT.md        UI iteration brief for agents
 docs/slides/     Pitch deck assets (static .pptx + speaker notes)
 ```
@@ -74,11 +74,13 @@ python fetch.py
 panel uses **Haiku** for cluster assignment and similarity search; the center
 viewer toggles H&E / virtual RNA (Phoenix) / virtual protein (GigaTIME).
 
-**Haiku explorer (Vite):**
+**Haiku explorer (Vite):** Taylor's three-column UI — targeted vs immunotherapy benefit
+if disease recurs, H&E placeholder, and UMAP patient embedding (~956 TCGA lung cases).
 
 ```bash
 bash scripts/run_haiku_ui.sh
 # → http://localhost:5173
+# GitHub Pages: https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/
 ```
 
 ## Agents

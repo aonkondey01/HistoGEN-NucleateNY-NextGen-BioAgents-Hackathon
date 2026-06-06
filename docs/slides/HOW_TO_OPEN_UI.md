@@ -1,4 +1,4 @@
-# How to open the Haiku Patient Explorer UI
+# How to open the HistoGEN UI
 
 The interactive UI is **not** the PowerPoint file. It is a web app you open in a browser.
 
@@ -69,6 +69,6 @@ https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026/blob/cursor/emma-resea
 
 ## What you should see
 
-- **Left:** TME spatial heatmap (changes per patient)
+- **Left:** Targeted vs immunotherapy benefit if disease recurs
 - **Centre:** H&E slide placeholder
 - **Right:** UMAP plot with ~956 patients — click dots to explore

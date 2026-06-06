@@ -1,4 +1,4 @@
-name: Deploy Haiku UI to GitHub Pages
+name: Deploy HistoGEN UI to GitHub Pages
 
 on:
   push:

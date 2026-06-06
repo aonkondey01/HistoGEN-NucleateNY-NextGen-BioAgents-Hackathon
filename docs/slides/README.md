@@ -3,6 +3,8 @@
 Static pitch assets for PEAT-Nucleate BioHack 2026. The live stack is
 **PHOENIX + GigaTIME + Haiku** (see root `README.md`).
 
+**Live UI (HistoGEN):** https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/
+
 ## Files
 
 | File | Description |

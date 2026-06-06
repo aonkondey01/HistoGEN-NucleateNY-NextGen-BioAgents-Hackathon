@@ -65,8 +65,8 @@ python fetch.py
 - **Do not refactor** unless the user asks.
 - Product name is **HistoGEN** (never SpatialMTB).
 - `ui/index.html` — single-file HistoGEN prototype (vanilla HTML/CSS/JS).
-- `ui/haiku-patient-explorer/` — Vite UMAP + heatmap demo; run via
-  `bash scripts/run_haiku_ui.sh`.
+- `ui/haiku-patient-explorer/` — Taylor's Vite UI (recurrence therapy predictions);
+  run via `bash scripts/run_haiku_ui.sh`.
 - Read `ui/CURSOR_PROMPT.md` for layout, brand colors, and iteration priorities.
 - **Haiku** — cluster assignment, similarity search, agent chat.
 - **Phoenix** — virtual RNA / spatial cell-state reference (viewer mode).
@@ -107,10 +107,15 @@ grid-template-rows: 56px topbar | 1fr content
 Panels: (1) Agent Chat 300px left, (2) H&E / Spatial Viewer center,
 (3) Patient Cluster & Clinical 340px right.
 
-**Haiku Patient Explorer grid** (`ui/haiku-patient-explorer/`):
+**HistoGEN Explorer grid** (`ui/haiku-patient-explorer/` — Taylor UI):
 
-Three columns: TME spatial heatmap (left) · H&E slide viewer (center) ·
-right stack (embedding scatter, patient card, immune profile bars, survival stub).
+Three columns: **Recurrence therapy predictions** (left) · **H&E slide placeholder**
+(center) · **Right stack** (UMAP embedding, patient card, immune signature bars,
+survival stub).
+
+Header brand: **HistoGEN** + logo (`public/logo.png`). Color-by dropdown options:
+targeted @ recurrence · IO @ recurrence · preferred at recurrence · driver ·
+archetype · prior treatment class · observed response · stage.
 
 ### HistoGEN dashboard — demo patient (`ui/index.html`)
 
@@ -186,102 +191,74 @@ with three placeholders:
 2. Treatment Response Rates · EGFR-TKI vs IO vs Chemo
 3. UMAP Embedding · Patient cluster position
 
-### Haiku Patient Explorer — data files
+### HistoGEN Explorer — data files (Taylor UI)
 
 Regenerate static JSON:
 
 ```bash
 cd ui/haiku-patient-explorer
-pip install numpy umap-learn scikit-learn   # or use repo venv
+pip install pandas numpy umap-learn scikit-learn
 python scripts/generate_demo_data.py
 ```
 
-**Inputs:** `data/tcga_lung/slides_metadata.tcga_lung.json` (case list).
+**Inputs:**
 
-**Outputs:**
+- `data/tcga_lung/slides_metadata.tcga_lung.json` — case list
+- `data/tcga_lung/patient_metadata.tcga_lung.json` — clinical fields
+- `data/tcga_lung/important_lung_genes/important_mutations.tcga_lung.csv` — drivers
+- Optional: `external/HistoTME/example_data/pantcga_tme_signatures.csv` (falls back
+  to synthetic signatures if missing)
 
-- `public/data/patients_embedding.json`
-- `public/data/spatial_heatmap_demo.json`
+**Output:** `public/data/patients_embedding.json` (~956 patients)
 
-#### `patients_embedding.json` schema
+#### `patients_embedding.json` schema (Taylor)
 
 ```json
 {
   "meta": {
-    "n_patients": "<int>",
-    "source": "TCGA lung diagnostic slides + synthetic TME signature demo (Phoenix/GigaTIME)",
-    "projection": "UMAP (or PCA fallback) on signature matrix",
+    "n_patients": 956,
+    "source": "TCGA lung + TME signatures + recurrence therapy predictions",
+    "prediction_scenario": "Targeted vs immunotherapy benefit if disease recurs",
+    "projection": "UMAP on TME signature scores",
     "archetypes": ["Immune Desert", "Immune Inflamed", "Myeloid/Treg-rich", "Stroma-high"],
-    "drivers": ["EGFR", "KRAS G12C", "ALK", "WT"],
-    "color_signatures": ["Treg", "Effector_cells", "Macrophages", "CAF", "MDSC", "T_cells", "Checkpoint_inhibition", "Angiogenesis"]
+    "color_signatures": ["Treg", "Effector_cells", "Macrophages", "CAF", "MDSC", "T_cells", "Checkpoint_inhibition", "Angiogenesis"],
+    "treatment_categories": ["Chemotherapy", "Pharmaceutical", "..."],
+    "benefit_labels": ["Likely benefit", "Uncertain benefit", "Unlikely benefit"],
+    "recurrence_modalities": ["targeted_therapy", "immunotherapy"]
   },
-  "patients": [
-    {
-      "case_id": "TCGA-XX-XXXX",
-      "project_id": "TCGA-LUAD" | "TCGA-LUSC",
-      "umap_x": "<float>",
-      "umap_y": "<float>",
-      "archetype": "<one of meta.archetypes>",
-      "driver": "<one of meta.drivers>",
-      "os_status": "alive" | "deceased",
-      "signatures": { "<signature_name>": "<float>" }
+  "patients": [{
+    "case_id": "TCGA-XX-XXXX",
+    "project_id": "TCGA-LUAD",
+    "umap_x": 0.0, "umap_y": 0.0,
+    "archetype": "Immune Inflamed",
+    "driver": "EGFR",
+    "histology": "Adenocarcinoma, NOS",
+    "stage": "Stage IIIA",
+    "smoking": "...",
+    "os_status": "alive",
+    "signatures": { "Treg": 0.0, "...": 0.0 },
+    "treatment": { "category": "Pharmaceutical", "agents": [], "disease_response": "..." },
+    "clinical": { "vital_status": "Alive", "overall_survival_days": 900 },
+    "recurrence_predictions": {
+      "scenario": "If disease recurs",
+      "targeted_therapy": { "score": 85, "label": "Likely benefit", "recommended_regimen": "...", "reasons": [] },
+      "immunotherapy": { "score": 62, "label": "Uncertain benefit", "recommended_regimen": "...", "reasons": [] },
+      "preferred_at_recurrence": "Targeted therapy first"
     }
-  ]
+  }]
 }
 ```
 
-**Archetype assignment** (`generate_demo_data.py`): score from signature row —
-Immune Desert (−Treg −Effector), Immune Inflamed (+Effector +T_cells),
-Myeloid/Treg-rich (+Treg +Macrophages), Stroma-high (+CAF).
+**Recurrence prediction heuristics** (`generate_demo_data.py`):
 
-**Driver weights** (random, seed 42): EGFR 22%, KRAS G12C 13%, ALK 5%, WT 60%.
-**OS:** ~58% alive (`rng.random() > 0.42`).
+| Modality | Main inputs |
+|----------|-------------|
+| Targeted @ recurrence | EGFR, ALK, KRAS G12C, MET, BRAF drivers |
+| Immunotherapy @ recurrence | Archetype + effector/T-cell/checkpoint signatures; penalize Treg/MDSC |
+| Preferred | Compare scores; both &lt; 50 → combination/trial |
 
-**UI color maps** (`src/main.js`):
-
-| Archetype | Hex |
-|-----------|-----|
-| Immune Desert | `#4e79a7` |
-| Immune Inflamed | `#e15759` |
-| Myeloid/Treg-rich | `#f28e2b` |
-| Stroma-high | `#76b7b2` |
-
-| Driver | Hex |
-|--------|-----|
-| EGFR | `#b07aa1` |
-| KRAS G12C | `#59a14f` |
-| ALK | `#edc948` |
-| WT | `#9c755f` |
-
-OS: alive `#008080`, deceased `#6b7280`.
-
-**Embedding scatter color-by options:** archetype · driver · signature · os_status.
-
-#### `spatial_heatmap_demo.json` schema
-
-```json
-{
-  "case_id": "<selected case>",
-  "signature": "Treg",
-  "tile_size": 256,
-  "tiles": [
-    { "x": "<int px>", "y": "<int px>", "Treg": 0.0, "Effector_cells": 0.0, "Macrophages": 0.0, "CAF": 0.0 }
-  ],
-  "note": "Demo spatial scores — replace with predict_spatial.py output"
-}
-```
-
-48×48 tile grid (512 px spacing). Radial demo pattern: Treg high at center,
-effector at periphery, macrophages along vertical axis, CAF from bottom.
-
-**Patient card fields rendered:** case_id, project_id, archetype pill, driver pill,
-os_status, UMAP coordinates.
-
-**Survival panel:** demo bar (72% width if alive, 28% if deceased) — wire to
-`data/tcga_lung/clinical_metadata.tcga_lung.csv` for real KM.
-
-**Slide viewer:** hue from `hashHue(case_id)` CSS mock — replace with
-`data/tcga_lung/slide.py thumbnail` when WSI files exist.
+**Left panel copy:** targeted therapy score + suggested agents (e.g. Osimertinib),
+IO score + regimen, preferred approach, prior treatment as context only.
 
 ### Wiring real pipeline outputs (future)
 
@@ -292,8 +269,7 @@ os_status, UMAP coordinates.
 | Protein overlay | GigaTIME virtual mIF from `data/gigatime/` |
 | Cluster card + similar patients | Haiku embedding API over Phoenix+GigaTIME features |
 | Agent chat | Anthropic Haiku API (not wired in static HTML yet) |
-| `patients_embedding.json` | UMAP on real signature matrix from pipeline |
-| Spatial heatmap JSON | GigaTIME / Phoenix per-tile scores |
+| `patients_embedding.json` | UMAP + recurrence predictions from `generate_demo_data.py` |
 
 ### UI iteration priorities
 

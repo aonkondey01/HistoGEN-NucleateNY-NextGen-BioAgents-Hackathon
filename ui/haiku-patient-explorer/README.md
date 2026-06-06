@@ -1,10 +1,10 @@
-# Haiku Patient Explorer
+# HistoGEN Explorer
 
-Three-column UI per the PEAT-Nucleate UX spec:
+Three-column UI for the HistoGEN lung TME platform:
 
 | Panel | Component |
 |-------|-----------|
-| **Left** | TME spatial heatmap (tile-level signature scores) |
+| **Left** | If disease recurs: predicted targeted vs immunotherapy benefit |
 | **Centre** | H&E slide viewer (placeholder; wire to `slide.py` thumbnails) |
 | **Right** | Embedding scatter · patient card · immune profile · survival demo |
 
@@ -34,17 +34,14 @@ Open **http://localhost:5173**
 
 ### Interactions
 
-- **Click** a dot in the UMAP plot → selects patient, updates heatmap + card
-- **Search** case ID in the header (e.g. `TCGA-05`)
-- **← / →** buttons or keyboard arrows → prev/next patient
-- **Hover** heatmap tiles → signature value tooltip
-- **Click** immune profile bars → switch heatmap signature
-- **Color-by** dropdown → archetype / driver / signature / OS
+- **Click** a dot in the UMAP plot → selects patient, updates treatment panel + card
+- **Search** case ID or treatment in the header (e.g. `TCGA-05`, `Cisplatin`)
+- **← / →** buttons → prev/next patient
+- **Color-by** dropdown → targeted @ recurrence / IO @ recurrence / preferred approach / driver / archetype
 
 ## Data
 
-Demo JSON is generated from the TCGA lung case list + synthetic TME signatures
-(placeholder until Phoenix/GigaTIME inference is wired):
+Demo JSON is generated from TCGA lung clinical metadata + HistoTME example signatures:
 
 ```bash
 python3 scripts/generate_demo_data.py
@@ -53,11 +50,6 @@ python3 scripts/generate_demo_data.py
 
 Outputs:
 
-- `public/data/patients_embedding.json` — UMAP coordinates + archetype / driver / signatures
-- `public/data/spatial_heatmap_demo.json` — tile heatmap for selected patient
+- `public/data/patients_embedding.json` — UMAP coordinates, TME signatures, prior treatment context, and recurrence therapy predictions
 
-Replace spatial JSON with real `predict_spatial.py` output when available.
-
-## Branch
-
-Commit UI work to `cursor/emma-research-slide-deck-5384`.
+Predictions estimate benefit from **targeted therapy** (driver-driven) and **immunotherapy** (TME-driven) **if disease recurs**. Prior TCGA treatment is shown for context only. Demo heuristic — not clinical advice.
