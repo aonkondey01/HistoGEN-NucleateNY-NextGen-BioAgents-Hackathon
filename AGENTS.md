@@ -1,54 +1,96 @@
 # Agent instructions
 
-## Cursor Cloud specific instructions
+## What this repo is
 
-### HistoTME
+**SpatialMTB** prototype for PEAT-Nucleate BioHack 2026. The pipeline is:
 
-The HistoTME setup requires Python venv support. If `.venv-histotme` is not
-already available, install `python3.12-venv` first because the base image may
-be missing `ensurepip`.
+1. **TCGA lung H&E** — download / tile / light-Zarr (`data/tcga_lung/`)
+2. **PHOENIX** — virtual spatial transcriptomics reference atlas (`data/phoenix/`)
+3. **GigaTIME** — virtual mIF from H&E (`data/gigatime/`)
+4. **Claude Haiku** — patient embedding similarity + vMTB agent chat (`ui/`)
 
-Prepare the HistoTME environment with:
+**Do not** set up, document, or reference HistoTME. It is out of scope for this
+project.
 
-```bash
-bash scripts/setup_histotme.sh
-```
+## Secrets (Cloud Agent)
 
-This creates `.venv-histotme` for commands such as checkpoint downloads.
+| Secret | Required for | Notes |
+|--------|----------------|-------|
+| `HF_TOKEN` | GigaTIME weights | Gated repo; account must accept [prov-gigatime/GigaTIME](https://huggingface.co/prov-gigatime/GigaTIME) terms |
+| `HF_TOKEN` | PHOENIX (optional) | Public dataset; token only helps rate limits |
+| Anthropic API key | Haiku in production UI | Not wired in static `ui/index.html` yet; mock chat only |
 
-### TCGA lung slide toolkit
+## Common commands
 
-PEAT-Nucleate-BIoHack-2026 includes a Python CLI data toolkit for downloading
-lung TCGA H&E diagnostic whole-slide images from the NCI Genomic Data Commons
-(GDC). All scripts live under `data/tcga_lung/`. See `data/tcga_lung/README.md`
-for the full workflow.
-
-| Component | Required? | Notes |
-|-----------|-----------|-------|
-| Python 3 | Yes | Stdlib for `download.py`, `generate_manifest.py` |
-| GDC API (`api.gdc.cancer.gov`) | For live fetch/download | Open access; no API key |
-| `gdc-client` | Optional | Auto-detected; falls back to built-in HTTP downloader |
-| `slide.py` + pip deps | For slide IO/rendering | `pip install -r requirements.txt`; optional `openslide-tools` + `openslide-python` |
-
-Run from `data/tcga_lung/`:
+### TCGA lung slides (`data/tcga_lung/`)
 
 ```bash
-python3 -m py_compile download.py generate_manifest.py slide.py
+cd data/tcga_lung
+pip install -r requirements.txt
+
+python3 -m py_compile download.py generate_manifest.py slide.py svs_to_zarr.py
 python3 download.py --manifest gdc_manifest.tcga_lung.txt --out-dir ./WSI --dry-run --limit 3
+
+# Three-patient pilot → light Zarr (skips native 40× level)
+bash fetch_three_light_zarr.sh
 ```
 
-Slide IO setup (once per VM):
+Optional slide IO backend:
 
 ```bash
-sudo apt-get install -y openslide-tools   # optional but preferred backend
-pip3 install -r data/tcga_lung/requirements.txt openslide-python
+sudo apt-get install -y openslide-tools
+pip3 install openslide-python
 ```
 
-`slide.py` auto-detects OpenSlide when installed; otherwise it falls back to
-`tifffile` + `zarr`.
+### PHOENIX (`data/phoenix/`)
 
-Gotchas:
+```bash
+cd data/phoenix
+pip install -r requirements.txt
+python fetch.py --list
+python fetch.py   # ~23 GB atlas download
+```
 
-- Full cohort is ~824 GB. Use `--dry-run` and `--limit N` for pilots. `WSI/` is gitignored.
-- No lint/test suite on `main`: validate with `py_compile`, dry-run, and small pilot downloads.
-- `generate_manifest.py` without `--out-dir` overwrites committed manifests in the repo directory.
+### GigaTIME (`data/gigatime/`)
+
+```bash
+export HF_TOKEN=...
+cd data/gigatime
+pip install -r requirements.txt
+python fetch.py
+```
+
+### UI (`ui/`)
+
+- **Do not refactor** unless the user asks.
+- `ui/index.html` — single-file SpatialMTB prototype (vanilla HTML/CSS/JS).
+- `ui/haiku-patient-explorer/` — Vite UMAP + heatmap demo; run via
+  `bash scripts/run_haiku_ui.sh`.
+- Read `ui/CURSOR_PROMPT.md` for layout, brand colors, and iteration priorities.
+- **Haiku** — cluster assignment, similarity search, agent chat.
+- **Phoenix** — virtual RNA / spatial cell-state reference (viewer mode).
+- **GigaTIME** — virtual protein / mIF (viewer mode).
+
+```bash
+python3 -m http.server 8080 --directory ui          # static dashboard
+bash scripts/run_haiku_ui.sh                        # Vite explorer on :5173
+```
+
+## Gotchas
+
+- **Disk:** full TCGA lung cohort ≈ 824 GB. Use `--dry-run`, `--limit N`, and
+  pilot manifests. `WSI/`, `zarr/`, and model weights are gitignored.
+- **No CI test suite** on `main` — validate with `py_compile`, dry-run downloads,
+  and small pilots.
+- **GigaTIME weights** must never be committed.
+- **`generate_manifest.py`** without `--out-dir` overwrites committed manifests
+  in `data/tcga_lung/`.
+- **Branch naming** for agent PRs: `cursor/<descriptive-name>-0459`.
+
+## What to commit vs ignore
+
+| Commit | Ignore |
+|--------|--------|
+| Scripts, manifests, metadata CSV/JSON | `WSI/`, `*.svs`, `zarr/`, `*.zarr/` |
+| UI HTML/CSS/JS | GigaTIME `model.pth`, PHOENIX `.h5ad` |
+| Docs, speaker notes | Large downloaded atlases |

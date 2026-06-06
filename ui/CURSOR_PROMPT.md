@@ -8,6 +8,16 @@ The core insight: mutations don't act alone. Response to therapy depends on the 
 
 Primary cancer type: **head and neck squamous cell carcinoma (HNSCC)**, including HPV+ and HPV− subtypes.
 
+### Backend models (repo stack)
+
+| Model | Role in UI |
+|-------|------------|
+| **PHOENIX** | Virtual spatial transcriptomics / cell-state reference (RNA viewer mode) |
+| **GigaTIME** | Virtual multiplex protein / mIF from H&E (Protein viewer mode) |
+| **Claude Haiku** | Patient embedding similarity, cluster card, agent chat |
+
+HistoTME is **not** part of this project.
+
 ---
 
 ## Current UI

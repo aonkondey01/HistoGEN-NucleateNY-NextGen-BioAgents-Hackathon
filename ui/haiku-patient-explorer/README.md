@@ -43,7 +43,8 @@ Open **http://localhost:5173**
 
 ## Data
 
-Demo JSON is generated from TCGA lung case list + HistoTME example signatures:
+Demo JSON is generated from the TCGA lung case list + synthetic TME signatures
+(placeholder until Phoenix/GigaTIME inference is wired):
 
 ```bash
 python3 scripts/generate_demo_data.py
