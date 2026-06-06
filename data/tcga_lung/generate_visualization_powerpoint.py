@@ -56,27 +56,38 @@ SECTIONS: list[tuple[str, list[str]]] = [
             "16_protein_expression_survival_pvalues",
         ],
     ),
-    (
-        "Kaplan-Meier curves (top associations)",
-        [
-            "17_mutation_survival_km_NOTCH2",
-            "17_mutation_survival_km_CDKN2A",
-            "17_mutation_survival_km_TP53",
-            "18_rna_survival_km_FAT1",
-            "18_rna_survival_km_SOX2",
-            "18_rna_survival_km_PTEN",
-            "19_protein_survival_km_Sox2",
-            "19_protein_survival_km_BRAF_pS445",
-            "19_protein_survival_km_CMET_pY1235",
-        ],
-    ),
 ]
 
 
+def load_significant_km_sections(plots_dir: Path) -> list[tuple[str, list[str]]]:
+    manifest_path = plots_dir / "significant_km_manifest.json"
+    if not manifest_path.exists():
+        return []
+    manifest = json.loads(manifest_path.read_text())
+    stems = []
+    for rel in manifest.get("plot_files", []):
+        rel_path = Path(rel)
+        if rel_path.parent.name == "significant_km":
+            stems.append(f"significant_km/{rel_path.stem}")
+        else:
+            stems.append(rel_path.stem)
+    if not stems:
+        return []
+    alpha = manifest.get("significance_alpha", 0.05)
+    return [(f"Significant Kaplan-Meier curves (p < {alpha})", stems)]
+
+
 def human_title(stem: str) -> str:
-    title = re.sub(r"^\d+_", "", stem)
+    title = re.sub(r"^(significant_km/)?", "", stem)
+    title = re.sub(r"^\d+_", "", title)
     title = title.replace("_", " ")
     return title[0].upper() + title[1:] if title else stem
+
+
+def resolve_plot_svg(plots_dir: Path, stem: str) -> Path:
+    if stem.startswith("significant_km/"):
+        return plots_dir / f"{stem}.svg"
+    return plots_dir / f"{stem}.svg"
 
 
 def svg_to_png(svg_path: Path, png_path: Path, *, scale: float = 2.0) -> None:
@@ -172,29 +183,35 @@ def build_powerpoint(
 
     plotted = 0
     missing = 0
+    sections = SECTIONS + load_significant_km_sections(plots_dir)
     with tempfile.TemporaryDirectory(prefix="tcga-lung-ppt-") as tmpdir:
         tmp = Path(tmpdir)
-        for section_title, stems in SECTIONS:
+        for section_title, stems in sections:
             add_section_slide(prs, section_title)
             for stem in stems:
-                svg_path = plots_dir / f"{stem}.svg"
+                svg_path = resolve_plot_svg(plots_dir, stem)
                 if not svg_path.exists():
                     if include_missing:
                         missing += 1
                     continue
-                png_path = tmp / f"{stem}.png"
+                png_path = tmp / f"{stem.replace('/', '_')}.png"
                 svg_to_png(svg_path, png_path)
                 add_plot_slide(prs, png_path, human_title(stem))
                 plotted += 1
 
-        # Include any extra plot files not listed explicitly.
-        known = {stem for _, stems in SECTIONS for stem in stems}
-        extras = sorted(p.stem for p in plots_dir.glob("*.svg") if p.stem not in known)
+        # Include any extra non-KM plot files not listed explicitly.
+        known = {stem for _, stems in sections for stem in stems}
+        extras = sorted(
+            p.relative_to(plots_dir).with_suffix("").as_posix()
+            for p in plots_dir.glob("*.svg")
+            if p.relative_to(plots_dir).with_suffix("").as_posix() not in known
+            and "survival_km" not in p.name
+        )
         if extras:
             add_section_slide(prs, "Additional plots")
             for stem in extras:
-                svg_path = plots_dir / f"{stem}.svg"
-                png_path = tmp / f"{stem}.png"
+                svg_path = resolve_plot_svg(plots_dir, stem)
+                png_path = tmp / f"{stem.replace('/', '_')}.png"
                 svg_to_png(svg_path, png_path)
                 add_plot_slide(prs, png_path, human_title(stem))
                 plotted += 1
@@ -214,6 +231,11 @@ def main() -> int:
         type=Path,
         default=default_root / "TCGA_Lung_Visual_Summary.pptx",
     )
+    parser.add_argument(
+        "--significant-km-out",
+        type=Path,
+        default=default_root / "TCGA_Lung_Significant_KM.pptx",
+    )
     args = parser.parse_args()
 
     plots_dir = args.report_dir / "plots"
@@ -226,6 +248,29 @@ def main() -> int:
     stats = build_powerpoint(plots_dir, summary_path, args.out)
     print(f"Wrote PowerPoint to {args.out}")
     print(json.dumps(stats, indent=2))
+
+    manifest_path = plots_dir / "significant_km_manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        km_sections = load_significant_km_sections(plots_dir)
+        if km_sections:
+            prs = Presentation()
+            prs.slide_width = Inches(13.333)
+            prs.slide_height = Inches(7.5)
+            add_title_slide(prs, json.loads(summary_path.read_text()))
+            with tempfile.TemporaryDirectory(prefix="tcga-lung-km-") as tmpdir:
+                tmp = Path(tmpdir)
+                for section_title, stems in km_sections:
+                    add_section_slide(prs, section_title)
+                    for stem in stems:
+                        svg_path = resolve_plot_svg(plots_dir, stem)
+                        png_path = tmp / f"{stem.replace('/', '_')}.png"
+                        svg_to_png(svg_path, png_path)
+                        add_plot_slide(prs, png_path, human_title(stem))
+            args.significant_km_out.parent.mkdir(parents=True, exist_ok=True)
+            prs.save(str(args.significant_km_out))
+            print(f"Wrote significant KM PowerPoint to {args.significant_km_out}")
+            print(json.dumps(manifest, indent=2))
     return 0
 
 

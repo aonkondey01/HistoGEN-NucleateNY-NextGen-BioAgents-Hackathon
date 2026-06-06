@@ -76,6 +76,50 @@ COLORS = {
     "dark": "#0f172a",
 }
 
+SIGNIFICANCE_ALPHA = 0.05
+
+
+def is_significant(row: dict[str, Any], *, alpha: float = SIGNIFICANCE_ALPHA) -> bool:
+    p = to_float(row.get("logrank_p_value"))
+    return p is not None and p < alpha
+
+
+def significant_survival_rows(rows: list[dict[str, Any]], *, alpha: float = SIGNIFICANCE_ALPHA) -> list[dict[str, Any]]:
+    return [row for row in rows if is_significant(row, alpha=alpha)]
+
+
+def km_curves_html(
+    rows: list[dict[str, Any]],
+    plot_groups: dict[str, tuple[list[dict[str, float]], list[dict[str, float]]]],
+    *,
+    key_field: str,
+    group_a_label: str,
+    group_b_label: str,
+    title_prefix: str,
+    alpha: float = SIGNIFICANCE_ALPHA,
+) -> str:
+    sig_rows = significant_survival_rows(rows, alpha=alpha)
+    if not sig_rows:
+        return f"<p>No significant Kaplan-Meier curves at p &lt; {alpha}.</p>"
+    parts = ['<div class="grid">']
+    for row in sig_rows:
+        key = row[key_field]
+        if key not in plot_groups:
+            continue
+        parts.append(
+            "<div>"
+            + km_curve(
+                *plot_groups[key],
+                title=f"{title_prefix}: {key}",
+                group_a_label=group_a_label,
+                group_b_label=group_b_label,
+                p_value=to_float(row.get("logrank_p_value")),
+            )
+            + "</div>"
+        )
+    parts.append("</div>")
+    return "\n".join(parts)
+
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="") as fh:
@@ -738,58 +782,85 @@ def export_standalone_plots(
         ),
     ]
 
-    for gene in (mutation_survival[:3] if mutation_survival else []):
-        g = gene["gene"]
-        if g in mutation_plot_groups:
-            plot_specs.append(
-                (
-                    f"17_mutation_survival_km_{g}.svg",
-                    km_curve(
-                        *mutation_plot_groups[g],
-                        title=f"Survival by {g} mutation status",
-                        group_a_label="Mutated",
-                        group_b_label="Not mutated",
-                        p_value=to_float(gene.get("logrank_p_value")),
-                    ),
-                )
+    sig_mutation = significant_survival_rows(mutation_survival)
+    sig_rna = significant_survival_rows(rna_survival)
+    sig_protein = significant_survival_rows(protein_survival)
+
+    significant_km_dir = plots_dir / "significant_km"
+    significant_km_dir.mkdir(parents=True, exist_ok=True)
+    for old in plots_dir.glob("*survival_km*.svg"):
+        old.unlink(missing_ok=True)
+    for old in significant_km_dir.glob("*.svg"):
+        old.unlink(missing_ok=True)
+
+    for row in sig_mutation:
+        g = row["gene"]
+        if g not in mutation_plot_groups:
+            continue
+        filename = f"mutation_km_{g}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *mutation_plot_groups[g],
+                    title=f"Survival by {g} mutation status",
+                    group_a_label="Mutated",
+                    group_b_label="Not mutated",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
-    for gene in (rna_survival[:3] if rna_survival else []):
-        g = gene["gene"]
-        if g in rna_plot_groups:
-            plot_specs.append(
-                (
-                    f"18_rna_survival_km_{g}.svg",
-                    km_curve(
-                        *rna_plot_groups[g],
-                        title=f"Survival by {g} RNA expression (median split)",
-                        group_a_label="High expression",
-                        group_b_label="Low expression",
-                        p_value=to_float(gene.get("logrank_p_value")),
-                    ),
-                )
+        )
+    for row in sig_rna:
+        g = row["gene"]
+        if g not in rna_plot_groups:
+            continue
+        filename = f"rna_km_{g}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *rna_plot_groups[g],
+                    title=f"Survival by {g} RNA expression (median split)",
+                    group_a_label="High expression",
+                    group_b_label="Low expression",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
-    for row in (protein_survival[:3] if protein_survival else []):
+        )
+    for row in sig_protein:
         target = row["protein_target"]
-        if target in protein_plot_groups:
-            safe = target.replace("/", "_")
-            plot_specs.append(
-                (
-                    f"19_protein_survival_km_{safe}.svg",
-                    km_curve(
-                        *protein_plot_groups[target],
-                        title=f"Survival by {target} RPPA expression (median split)",
-                        group_a_label="High protein",
-                        group_b_label="Low protein",
-                        p_value=to_float(row.get("logrank_p_value")),
-                    ),
-                )
+        if target not in protein_plot_groups:
+            continue
+        safe = target.replace("/", "_")
+        filename = f"protein_km_{safe}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *protein_plot_groups[target],
+                    title=f"Survival by {target} RPPA expression (median split)",
+                    group_a_label="High protein",
+                    group_b_label="Low protein",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
+        )
 
     written: list[str] = []
     for filename, svg in plot_specs:
         path = plots_dir / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
         write_svg(path, svg)
         written.append(filename)
+
+    manifest = {
+        "significance_alpha": SIGNIFICANCE_ALPHA,
+        "significant_mutation_curves": [r["gene"] for r in sig_mutation],
+        "significant_rna_curves": [r["gene"] for r in sig_rna],
+        "significant_protein_curves": [r["protein_target"] for r in sig_protein],
+        "plot_files": [name for name in written if name.startswith("significant_km/")],
+    }
+    write_json(plots_dir / "significant_km_manifest.json", manifest)
 
     gallery_items = "\n".join(
         f'    <section class="plot-card"><h3>{esc(name)}</h3><img src="plots/{esc(name)}" alt="{esc(name)}"></section>'
@@ -870,42 +941,29 @@ def render_report(
     mutation_cases = sum(1 for row in patient_rows if int(float(row.get("mutation_file_count") or 0)) > 0)
     expression_cases = sum(1 for row in patient_rows if int(float(row.get("expression_file_count") or 0)) > 0)
 
-    top_mut = mutation_survival[0] if mutation_survival else None
-    top_rna = rna_survival[0] if rna_survival else None
-    top_protein = protein_survival[0] if protein_survival else None
-
-    mutation_km = (
-        km_curve(
-            *mutation_plot_groups[top_mut["gene"]],
-            title=f"Survival by {top_mut['gene']} mutation: mutated vs not mutated",
-            group_a_label="Mutated",
-            group_b_label="Not mutated",
-            p_value=to_float(top_mut.get("logrank_p_value")),
-        )
-        if top_mut and top_mut["gene"] in mutation_plot_groups
-        else "<p>No mutation survival curve available.</p>"
+    mutation_km = km_curves_html(
+        mutation_survival,
+        mutation_plot_groups,
+        key_field="gene",
+        group_a_label="Mutated",
+        group_b_label="Not mutated",
+        title_prefix="Mutation",
     )
-    rna_km = (
-        km_curve(
-            *rna_plot_groups[top_rna["gene"]],
-            title=f"Survival by {top_rna['gene']} RNA expression: high vs low",
-            group_a_label="High expression",
-            group_b_label="Low expression",
-            p_value=to_float(top_rna.get("logrank_p_value")),
-        )
-        if top_rna and top_rna["gene"] in rna_plot_groups
-        else "<p>No RNA expression survival curve available.</p>"
+    rna_km = km_curves_html(
+        rna_survival,
+        rna_plot_groups,
+        key_field="gene",
+        group_a_label="High expression",
+        group_b_label="Low expression",
+        title_prefix="RNA expression",
     )
-    protein_km = (
-        km_curve(
-            *protein_plot_groups[top_protein["protein_target"]],
-            title=f"Survival by {top_protein['protein_target']} RPPA expression: high vs low",
-            group_a_label="High protein",
-            group_b_label="Low protein",
-            p_value=to_float(top_protein.get("logrank_p_value")),
-        )
-        if top_protein and top_protein["protein_target"] in protein_plot_groups
-        else "<p>No protein expression survival curve available.</p>"
+    protein_km = km_curves_html(
+        protein_survival,
+        protein_plot_groups,
+        key_field="protein_target",
+        group_a_label="High protein",
+        group_b_label="Low protein",
+        title_prefix="RPPA protein",
     )
 
     cards = [
@@ -989,15 +1047,15 @@ def render_report(
 
   <div class="panel">
     <h2>5. Exploratory survival associations</h2>
-    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Y-axis = survival probability (fraction alive). X-axis = follow-up time in days from TCGA clinical fields. Expression and protein analyses use per-gene median splits. P-values are shown on each curve and in the tables below.</p>
-    <h3>Mutation status vs survival</h3>
-    {table_html(mutation_survival, ["gene", "mutated_n", "not_mutated_n", "mutated_events", "not_mutated_events", "mutated_km_median_survival_days", "not_mutated_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Only curves with log-rank p &lt; {SIGNIFICANCE_ALPHA} are plotted below. Y-axis = survival probability (fraction alive). X-axis = follow-up time in days from TCGA clinical fields.</p>
+    <h3>Significant mutation status vs survival</h3>
+    {table_html([r for r in mutation_survival if is_significant(r)], ["gene", "mutated_n", "not_mutated_n", "mutated_events", "not_mutated_events", "mutated_km_median_survival_days", "not_mutated_km_median_survival_days", "logrank_p_value"], limit=12)}
     {mutation_km}
-    <h3>RNA expression vs survival</h3>
-    {table_html(rna_survival, ["gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <h3>Significant RNA expression vs survival</h3>
+    {table_html([r for r in rna_survival if is_significant(r)], ["gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
     {rna_km}
-    <h3>Protein/RPPA expression vs survival</h3>
-    {table_html(protein_survival, ["protein_target", "gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <h3>Significant protein/RPPA expression vs survival</h3>
+    {table_html([r for r in protein_survival if is_significant(r)], ["protein_target", "gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
     {protein_km}
   </div>
 
@@ -1012,7 +1070,8 @@ def render_report(
     <ul>
       <li><code>index.html</code> - this visual report</li>
       <li><code>gallery.html</code> - standalone plot gallery for Cursor/browser preview</li>
-      <li><code>plots/</code> - individual SVG charts for cohort, demographics, mutations, clinical comparisons, and survival</li>
+      <li><code>plots/significant_km/</code> - Kaplan-Meier curves with log-rank p &lt; {SIGNIFICANCE_ALPHA}</li>
+      <li><code>plots/significant_km_manifest.json</code> - list of significant KM curves</li>
       <li><code>cohort_visual_summary.json</code> - report-level summary counts</li>
       <li><code>driver_mutation_frequency.csv</code> - mutation frequencies by LUAD/LUSC</li>
       <li><code>clinical_by_driver_mutation.csv</code> - clinical summaries by mutation status</li>
