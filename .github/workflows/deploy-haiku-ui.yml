@@ -8,21 +8,17 @@ on:
       - ".github/workflows/deploy-haiku-ui.yml"
   workflow_dispatch:
 
+# Push built static files to the gh-pages branch (no Pages REST API / enablement needed).
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: gh-pages-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,18 +34,11 @@ jobs:
           GITHUB_PAGES: "true"
         run: |
           npm ci
-          # Use committed representative data under public/data/ (slides + spatial JSON).
           npm run build:pages
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          # Creates/enables the Pages site when repo Settings → Pages source is unset.
-          enablement: true
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ui/haiku-patient-explorer/dist
-
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ui/haiku-patient-explorer/dist
+          enable_jekyll: false

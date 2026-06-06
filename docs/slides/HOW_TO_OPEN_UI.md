@@ -13,8 +13,12 @@ After the deploy workflow runs on `main`:
 ### One-time setup (repo owner)
 
 1. GitHub repo → **Settings** → **Pages**
-2. **Build and deployment** → Source: **GitHub Actions**
-3. Push to `main` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
+2. **Build and deployment** → Source: **Deploy from a branch**
+3. Branch: **`gh-pages`** · folder: **`/ (root)`**
+4. Push to `main` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
+
+The workflow builds Vite output and pushes it to `gh-pages`. It does **not** need the
+Pages “GitHub Actions” source (that API requires repo-admin enablement).
 
 Wait ~2–3 minutes after the workflow completes, then open the URL above.
 
