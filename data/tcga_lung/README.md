@@ -49,7 +49,8 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | File                                | Description                                                       |
 | ----------------------------------- | ----------------------------------------------------------------- |
 | `generate_manifest.py`              | Queries the GDC API and (re)writes all manifests + metadata below |
-| `extract_patient_metadata.py`       | Extracts patient clinical metadata plus mutation/expression file indexes |
+| `fetch_clinical_metadata.py`        | Queries the GDC cases API for all LUAD/LUSC clinical case records |
+| `extract_patient_metadata.py`       | Extracts slide-cohort patient metadata plus mutation/expression file indexes |
 | `extract_important_lung_genes.py`   | Streams public GDC files and extracts important LUAD/LUSC gene data |
 | `visualize_important_lung_genes.py` | Builds an HTML/SVG visual summary report from the extracted tables |
 | `generate_visualization_powerpoint.py` | Builds a PowerPoint deck from the SVG plots in `visual_report/plots/` |
@@ -58,6 +59,9 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
 | `gdc_manifest.TCGA-LUSC.txt`        | Per-project manifest (512 slides)                                 |
 | `slides_metadata.tcga_lung.json`    | Rich per-slide metadata (file id, md5, size, patient/case ids)    |
+| `clinical_metadata.tcga_lung.json`  | Full expanded GDC clinical case records for all LUAD/LUSC patients |
+| `clinical_patient_summary.tcga_lung.tsv` | One-row-per-patient clinical summary for joins                 |
+| `clinical_summary.tcga_lung.json`   | Clinical cohort counts for quick inspection                       |
 | `patient_metadata.tcga_lung.csv`    | One row per slide-cohort patient with clinical fields from GDC     |
 | `patient_metadata.tcga_lung.json`   | Same patient rows plus raw diagnoses/exposures/treatments/follow-ups |
 | `molecular_files.tcga_lung.csv`     | Open mutation/expression GDC file index for these patients         |
@@ -184,6 +188,18 @@ important_lung_genes/visual_report/TCGA_Lung_Visual_Summary.pptx
 ```bash
 python generate_manifest.py
 ```
+
+### 1b. (Optional) Refresh clinical metadata from GDC
+
+```bash
+python fetch_clinical_metadata.py
+```
+
+This writes the complete expanded GDC case records for all TCGA-LUAD/LUSC
+patients plus a flattened patient-level TSV. The raw JSON preserves nested
+demographic, diagnosis, treatment, exposure, follow-up, sample, and project
+metadata; the TSV adds `has_diagnostic_slide` and `n_diagnostic_slides` for
+joining back to the diagnostic-slide manifest.
 
 ### 2. Preview / pilot before committing ~824 GB
 
