@@ -1,10 +1,10 @@
-# Cursor UI Iteration Prompt — SpatialMTB
+# Cursor UI Iteration Prompt — HistoGEN
 
 ## Project context
 
-**SpatialMTB** is a clinical AI tool for head and neck oncology. It takes one routine H&E slide and a short clinical note, uses pretrained H&E foundation models to infer virtual spatial transcriptomics and multiplex protein imaging, retrieves similar prior patients with known outcomes, and generates a ranked, citation-backed virtual molecular tumor board (vMTB) report.
+**HistoGEN** is a clinical AI tool for head and neck oncology. It takes one routine H&E slide and a short clinical note, uses pretrained H&E foundation models to infer virtual spatial transcriptomics and multiplex protein imaging, retrieves similar prior patients with known outcomes, and generates a ranked, citation-backed virtual molecular tumor board (vMTB) report.
 
-The core insight: mutations don't act alone. Response to therapy depends on the tumor microenvironment — whether T cells enter tumor nests, whether macrophages dominate, whether the tumor is hypoxic, stromal, HPV-like, or immune-excluded. Instead of asking "what drug matches this mutation?", SpatialMTB asks **"what kind of tumor ecosystem is this patient in, and how did similar patients behave before?"**
+The core insight: mutations don't act alone. Response to therapy depends on the tumor microenvironment — whether T cells enter tumor nests, whether macrophages dominate, whether the tumor is hypoxic, stromal, HPV-like, or immune-excluded. Instead of asking "what drug matches this mutation?", HistoGEN asks **"what kind of tumor ecosystem is this patient in, and how did similar patients behave before?"**
 
 Primary cancer type: **head and neck squamous cell carcinoma (HNSCC)**, including HPV+ and HPV− subtypes.
 

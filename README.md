@@ -1,6 +1,6 @@
 # PEAT-Nucleate-BIoHack-2026
 
-Hackathon workspace for **SpatialMTB** — a clinical AI workflow that starts from
+Hackathon workspace for **HistoGEN** — a clinical AI workflow that starts from
 routine H&E, infers virtual spatial biology, retrieves similar patients, and
 drafts a citation-backed virtual molecular tumor board (vMTB) report.
 
@@ -23,7 +23,7 @@ data/
   phoenix/       PHOENIX atlas fetch helper
   gigatime/      GigaTIME weights fetch helper (gated HF)
 ui/
-  index.html              SpatialMTB 4-panel dashboard prototype
+  index.html              HistoGEN 4-panel dashboard prototype
   haiku-patient-explorer/ Vite app — UMAP + TME heatmap (Haiku demo)
   CURSOR_PROMPT.md        UI iteration brief for agents
 docs/slides/     Pitch deck assets (static .pptx + speaker notes)
@@ -68,7 +68,7 @@ python fetch.py
 # or: bash fetch.sh
 ```
 
-### 4. SpatialMTB UI
+### 4. HistoGEN UI
 
 **Static dashboard:** open `ui/index.html` in a browser (no build step). The right
 panel uses **Haiku** for cluster assignment and similarity search; the center

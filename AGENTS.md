@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-**SpatialMTB** prototype for PEAT-Nucleate BioHack 2026. The pipeline is:
+**HistoGEN** prototype for PEAT-Nucleate BioHack 2026. The pipeline is:
 
 1. **TCGA lung H&E** — download / tile / light-Zarr (`data/tcga_lung/`)
 2. **PHOENIX** — virtual spatial transcriptomics reference atlas (`data/phoenix/`)
@@ -63,7 +63,7 @@ python fetch.py
 ### UI (`ui/`)
 
 - **Do not refactor** unless the user asks.
-- `ui/index.html` — single-file SpatialMTB prototype (vanilla HTML/CSS/JS).
+- `ui/index.html` — single-file HistoGEN prototype (vanilla HTML/CSS/JS).
 - `ui/haiku-patient-explorer/` — Vite UMAP + heatmap demo; run via
   `bash scripts/run_haiku_ui.sh`.
 - Read `ui/CURSOR_PROMPT.md` for layout, brand colors, and iteration priorities.

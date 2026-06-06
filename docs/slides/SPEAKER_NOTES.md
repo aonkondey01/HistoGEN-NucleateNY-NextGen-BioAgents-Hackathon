@@ -4,7 +4,7 @@ Approximate timing: **12–15 minutes** (14 slides).
 
 Stack on `main`: **PHOENIX** (virtual spatial transcriptomics atlas), **GigaTIME**
 (virtual mIF from H&E), **Claude Haiku** (patient similarity + vMTB agent in the
-SpatialMTB UI).
+HistoGEN UI).
 
 ---
 
@@ -73,7 +73,7 @@ imaging and spatial transcriptomics.
 ## Slide 8 — Repo pipeline (~1 min)
 
 This repo wires it together: TCGA lung diagnostic slides, PHOENIX atlas fetch,
-GigaTIME inference helpers, light-Zarr slide stores, and the SpatialMTB UI.
+GigaTIME inference helpers, light-Zarr slide stores, and the HistoGEN UI.
 Pilot with a few slides for the hackathon; scale to the full cohort later.
 
 ---
@@ -94,7 +94,7 @@ Stratify by EGFR/ALK/KRAS/wild-type. Cluster TME archetypes. Ask whether non-res
 
 ## Slide 11 — Deliverables (~1 min)
 
-Be honest about what's live vs stretch: pilot slides, virtual RNA/protein maps on exemplars, Haiku-powered similarity clusters, SpatialMTB UI mock-up.
+Be honest about what's live vs stretch: pilot slides, virtual RNA/protein maps on exemplars, Haiku-powered similarity clusters, HistoGEN UI mock-up.
 
 ---
 
