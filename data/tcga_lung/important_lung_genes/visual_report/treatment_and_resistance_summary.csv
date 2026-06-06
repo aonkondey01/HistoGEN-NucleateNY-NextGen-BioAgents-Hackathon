@@ -1,0 +1,13 @@
+metric,category,count
+patients,all,956
+field_coverage,prior_treatment,955
+field_coverage,treatment_types,894
+field_coverage,treatment_or_therapy,822
+field_coverage,therapeutic_agents,284
+field_coverage,disease_response,837
+field_coverage,progression_or_recurrence,283
+field_coverage,treatment_outcomes,216
+field_coverage,days_to_treatment_start,386
+resistance_proxy,Progression/recurrence reported,283
+resistance_proxy,Treatment outcome: Progressive Disease,62
+resistance_proxy,Disease response: with tumor,181

@@ -722,6 +722,96 @@ def cohort_overview_chart(
     return bar_chart(items, "Cohort size and data availability", width=width, color=COLORS["green"])
 
 
+TREATMENT_COVERAGE_FIELDS = [
+    "prior_treatment",
+    "treatment_types",
+    "treatment_or_therapy",
+    "therapeutic_agents",
+    "disease_response",
+    "progression_or_recurrence",
+    "treatment_outcomes",
+    "days_to_treatment_start",
+]
+
+
+def split_field_counts(rows: Iterable[dict[str, str]], field: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        val = (row.get(field) or "").strip()
+        if not val:
+            continue
+        for part in val.split(";"):
+            part = part.strip()
+            if part:
+                counts[part] += 1
+    return counts
+
+
+def field_coverage_counts(rows: list[dict[str, str]], fields: list[str]) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for field in fields:
+        label = field.replace("_", " ")
+        counts[label] = sum(1 for row in rows if (row.get(field) or "").strip())
+    return counts
+
+
+def yes_no_field_counts(rows: list[dict[str, str]], field: str, *, title_yes: str, title_no: str, title_missing: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        val = (row.get(field) or "").strip().lower()
+        if not val:
+            counts[title_missing] += 1
+        elif "yes" in val:
+            counts[title_yes] += 1
+        elif "no" in val:
+            counts[title_no] += 1
+        else:
+            counts[val] += 1
+    return counts
+
+
+def resistance_proxy_counts(rows: list[dict[str, str]]) -> Counter[str]:
+    """Summarize progression/recurrence and progressive-disease outcome proxies."""
+    counts: Counter[str] = Counter()
+    for row in rows:
+        progression = (row.get("progression_or_recurrence") or "").strip().lower()
+        if progression == "yes":
+            counts["Progression/recurrence reported"] += 1
+        outcomes = split_field_counts([row], "treatment_outcomes")
+        if "Progressive Disease" in outcomes:
+            counts["Treatment outcome: Progressive Disease"] += 1
+        response = (row.get("disease_response") or "").strip()
+        if response == "WT-With Tumor":
+            counts["Disease response: with tumor"] += 1
+    return counts
+
+
+def build_treatment_summary(rows: list[dict[str, str]]) -> dict[str, Any]:
+    total = len(rows)
+    coverage = {
+        field: sum(1 for row in rows if (row.get(field) or "").strip())
+        for field in TREATMENT_COVERAGE_FIELDS
+    }
+    return {
+        "patient_count": total,
+        "field_coverage": coverage,
+        "field_coverage_pct": {
+            field: round(100 * count / total, 1) if total else 0.0
+            for field, count in coverage.items()
+        },
+        "top_treatment_types": dict(split_field_counts(rows, "treatment_types").most_common(10)),
+        "top_therapeutic_agents": dict(split_field_counts(rows, "therapeutic_agents").most_common(10)),
+        "disease_response_counts": dict(count_values(rows, "disease_response")),
+        "progression_or_recurrence_counts": dict(count_values(rows, "progression_or_recurrence")),
+        "treatment_outcome_counts": dict(split_field_counts(rows, "treatment_outcomes")),
+        "resistance_proxy_counts": dict(resistance_proxy_counts(rows)),
+        "notes": [
+            "Direct drug-resistance labels are not uniformly available in public TCGA clinical data.",
+            "Progression/recurrence, disease response, and treatment outcomes are used as resistance proxies.",
+        ],
+    }
+
+
 def export_standalone_plots(
     plots_dir: Path,
     *,
@@ -779,6 +869,78 @@ def export_standalone_plots(
         (
             "16_protein_expression_survival_pvalues.svg",
             survival_pvalue_chart(protein_survival, "protein_target", "RPPA protein survival association strength (-log10 p)"),
+        ),
+        (
+            "17_treatment_field_coverage.svg",
+            bar_chart(
+                field_coverage_counts(patient_rows, TREATMENT_COVERAGE_FIELDS),
+                "Treatment and outcome field coverage (patients with data)",
+                color=COLORS["green"],
+            ),
+        ),
+        (
+            "18_prior_treatment_status.svg",
+            bar_chart(
+                yes_no_field_counts(
+                    patient_rows,
+                    "prior_treatment",
+                    title_yes="Any prior treatment reported",
+                    title_no="No prior treatment reported",
+                    title_missing="Not reported",
+                ),
+                "Prior treatment status",
+                color=COLORS["blue"],
+            ),
+        ),
+        (
+            "19_treatment_types.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "treatment_types"),
+                "Reported treatment types",
+                color=COLORS["purple"],
+                max_items=12,
+            ),
+        ),
+        (
+            "20_top_therapeutic_agents.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "therapeutic_agents"),
+                "Top therapeutic agents",
+                color=COLORS["orange"],
+                max_items=12,
+            ),
+        ),
+        (
+            "21_disease_response.svg",
+            bar_chart(
+                count_values(patient_rows, "disease_response"),
+                "Disease response",
+                color=COLORS["gray"],
+            ),
+        ),
+        (
+            "22_progression_or_recurrence.svg",
+            bar_chart(
+                count_values(patient_rows, "progression_or_recurrence"),
+                "Progression or recurrence",
+                color=COLORS["red"],
+            ),
+        ),
+        (
+            "23_treatment_outcomes.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "treatment_outcomes"),
+                "Treatment outcomes",
+                color=COLORS["blue"],
+            ),
+        ),
+        (
+            "24_resistance_proxies.svg",
+            bar_chart(
+                resistance_proxy_counts(patient_rows),
+                "Resistance proxies (progression, progressive disease, residual tumor)",
+                color=COLORS["red"],
+            ),
         ),
     ]
 
@@ -1060,8 +1222,18 @@ def render_report(
   </div>
 
   <div class="panel">
-    <h2>6. Resistance/progression caveat</h2>
-    <p class="note">The current public clinical table has survival, disease response, progression/recurrence, and treatment outcome fields, but direct drug-resistance labels are sparse/not uniformly available. The report therefore uses survival and progression/recurrence as exploratory clinical endpoints.</p>
+    <h2>6. Treatment history and resistance proxies</h2>
+    <p class="note">Public TCGA clinical data includes treatment types, agents, disease response, progression/recurrence, and treatment outcomes, but direct drug-resistance labels are sparse. The charts below summarize available treatment history and use progression, progressive disease, and residual-tumor response as resistance proxies.</p>
+    <div class="grid">
+      <div>{bar_chart(field_coverage_counts(patient_rows, TREATMENT_COVERAGE_FIELDS), "Treatment field coverage", color=COLORS["green"])}</div>
+      <div>{bar_chart(yes_no_field_counts(patient_rows, "prior_treatment", title_yes="Any prior treatment reported", title_no="No prior treatment reported", title_missing="Not reported"), "Prior treatment status", color=COLORS["blue"])}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "treatment_types"), "Treatment types", color=COLORS["purple"], max_items=10)}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "therapeutic_agents"), "Top therapeutic agents", color=COLORS["orange"], max_items=10)}</div>
+      <div>{bar_chart(count_values(patient_rows, "disease_response"), "Disease response", color=COLORS["gray"])}</div>
+      <div>{bar_chart(count_values(patient_rows, "progression_or_recurrence"), "Progression or recurrence", color=COLORS["red"])}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "treatment_outcomes"), "Treatment outcomes", color=COLORS["blue"])}</div>
+      <div>{bar_chart(resistance_proxy_counts(patient_rows), "Resistance proxies", color=COLORS["red"])}</div>
+    </div>
   </div>
 
   <div class="panel">
@@ -1218,6 +1390,7 @@ def main() -> int:
     write_csv(args.out_dir / "rna_expression_survival_associations.csv", rna_survival, expression_survival_fields)
     write_csv(args.out_dir / "protein_expression_survival_associations.csv", protein_survival, protein_survival_fields)
 
+    treatment_summary = build_treatment_summary(patient_rows)
     cohort_summary = {
         "patient_count": len(patient_rows),
         "slide_count": sum(int(float(row.get("slide_count") or 0)) for row in patient_rows),
@@ -1234,13 +1407,29 @@ def main() -> int:
         "mutation_survival_tests": len(mutation_survival),
         "rna_survival_tests": len(rna_survival),
         "protein_survival_tests": len(protein_survival),
+        "treatment_summary": treatment_summary,
         "method_notes": [
             "Report uses public TCGA/GDC data already extracted in this repository.",
             "Survival tests are unadjusted two-group log-rank comparisons.",
             "RNA and protein survival tests use median splits and should be treated as exploratory.",
-            "Resistance is approximated with available progression/recurrence, disease response, and survival fields because direct resistance labels are sparse.",
+            "Resistance is approximated with available progression/recurrence, disease response, and treatment outcomes because direct resistance labels are sparse.",
         ],
     }
+    write_csv(
+        args.out_dir / "treatment_and_resistance_summary.csv",
+        [
+            {"metric": "patients", "category": "all", "count": treatment_summary["patient_count"]},
+            *[
+                {"metric": "field_coverage", "category": field, "count": count}
+                for field, count in treatment_summary["field_coverage"].items()
+            ],
+            *[
+                {"metric": "resistance_proxy", "category": label, "count": count}
+                for label, count in treatment_summary["resistance_proxy_counts"].items()
+            ],
+        ],
+        ["metric", "category", "count"],
+    )
     write_json(args.out_dir / "cohort_visual_summary.json", cohort_summary)
 
     render_report(

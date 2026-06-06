@@ -56,6 +56,19 @@ SECTIONS: list[tuple[str, list[str]]] = [
             "16_protein_expression_survival_pvalues",
         ],
     ),
+    (
+        "Treatment history and resistance proxies",
+        [
+            "17_treatment_field_coverage",
+            "18_prior_treatment_status",
+            "19_treatment_types",
+            "20_top_therapeutic_agents",
+            "21_disease_response",
+            "22_progression_or_recurrence",
+            "23_treatment_outcomes",
+            "24_resistance_proxies",
+        ],
+    ),
 ]
 
 
@@ -157,7 +170,8 @@ def add_summary_slide(prs: Presentation, summary: dict) -> None:
         f"Important RPPA protein rows: {summary['important_protein_expression_rows']}",
         "Survival analyses are exploratory and unadjusted.",
         "RNA/protein survival uses median splits.",
-        "Direct drug-resistance labels are sparse in public TCGA clinical data.",
+        "Treatment history is partially available; direct drug-resistance labels are sparse.",
+        "Resistance proxies include progression/recurrence and progressive disease outcomes.",
         "Mutation MAF files capture SNVs/indels; fusions and CNAs need separate assays.",
     ]
     for i, text in enumerate(bullets):
