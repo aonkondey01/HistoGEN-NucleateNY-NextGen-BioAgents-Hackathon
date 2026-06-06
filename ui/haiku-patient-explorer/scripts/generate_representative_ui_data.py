@@ -14,7 +14,6 @@ UI_DATA = Path(__file__).resolve().parents[1] / "public" / "data"
 REP_JSON = ROOT / "data" / "tcga_lung" / "representative_patients" / "representative_20_patients.json"
 REP_CSV = ROOT / "data" / "tcga_lung" / "representative_patients" / "representative_20_patients.csv"
 BUNDLE_ROOT = ROOT / "data" / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
-PANTCGA = ROOT / "external" / "HistoTME" / "example_data" / "pantcga_tme_signatures.csv"
 
 ARCHETYPES = ["Immune Desert", "Immune Inflamed", "Myeloid/Treg-rich", "Stroma-high"]
 SIGNATURES = [
@@ -62,7 +61,7 @@ def _driver_from_row(row: dict) -> str:
     return first or "WT"
 
 
-def _signatures_for_case(case_id: str, pantcga_row: dict[str, float] | None) -> dict[str, float]:
+def _signatures_for_case(case_id: str) -> dict[str, float]:
     summary = BUNDLE_ROOT / case_id / "phoenix_gene_summary.csv"
     if summary.exists():
         genes = {}
@@ -83,8 +82,6 @@ def _signatures_for_case(case_id: str, pantcga_row: dict[str, float] | None) -> 
             "Checkpoint_inhibition": float(genes.get("PDCD1", 0.0) + genes.get("CD274", 0.0)),
             "Angiogenesis": float(genes.get("PECAM1", 0.0) + genes.get("VWF", 0.0)),
         }
-    if pantcga_row:
-        return {s: float(pantcga_row.get(s, 0.0)) for s in SIGNATURES}
     return {s: 0.0 for s in SIGNATURES}
 
 
@@ -93,20 +90,12 @@ def main() -> int:
     rows = list(csv.DictReader(REP_CSV.open()))
     row_by_case = {r["case_submitter_id"]: r for r in rows}
 
-    pantcga: dict[str, dict[str, float]] = {}
-    if PANTCGA.exists():
-        import pandas as pd
-
-        df = pd.read_csv(PANTCGA, index_col=0)
-        for idx in df.index.astype(str):
-            pantcga[idx] = {c: float(df.loc[idx, c]) for c in df.columns if c in SIGNATURES}
-
     patients = []
     sig_matrix = []
     for p in rep["patients"]:
         case_id = p["case_submitter_id"]
         csv_row = row_by_case[case_id]
-        sig = _signatures_for_case(case_id, pantcga.get(case_id))
+        sig = _signatures_for_case(case_id)
         sig_matrix.append([sig[s] for s in SIGNATURES])
         patients.append(
             {
@@ -131,8 +120,8 @@ def main() -> int:
     embedding = {
         "meta": {
             "n_patients": len(patients),
-            "source": "20 representative TCGA lung patients + PHOENIX/HistoTME signatures",
-            "projection": "UMAP on PHOENIX-derived signature matrix",
+            "source": "20 representative TCGA lung patients + PHOENIX spatial RNA signatures",
+            "projection": "UMAP (or PCA fallback) on PHOENIX-derived signature matrix",
             "archetypes": ARCHETYPES,
             "color_signatures": SIGNATURES,
         },

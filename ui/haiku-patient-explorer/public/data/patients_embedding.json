@@ -1,8 +1,8 @@
 {
   "meta": {
     "n_patients": 20,
-    "source": "20 representative TCGA lung patients + PHOENIX/HistoTME signatures",
-    "projection": "UMAP on PHOENIX-derived signature matrix",
+    "source": "20 representative TCGA lung patients + PHOENIX spatial RNA signatures",
+    "projection": "UMAP (or PCA fallback) on PHOENIX-derived signature matrix",
     "archetypes": [
       "Immune Desert",
       "Immune Inflamed",
