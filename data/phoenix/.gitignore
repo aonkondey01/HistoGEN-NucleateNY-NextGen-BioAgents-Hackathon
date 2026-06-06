@@ -1,0 +1,6 @@
+# Large data files (downloaded, never committed)
+*.h5ad
+*.h5
+*.zarr/
+atlas/
+__pycache__/

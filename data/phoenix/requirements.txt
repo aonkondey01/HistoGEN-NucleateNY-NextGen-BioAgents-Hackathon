@@ -1,0 +1,12 @@
+# Download + inspect + subset the PHOENIX TCGA atlas (.h5ad / AnnData).
+huggingface_hub[hf_xet]>=0.24   # Xet-accelerated transfer for large files
+h5py>=3.10                       # inspect .h5ad without loading it all
+
+# make_zarr.py (subset cohort -> chunked .zarr for live viewers):
+anndata>=0.11                    # backed read + write_zarr
+zarr>=3.0                        # chunked store (writes v2 for viewer compatibility)
+numpy>=1.24
+matplotlib>=3.7                  # optional: spatial preview render
+
+# Optional, for fuller analysis:
+# scanpy>=1.10
