@@ -49,16 +49,56 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | File                                | Description                                                       |
 | ----------------------------------- | ----------------------------------------------------------------- |
 | `generate_manifest.py`              | Queries the GDC API and (re)writes all manifests + metadata below |
+| `extract_patient_metadata.py`       | Extracts patient clinical metadata plus mutation/expression file indexes |
 | `download.py`                       | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
 | `gdc_manifest.tcga_lung.txt`        | Combined gdc-client manifest (all 1,053 slides)                   |
 | `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
 | `gdc_manifest.TCGA-LUSC.txt`        | Per-project manifest (512 slides)                                 |
 | `slides_metadata.tcga_lung.json`    | Rich per-slide metadata (file id, md5, size, patient/case ids)    |
+| `patient_metadata.tcga_lung.csv`    | One row per slide-cohort patient with clinical fields from GDC     |
+| `patient_metadata.tcga_lung.json`   | Same patient rows plus raw diagnoses/exposures/treatments/follow-ups |
+| `molecular_files.tcga_lung.csv`     | Open mutation/expression GDC file index for these patients         |
+| `molecular_files.tcga_lung.json`    | JSON version of the molecular file index                           |
+| `gdc_manifest.mutation.tcga_lung.txt` | gdc-client manifest for masked somatic mutation MAF files        |
+| `gdc_manifest.expression.tcga_lung.txt` | gdc-client manifest for RNA-seq STAR-count expression files    |
+| `patient_metadata_summary.tcga_lung.json` | Counts and missingness for the extracted patient metadata     |
 | `summary.json`                      | Counts + total size for quick reference                           |
 
 The manifests and metadata are committed so you don't need network access just
 to inspect the cohort. Regenerate them any time with `generate_manifest.py`
 (the GDC dataset is occasionally updated).
+
+## Patient, clinical, mutation, and expression metadata
+
+The slide metadata identifies 956 unique TCGA lung patients/cases. To extract
+clinical and molecular metadata for exactly those patients, run:
+
+```bash
+python extract_patient_metadata.py
+```
+
+This writes `patient_metadata.tcga_lung.csv` with columns for:
+
+- age at diagnosis, sex, race, ethnicity,
+- smoking/exposure history,
+- survival and vital status,
+- diagnosis timing,
+- AJCC/pathologic staging,
+- treatment summaries,
+- counts of available mutation and expression files.
+
+The companion JSON keeps the raw GDC `diagnoses`, `exposures`, `treatments`,
+and `follow_ups` arrays for each patient so no repeated clinical records are
+lost during CSV flattening.
+
+Mutation and expression payloads themselves are large and are not committed.
+Instead, `molecular_files.tcga_lung.csv` indexes the open GDC files and the
+two `gdc_manifest.*.tcga_lung.txt` files can be used with `gdc-client`:
+
+```bash
+gdc-client download -m gdc_manifest.mutation.tcga_lung.txt -d ./molecular_data/mutation -n 8
+gdc-client download -m gdc_manifest.expression.tcga_lung.txt -d ./molecular_data/expression -n 8
+```
 
 ## Quick start
 

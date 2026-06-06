@@ -1,0 +1,109 @@
+{
+  "cohort_source": "slides_metadata.tcga_lung.json",
+  "ethnicity_counts": {
+    "hispanic or latino": 14,
+    "missing": 293,
+    "not hispanic or latino": 649
+  },
+  "generated_unix": 1780758209,
+  "manifest_records": {
+    "expression": 1077,
+    "mutation": 1048
+  },
+  "missing_patient_field_counts": {
+    "age_at_diagnosis_days": 51,
+    "age_at_diagnosis_years": 51,
+    "ajcc_pathologic_m": 8,
+    "ajcc_pathologic_n": 1,
+    "ajcc_pathologic_stage": 12,
+    "ajcc_pathologic_t": 0,
+    "alcohol_history": 956,
+    "case_id": 0,
+    "case_submitter_id": 0,
+    "cigarettes_per_day": 956,
+    "days_to_birth": 41,
+    "days_to_death": 591,
+    "days_to_diagnosis": 31,
+    "days_to_last_follow_up": 14,
+    "days_to_last_known_disease_status": 956,
+    "days_to_progression": 847,
+    "days_to_treatment_end": 643,
+    "days_to_treatment_start": 570,
+    "diagnosis_count": 0,
+    "disease_response": 119,
+    "ethnicity": 293,
+    "expression_file_count": 0,
+    "follow_up_count": 0,
+    "initial_disease_status": 712,
+    "last_follow_up_days": 14,
+    "mutation_file_count": 0,
+    "pack_years_smoked": 215,
+    "primary_diagnosis": 0,
+    "prior_malignancy": 1,
+    "prior_treatment": 1,
+    "progression_or_recurrence": 673,
+    "project_id": 0,
+    "race": 176,
+    "regimen_or_line_of_therapy": 956,
+    "sex": 0,
+    "slide_count": 0,
+    "slide_sample_submitter_ids": 0,
+    "slide_sample_types": 0,
+    "survival_event": 0,
+    "survival_time_days": 14,
+    "synchronous_malignancy": 1,
+    "therapeutic_agents": 672,
+    "tobacco_smoking_onset_year": 380,
+    "tobacco_smoking_status": 15,
+    "treatment_intent_types": 129,
+    "treatment_or_therapy": 134,
+    "treatment_outcomes": 740,
+    "treatment_types": 62,
+    "tumor_stage": 956,
+    "vital_status": 0,
+    "year_of_birth": 956,
+    "years_smoked": 956
+  },
+  "molecular_file_counts": {
+    "expression": 1077,
+    "mutation": 1048
+  },
+  "molecular_total_bytes": {
+    "expression": 4566666079,
+    "mutation": 105140790
+  },
+  "patient_count": 956,
+  "patients_with_expression_files": 951,
+  "patients_with_mutation_files": 932,
+  "project_counts": {
+    "TCGA-LUAD": 478,
+    "TCGA-LUSC": 478
+  },
+  "race_counts": {
+    "american indian or alaska native": 1,
+    "asian": 17,
+    "black or african american": 81,
+    "missing": 176,
+    "white": 681
+  },
+  "sample_type_counts_from_slides": {
+    "Primary Tumor": 955,
+    "Primary Tumor; Recurrent Tumor": 1
+  },
+  "sex_counts": {
+    "female": 377,
+    "male": 579
+  },
+  "smoking_status_counts": {
+    "Current Reformed Smoker for < or = 15 yrs": 404,
+    "Current Reformed Smoker for > 15 yrs": 205,
+    "Current Reformed Smoker, Duration Not Specified": 7,
+    "Current Smoker": 241,
+    "Lifelong Non-Smoker": 84,
+    "missing": 15
+  },
+  "vital_status_counts": {
+    "Alive": 582,
+    "Dead": 374
+  }
+}
