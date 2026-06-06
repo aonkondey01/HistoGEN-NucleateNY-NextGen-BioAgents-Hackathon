@@ -6,7 +6,12 @@ Browser-viewable summary of all extracted data for the stratified 20-patient TCG
 
 ```bash
 python3 data/tcga_lung/visualize_representative_patients.py
+python3 data/tcga_lung/generate_representative_patient_powerpoint.py
 ```
+
+## PowerPoint deck
+
+`Representative_20_Patients_Summary.pptx` — native pie charts, bar/column charts with statistics, plus embedded plot images for heatmaps and complex visualizations (39 slides).
 
 ## View locally
 
