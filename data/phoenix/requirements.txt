@@ -1,9 +1,14 @@
-# Download + inspect the PHOENIX TCGA atlas (.h5ad / AnnData).
+# Download + inspect + subset the PHOENIX TCGA atlas (.h5ad / AnnData).
 huggingface_hub[hf_xet]>=0.24   # Xet-accelerated transfer for large files
 h5py>=3.10                       # inspect .h5ad without loading it all
+
 # Subset atlas slides into per-patient bundles (extract_slide_readouts.py)
-anndata>=0.10
+anndata>=0.11
 scipy>=1.11
-zarr>=3.0
+zarr>=3.0                        # chunked store (writes v2 for viewer compatibility)
+numpy>=1.24
 matplotlib>=3.8
 opencv-python-headless>=4.9
+
+# Optional, for fuller analysis:
+# scanpy>=1.10
