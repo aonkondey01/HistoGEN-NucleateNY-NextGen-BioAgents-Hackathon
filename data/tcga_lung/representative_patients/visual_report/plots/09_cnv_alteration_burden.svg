@@ -1,0 +1,90 @@
+<svg viewBox="0 0 980 420" role="img" aria-label="Copy-number segment classes by patient">
+<text x="0" y="24" class="chart-title">Copy-number segment classes by patient</text>
+<line x1="55" y1="240" x2="945" y2="240" stroke="#94a3b8"></line>
+<rect x="55" y="36" width="14" height="10" fill="#dc2626"></rect>
+<text x="75" y="45" class="legend">Amplification (CN≥3)</text>
+<rect x="175" y="36" width="14" height="10" fill="#3b82f6"></rect>
+<text x="195" y="45" class="legend">Deletion (CN≤1)</text>
+<rect x="295" y="36" width="14" height="10" fill="#e2e8f0"></rect>
+<text x="315" y="45" class="legend">Neutral (CN=2)</text>
+<rect x="61.0" y="216.2" width="32.5" height="23.8" fill="#dc2626"></rect>
+<rect x="61.0" y="212.6" width="32.5" height="3.6" fill="#3b82f6"></rect>
+<rect x="61.0" y="208.2" width="32.5" height="4.4" fill="#e2e8f0"></rect>
+<text x="77.2" y="258" class="axis-label" text-anchor="middle">05-4410</text>
+<rect x="105.5" y="208.4" width="32.5" height="31.6" fill="#dc2626"></rect>
+<rect x="105.5" y="204.6" width="32.5" height="3.8" fill="#3b82f6"></rect>
+<rect x="105.5" y="200.8" width="32.5" height="3.8" fill="#e2e8f0"></rect>
+<text x="121.8" y="258" class="axis-label" text-anchor="middle">18-3409</text>
+<rect x="150.0" y="200.4" width="32.5" height="39.6" fill="#dc2626"></rect>
+<rect x="150.0" y="195.8" width="32.5" height="4.5" fill="#3b82f6"></rect>
+<rect x="150.0" y="184.5" width="32.5" height="11.3" fill="#e2e8f0"></rect>
+<text x="166.2" y="258" class="axis-label" text-anchor="middle">18-5595</text>
+<rect x="194.5" y="201.9" width="32.5" height="38.1" fill="#dc2626"></rect>
+<rect x="194.5" y="194.6" width="32.5" height="7.2" fill="#3b82f6"></rect>
+<rect x="194.5" y="182.4" width="32.5" height="12.2" fill="#e2e8f0"></rect>
+<text x="210.8" y="258" class="axis-label" text-anchor="middle">22-4613</text>
+<rect x="239.0" y="198.0" width="32.5" height="42.0" fill="#dc2626"></rect>
+<rect x="239.0" y="174.0" width="32.5" height="24.0" fill="#3b82f6"></rect>
+<rect x="239.0" y="144.6" width="32.5" height="29.4" fill="#e2e8f0"></rect>
+<text x="255.2" y="258" class="axis-label" text-anchor="middle">37-3789</text>
+<rect x="283.5" y="167.7" width="32.5" height="72.3" fill="#dc2626"></rect>
+<rect x="283.5" y="117.8" width="32.5" height="49.9" fill="#3b82f6"></rect>
+<rect x="283.5" y="70.0" width="32.5" height="47.8" fill="#e2e8f0"></rect>
+<text x="299.8" y="258" class="axis-label" text-anchor="middle">44-2661</text>
+<rect x="328.0" y="207.4" width="32.5" height="32.6" fill="#dc2626"></rect>
+<rect x="328.0" y="189.7" width="32.5" height="17.8" fill="#3b82f6"></rect>
+<rect x="328.0" y="170.1" width="32.5" height="19.6" fill="#e2e8f0"></rect>
+<text x="344.2" y="258" class="axis-label" text-anchor="middle">44-3917</text>
+<rect x="372.5" y="212.4" width="32.5" height="27.6" fill="#dc2626"></rect>
+<rect x="372.5" y="208.4" width="32.5" height="4.1" fill="#3b82f6"></rect>
+<rect x="372.5" y="203.7" width="32.5" height="4.7" fill="#e2e8f0"></rect>
+<text x="388.8" y="258" class="axis-label" text-anchor="middle">55-7815</text>
+<rect x="417.0" y="216.8" width="32.5" height="23.2" fill="#dc2626"></rect>
+<rect x="417.0" y="210.2" width="32.5" height="6.6" fill="#3b82f6"></rect>
+<rect x="417.0" y="204.4" width="32.5" height="5.7" fill="#e2e8f0"></rect>
+<text x="433.2" y="258" class="axis-label" text-anchor="middle">55-7907</text>
+<rect x="461.5" y="203.1" width="32.5" height="36.9" fill="#dc2626"></rect>
+<rect x="461.5" y="198.4" width="32.5" height="4.7" fill="#3b82f6"></rect>
+<rect x="461.5" y="186.2" width="32.5" height="12.2" fill="#e2e8f0"></rect>
+<text x="477.8" y="258" class="axis-label" text-anchor="middle">56-5898</text>
+<rect x="506.0" y="225.8" width="32.5" height="14.2" fill="#dc2626"></rect>
+<rect x="506.0" y="219.2" width="32.5" height="6.6" fill="#3b82f6"></rect>
+<rect x="506.0" y="211.8" width="32.5" height="7.4" fill="#e2e8f0"></rect>
+<text x="522.2" y="258" class="axis-label" text-anchor="middle">56-A5DR</text>
+<rect x="550.5" y="205.6" width="32.5" height="34.4" fill="#dc2626"></rect>
+<rect x="550.5" y="197.5" width="32.5" height="8.1" fill="#3b82f6"></rect>
+<rect x="550.5" y="186.2" width="32.5" height="11.3" fill="#e2e8f0"></rect>
+<text x="566.8" y="258" class="axis-label" text-anchor="middle">60-2698</text>
+<rect x="595.0" y="171.6" width="32.5" height="68.4" fill="#dc2626"></rect>
+<rect x="595.0" y="158.8" width="32.5" height="12.8" fill="#3b82f6"></rect>
+<rect x="595.0" y="138.3" width="32.5" height="20.5" fill="#e2e8f0"></rect>
+<text x="611.2" y="258" class="axis-label" text-anchor="middle">70-6722</text>
+<rect x="639.5" y="194.5" width="32.5" height="45.5" fill="#dc2626"></rect>
+<rect x="639.5" y="187.4" width="32.5" height="7.1" fill="#3b82f6"></rect>
+<rect x="639.5" y="165.9" width="32.5" height="21.6" fill="#e2e8f0"></rect>
+<text x="655.8" y="258" class="axis-label" text-anchor="middle">73-A9RS</text>
+<rect x="684.0" y="183.2" width="32.5" height="56.8" fill="#dc2626"></rect>
+<rect x="684.0" y="164.9" width="32.5" height="18.2" fill="#3b82f6"></rect>
+<rect x="684.0" y="141.0" width="32.5" height="24.0" fill="#e2e8f0"></rect>
+<text x="700.2" y="258" class="axis-label" text-anchor="middle">85-8277</text>
+<rect x="728.5" y="224.9" width="32.5" height="15.1" fill="#dc2626"></rect>
+<rect x="728.5" y="223.6" width="32.5" height="1.4" fill="#3b82f6"></rect>
+<rect x="728.5" y="220.9" width="32.5" height="2.7" fill="#e2e8f0"></rect>
+<text x="744.8" y="258" class="axis-label" text-anchor="middle">86-7701</text>
+<rect x="773.0" y="177.8" width="32.5" height="62.2" fill="#dc2626"></rect>
+<rect x="773.0" y="173.1" width="32.5" height="4.7" fill="#3b82f6"></rect>
+<rect x="773.0" y="163.7" width="32.5" height="9.3" fill="#e2e8f0"></rect>
+<text x="789.2" y="258" class="axis-label" text-anchor="middle">86-7954</text>
+<rect x="817.5" y="222.8" width="32.5" height="17.2" fill="#dc2626"></rect>
+<rect x="817.5" y="220.0" width="32.5" height="2.9" fill="#3b82f6"></rect>
+<rect x="817.5" y="213.5" width="32.5" height="6.5" fill="#e2e8f0"></rect>
+<text x="833.8" y="258" class="axis-label" text-anchor="middle">86-8279</text>
+<rect x="862.0" y="225.7" width="32.5" height="14.3" fill="#dc2626"></rect>
+<rect x="862.0" y="221.9" width="32.5" height="3.8" fill="#3b82f6"></rect>
+<rect x="862.0" y="211.2" width="32.5" height="10.7" fill="#e2e8f0"></rect>
+<text x="878.2" y="258" class="axis-label" text-anchor="middle">86-8672</text>
+<rect x="906.5" y="157.3" width="32.5" height="82.7" fill="#dc2626"></rect>
+<rect x="906.5" y="152.7" width="32.5" height="4.5" fill="#3b82f6"></rect>
+<rect x="906.5" y="141.1" width="32.5" height="11.6" fill="#e2e8f0"></rect>
+<text x="922.8" y="258" class="axis-label" text-anchor="middle">L3-A524</text>
+</svg>

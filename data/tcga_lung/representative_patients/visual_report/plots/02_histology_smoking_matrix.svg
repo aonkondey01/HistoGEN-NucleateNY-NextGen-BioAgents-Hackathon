@@ -1,0 +1,16 @@
+<svg viewBox="0 0 420 294" role="img" aria-label="Selection strata coverage (target: 5 per cell)">
+<text x="0" y="24" class="chart-title">Selection strata coverage (target: 5 per cell)</text>
+<text x="170.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 170.0 66)">Patients selected</text>
+<text x="0" y="122.8" class="axis-label">LUAD smoker</text>
+<rect x="150.0" y="94.0" width="39.0" height="39.0" fill="#16a34a" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="162.8" class="axis-label">LUAD non-smoker</text>
+<rect x="150.0" y="134.0" width="39.0" height="39.0" fill="#16a34a" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="202.8" class="axis-label">LUSC smoker</text>
+<rect x="150.0" y="174.0" width="39.0" height="39.0" fill="#16a34a" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="242.8" class="axis-label">LUSC non-smoker</text>
+<rect x="150.0" y="214.0" width="39.0" height="39.0" fill="#16a34a" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="150" y="272" width="14" height="10" fill="#16a34a"></rect>
+<text x="170" y="281" class="legend">Present / altered</text>
+<rect x="320" y="272" width="14" height="10" fill="#f1f5f9"></rect>
+<text x="340" y="281" class="legend">Absent / not available</text>
+</svg>

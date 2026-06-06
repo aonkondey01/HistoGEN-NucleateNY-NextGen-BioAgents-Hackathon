@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Representative 20 Patients — Plot Gallery</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; background: #f8fafc; color: #0f172a; }
+    h1 { margin-bottom: 8px; }
+    .subtitle { color: #475569; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 20px; }
+    .plot-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+    .plot-card h3 { margin: 0 0 12px 0; font-size: 16px; }
+    .plot-card img { width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 8px; background: white; }
+    a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <h1>Representative 20 Patients — Plot Gallery</h1>
+  <p class="subtitle">Standalone SVG plots for the 20 representative TCGA lung patients. See <a href="index.html">index.html</a> for the full narrative report.</p>
+  <div class="grid">
+    <section class="plot-card"><h3>01_cohort_composition.svg</h3><img src="plots/01_cohort_composition.svg" alt="01_cohort_composition.svg"></section>
+    <section class="plot-card"><h3>02_histology_smoking_matrix.svg</h3><img src="plots/02_histology_smoking_matrix.svg" alt="02_histology_smoking_matrix.svg"></section>
+    <section class="plot-card"><h3>03_data_availability_heatmap.svg</h3><img src="plots/03_data_availability_heatmap.svg" alt="03_data_availability_heatmap.svg"></section>
+    <section class="plot-card"><h3>04_mutation_burden_by_patient.svg</h3><img src="plots/04_mutation_burden_by_patient.svg" alt="04_mutation_burden_by_patient.svg"></section>
+    <section class="plot-card"><h3>05_variant_classification_cohort.svg</h3><img src="plots/05_variant_classification_cohort.svg" alt="05_variant_classification_cohort.svg"></section>
+    <section class="plot-card"><h3>06_driver_gene_mutation_matrix.svg</h3><img src="plots/06_driver_gene_mutation_matrix.svg" alt="06_driver_gene_mutation_matrix.svg"></section>
+    <section class="plot-card"><h3>07_chromosome_mutation_landscape.svg</h3><img src="plots/07_chromosome_mutation_landscape.svg" alt="07_chromosome_mutation_landscape.svg"></section>
+    <section class="plot-card"><h3>08_important_gene_rna_heatmap.svg</h3><img src="plots/08_important_gene_rna_heatmap.svg" alt="08_important_gene_rna_heatmap.svg"></section>
+    <section class="plot-card"><h3>09_cnv_alteration_burden.svg</h3><img src="plots/09_cnv_alteration_burden.svg" alt="09_cnv_alteration_burden.svg"></section>
+    <section class="plot-card"><h3>10_mirna_coverage.svg</h3><img src="plots/10_mirna_coverage.svg" alt="10_mirna_coverage.svg"></section>
+  </div>
+</body>
+</html>

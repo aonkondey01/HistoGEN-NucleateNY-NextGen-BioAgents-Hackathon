@@ -1,0 +1,14 @@
+<svg viewBox="0 0 840 320" role="img" aria-label="Cohort composition: histology × smoking status">
+<text x="0" y="24" class="chart-title">Cohort composition: histology × smoking status</text>
+<line x1="55" y1="240" x2="805" y2="240" stroke="#94a3b8"></line>
+<rect x="55" y="36" width="14" height="10" fill="#f97316"></rect>
+<text x="75" y="45" class="legend">Smoker</text>
+<rect x="175" y="36" width="14" height="10" fill="#3b82f6"></rect>
+<text x="195" y="45" class="legend">Non-smoker</text>
+<rect x="61.0" y="155.0" width="363.0" height="85.0" fill="#f97316"></rect>
+<rect x="61.0" y="70.0" width="363.0" height="85.0" fill="#3b82f6"></rect>
+<text x="242.5" y="258" class="axis-label" text-anchor="middle">LUAD</text>
+<rect x="436.0" y="155.0" width="363.0" height="85.0" fill="#f97316"></rect>
+<rect x="436.0" y="70.0" width="363.0" height="85.0" fill="#3b82f6"></rect>
+<text x="617.5" y="258" class="axis-label" text-anchor="middle">LUSC</text>
+</svg>

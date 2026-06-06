@@ -1,0 +1,195 @@
+<svg viewBox="0 0 980 514" role="img" aria-label="Data modality availability by patient">
+<text x="0" y="24" class="chart-title">Data modality availability by patient</text>
+<text x="88.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 88.0 66)">Clinical</text>
+<text x="104.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 104.0 66)">Mutations (MAF)</text>
+<text x="120.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 120.0 66)">RNA expression</text>
+<text x="136.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 136.0 66)">RPPA protein</text>
+<text x="152.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 152.0 66)">CNV segments</text>
+<text x="168.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 168.0 66)">miRNA</text>
+<text x="184.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 184.0 66)">Methylation</text>
+<text x="200.0" y="66" class="axis-label" text-anchor="end" transform="rotate(-55 200.0 66)">H&amp;E slides</text>
+<text x="0" y="165.5" class="axis-label">05-4410</text>
+<rect x="80.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="154.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="181.5" class="axis-label">18-3409</text>
+<rect x="80.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="170.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="170.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="170.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="197.5" class="axis-label">18-5595</text>
+<rect x="80.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="186.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="213.5" class="axis-label">22-4613</text>
+<rect x="80.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="202.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="202.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="229.5" class="axis-label">37-3789</text>
+<rect x="80.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="218.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="245.5" class="axis-label">44-2661</text>
+<rect x="80.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="234.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="261.5" class="axis-label">44-3917</text>
+<rect x="80.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="250.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="250.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="277.5" class="axis-label">55-7815</text>
+<rect x="80.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="266.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="293.5" class="axis-label">55-7907</text>
+<rect x="80.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="282.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="282.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="309.5" class="axis-label">56-5898</text>
+<rect x="80.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="298.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="325.5" class="axis-label">56-A5DR</text>
+<rect x="80.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="314.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="314.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="341.5" class="axis-label">60-2698</text>
+<rect x="80.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="330.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="357.5" class="axis-label">70-6722</text>
+<rect x="80.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="346.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="373.5" class="axis-label">73-A9RS</text>
+<rect x="80.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="362.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="389.5" class="axis-label">85-8277</text>
+<rect x="80.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="378.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="378.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="378.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="405.5" class="axis-label">86-7701</text>
+<rect x="80.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="394.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="421.5" class="axis-label">86-7954</text>
+<rect x="80.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="410.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="437.5" class="axis-label">86-8279</text>
+<rect x="80.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="426.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="453.5" class="axis-label">86-8672</text>
+<rect x="80.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="442.0" width="15.0" height="15.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="442.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<text x="0" y="469.5" class="axis-label">L3-A524</text>
+<rect x="80.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="96.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="112.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="128.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="144.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="160.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="176.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="192.0" y="458.0" width="15.0" height="15.0" fill="#dc2626" stroke="#cbd5e1" stroke-width="0.5"></rect>
+<rect x="80" y="492" width="14" height="10" fill="#dc2626"></rect>
+<text x="100" y="501" class="legend">Present / altered</text>
+<rect x="250" y="492" width="14" height="10" fill="#f1f5f9"></rect>
+<text x="270" y="501" class="legend">Absent / not available</text>
+</svg>

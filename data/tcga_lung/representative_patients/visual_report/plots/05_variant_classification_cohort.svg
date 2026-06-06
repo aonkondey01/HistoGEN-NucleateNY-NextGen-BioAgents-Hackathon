@@ -1,0 +1,48 @@
+<svg viewBox="0 0 840 594" role="img" aria-label="Variant classifications across cohort">
+<text x="0" y="24" class="chart-title">Variant classifications across cohort</text>
+<text x="0" y="71" class="axis-label">Frame_Shift_Del</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="71" class="value-label">20</text>
+<text x="0" y="105" class="axis-label">Missense_Mutation</text>
+<rect x="210" y="88" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="105" class="value-label">20</text>
+<text x="0" y="139" class="axis-label">Silent</text>
+<rect x="210" y="122" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="139" class="value-label">20</text>
+<text x="0" y="173" class="axis-label">Nonsense_Mutation</text>
+<rect x="210" y="156" width="513.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="731.0" y="173" class="value-label">19</text>
+<text x="0" y="207" class="axis-label">Splice_Site</text>
+<rect x="210" y="190" width="513.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="731.0" y="207" class="value-label">19</text>
+<text x="0" y="241" class="axis-label">RNA</text>
+<rect x="210" y="224" width="486.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="704.0" y="241" class="value-label">18</text>
+<text x="0" y="275" class="axis-label">Intron</text>
+<rect x="210" y="258" width="459.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="677.0" y="275" class="value-label">17</text>
+<text x="0" y="309" class="axis-label">Splice_Region</text>
+<rect x="210" y="292" width="459.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="677.0" y="309" class="value-label">17</text>
+<text x="0" y="343" class="axis-label">Frame_Shift_Ins</text>
+<rect x="210" y="326" width="432.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="650.0" y="343" class="value-label">16</text>
+<text x="0" y="377" class="axis-label">3&#x27;Flank</text>
+<rect x="210" y="360" width="378.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="596.0" y="377" class="value-label">14</text>
+<text x="0" y="411" class="axis-label">3&#x27;UTR</text>
+<rect x="210" y="394" width="378.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="596.0" y="411" class="value-label">14</text>
+<text x="0" y="445" class="axis-label">5&#x27;UTR</text>
+<rect x="210" y="428" width="378.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="596.0" y="445" class="value-label">14</text>
+<text x="0" y="479" class="axis-label">5&#x27;Flank</text>
+<rect x="210" y="462" width="324.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="542.0" y="479" class="value-label">12</text>
+<text x="0" y="513" class="axis-label">Translation_Start_Site</text>
+<rect x="210" y="496" width="243.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="461.0" y="513" class="value-label">9</text>
+<text x="0" y="547" class="axis-label">Nonstop_Mutation</text>
+<rect x="210" y="530" width="216.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="434.0" y="547" class="value-label">8</text>
+</svg>

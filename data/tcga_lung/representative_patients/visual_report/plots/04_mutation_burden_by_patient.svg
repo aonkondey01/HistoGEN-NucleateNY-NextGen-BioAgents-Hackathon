@@ -1,0 +1,64 @@
+<svg viewBox="0 0 920 624" role="img" aria-label="Somatic mutation burden by patient (MAF rows)">
+<text x="0" y="24" class="chart-title">Somatic mutation burden by patient (MAF rows)</text>
+<text x="0" y="69" class="axis-label">18-3409</text>
+<rect x="130" y="54" width="720.0" height="20" rx="3" fill="#dc2626"></rect>
+<text x="856.0" y="69" class="value-label">3650</text>
+<text x="0" y="95" class="axis-label">60-2698</text>
+<rect x="130" y="80" width="433.6" height="20" rx="3" fill="#dc2626"></rect>
+<text x="569.6" y="95" class="value-label">2198</text>
+<text x="0" y="121" class="axis-label">55-7907</text>
+<rect x="130" y="106" width="249.1" height="20" rx="3" fill="#dc2626"></rect>
+<text x="385.1" y="121" class="value-label">1263</text>
+<text x="0" y="147" class="axis-label">56-A5DR</text>
+<rect x="130" y="132" width="235.5" height="20" rx="3" fill="#dc2626"></rect>
+<text x="371.5" y="147" class="value-label">1194</text>
+<text x="0" y="173" class="axis-label">05-4410</text>
+<rect x="130" y="158" width="228.0" height="20" rx="3" fill="#dc2626"></rect>
+<text x="364.0" y="173" class="value-label">1156</text>
+<text x="0" y="199" class="axis-label">73-A9RS</text>
+<rect x="130" y="184" width="206.7" height="20" rx="3" fill="#dc2626"></rect>
+<text x="342.7" y="199" class="value-label">1048</text>
+<text x="0" y="225" class="axis-label">22-4613</text>
+<rect x="130" y="210" width="135.9" height="20" rx="3" fill="#dc2626"></rect>
+<text x="271.9" y="225" class="value-label">689</text>
+<text x="0" y="251" class="axis-label">86-8279</text>
+<rect x="130" y="236" width="110.3" height="20" rx="3" fill="#dc2626"></rect>
+<text x="246.3" y="251" class="value-label">559</text>
+<text x="0" y="277" class="axis-label">44-3917</text>
+<rect x="130" y="262" width="94.7" height="20" rx="3" fill="#dc2626"></rect>
+<text x="230.7" y="277" class="value-label">480</text>
+<text x="0" y="303" class="axis-label">L3-A524</text>
+<rect x="130" y="288" width="72.8" height="20" rx="3" fill="#dc2626"></rect>
+<text x="208.8" y="303" class="value-label">369</text>
+<text x="0" y="329" class="axis-label">86-8672</text>
+<rect x="130" y="314" width="64.9" height="20" rx="3" fill="#dc2626"></rect>
+<text x="200.9" y="329" class="value-label">329</text>
+<text x="0" y="355" class="axis-label">70-6722</text>
+<rect x="130" y="340" width="63.5" height="20" rx="3" fill="#dc2626"></rect>
+<text x="199.5" y="355" class="value-label">322</text>
+<text x="0" y="381" class="axis-label">37-3789</text>
+<rect x="130" y="366" width="60.8" height="20" rx="3" fill="#dc2626"></rect>
+<text x="196.8" y="381" class="value-label">308</text>
+<text x="0" y="407" class="axis-label">18-5595</text>
+<rect x="130" y="392" width="52.5" height="20" rx="3" fill="#dc2626"></rect>
+<text x="188.5" y="407" class="value-label">266</text>
+<text x="0" y="433" class="axis-label">85-8277</text>
+<rect x="130" y="418" width="52.1" height="20" rx="3" fill="#dc2626"></rect>
+<text x="188.1" y="433" class="value-label">264</text>
+<text x="0" y="459" class="axis-label">86-7954</text>
+<rect x="130" y="444" width="44.4" height="20" rx="3" fill="#dc2626"></rect>
+<text x="180.4" y="459" class="value-label">225</text>
+<text x="0" y="485" class="axis-label">86-7701</text>
+<rect x="130" y="470" width="41.0" height="20" rx="3" fill="#dc2626"></rect>
+<text x="177.0" y="485" class="value-label">208</text>
+<text x="0" y="511" class="axis-label">56-5898</text>
+<rect x="130" y="496" width="31.6" height="20" rx="3" fill="#dc2626"></rect>
+<text x="167.6" y="511" class="value-label">160</text>
+<text x="0" y="537" class="axis-label">55-7815</text>
+<rect x="130" y="522" width="31.2" height="20" rx="3" fill="#dc2626"></rect>
+<text x="167.2" y="537" class="value-label">158</text>
+<text x="0" y="563" class="axis-label">44-2661</text>
+<rect x="130" y="548" width="9.1" height="20" rx="3" fill="#dc2626"></rect>
+<text x="145.1" y="563" class="value-label">46</text>
+<text x="450.0" y="616" class="axis-label">MAF mutation rows</text>
+</svg>

@@ -1,0 +1,109 @@
+{
+  "median_mutation_burden": 349.0,
+  "method_notes": [
+    "20-patient stratified cohort: 10 LUAD + 10 LUSC, 5 smokers + 5 non-smokers per histology.",
+    "Somatic mutations from TCGA masked MAF (whole-exome SNVs/indels).",
+    "CNV from ASCAT2 allele-specific segment files.",
+    "RNA expression TPM for 30 curated important lung genes."
+  ],
+  "patient_count": 20,
+  "patients_with_methylation": 20,
+  "patients_with_mirna": 17,
+  "patients_with_rppa": 14,
+  "plot_files": [
+    "01_cohort_composition.svg",
+    "02_histology_smoking_matrix.svg",
+    "03_data_availability_heatmap.svg",
+    "04_mutation_burden_by_patient.svg",
+    "05_variant_classification_cohort.svg",
+    "06_driver_gene_mutation_matrix.svg",
+    "07_chromosome_mutation_landscape.svg",
+    "08_important_gene_rna_heatmap.svg",
+    "09_cnv_alteration_burden.svg",
+    "10_mirna_coverage.svg"
+  ],
+  "project_counts": {
+    "TCGA-LUAD": 10,
+    "TCGA-LUSC": 10
+  },
+  "smoking_group_counts": {
+    "non_smoker": 10,
+    "smoker": 10
+  },
+  "total_somatic_mutations": 14892,
+  "treatment_summary": {
+    "disease_response_counts": {
+      "TF-Tumor Free": 11,
+      "TF-Tumor Free; WT-With Tumor": 2,
+      "WT-With Tumor": 2,
+      "WT-With Tumor; TF-Tumor Free": 2,
+      "missing": 3
+    },
+    "field_coverage": {
+      "days_to_treatment_start": 12,
+      "disease_response": 17,
+      "prior_treatment": 20,
+      "progression_or_recurrence": 6,
+      "therapeutic_agents": 8,
+      "treatment_or_therapy": 17,
+      "treatment_outcomes": 7,
+      "treatment_types": 19
+    },
+    "field_coverage_pct": {
+      "days_to_treatment_start": 60.0,
+      "disease_response": 85.0,
+      "prior_treatment": 100.0,
+      "progression_or_recurrence": 30.0,
+      "therapeutic_agents": 40.0,
+      "treatment_or_therapy": 85.0,
+      "treatment_outcomes": 35.0,
+      "treatment_types": 95.0
+    },
+    "notes": [
+      "Direct drug-resistance labels are not uniformly available in public TCGA clinical data.",
+      "Progression/recurrence, disease response, and treatment outcomes are used as resistance proxies."
+    ],
+    "patient_count": 20,
+    "progression_or_recurrence_counts": {
+      "Yes": 6,
+      "missing": 14
+    },
+    "resistance_proxy_counts": {
+      "Disease response: with tumor": 2,
+      "Progression/recurrence reported": 6,
+      "Treatment outcome: Progressive Disease": 4
+    },
+    "top_therapeutic_agents": {
+      "Bevacizumab": 1,
+      "Carboplatin": 2,
+      "Cisplatin": 5,
+      "Docetaxel": 2,
+      "Etoposide": 2,
+      "Gemcitabine": 3,
+      "Letrozole": 1,
+      "Paclitaxel": 2,
+      "Pemetrexed": 1,
+      "Tyrosine Kinase Inhibitor": 1
+    },
+    "top_treatment_types": {
+      "Ancillary Treatment": 1,
+      "Chemotherapy": 7,
+      "Immunotherapy (Including Vaccines)": 1,
+      "Pharmaceutical Therapy, NOS": 16,
+      "Radiation Therapy, NOS": 18,
+      "Radiation, External Beam": 5,
+      "Radiation, Internal": 1,
+      "Surgery, NOS": 7
+    },
+    "treatment_outcome_counts": {
+      "Complete Response": 4,
+      "Progressive Disease": 4,
+      "Stable Disease": 1,
+      "Treatment Ongoing": 3
+    }
+  },
+  "vital_status_counts": {
+    "Alive": 12,
+    "Dead": 8
+  }
+}

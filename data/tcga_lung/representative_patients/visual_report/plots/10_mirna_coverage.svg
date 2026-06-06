@@ -1,0 +1,55 @@
+<svg viewBox="0 0 920 546" role="img" aria-label="miRNA targets quantified by patient">
+<text x="0" y="24" class="chart-title">miRNA targets quantified by patient</text>
+<text x="0" y="69" class="axis-label">05-4410</text>
+<rect x="130" y="54" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="69" class="value-label">1881</text>
+<text x="0" y="95" class="axis-label">18-5595</text>
+<rect x="130" y="80" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="95" class="value-label">1881</text>
+<text x="0" y="121" class="axis-label">22-4613</text>
+<rect x="130" y="106" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="121" class="value-label">1881</text>
+<text x="0" y="147" class="axis-label">37-3789</text>
+<rect x="130" y="132" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="147" class="value-label">1881</text>
+<text x="0" y="173" class="axis-label">44-2661</text>
+<rect x="130" y="158" width="720.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="856.0" y="173" class="value-label">3762</text>
+<text x="0" y="199" class="axis-label">55-7815</text>
+<rect x="130" y="184" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="199" class="value-label">1881</text>
+<text x="0" y="225" class="axis-label">55-7907</text>
+<rect x="130" y="210" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="225" class="value-label">1881</text>
+<text x="0" y="251" class="axis-label">56-5898</text>
+<rect x="130" y="236" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="251" class="value-label">1881</text>
+<text x="0" y="277" class="axis-label">56-A5DR</text>
+<rect x="130" y="262" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="277" class="value-label">1881</text>
+<text x="0" y="303" class="axis-label">60-2698</text>
+<rect x="130" y="288" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="303" class="value-label">1881</text>
+<text x="0" y="329" class="axis-label">70-6722</text>
+<rect x="130" y="314" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="329" class="value-label">1881</text>
+<text x="0" y="355" class="axis-label">73-A9RS</text>
+<rect x="130" y="340" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="355" class="value-label">1881</text>
+<text x="0" y="381" class="axis-label">86-7701</text>
+<rect x="130" y="366" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="381" class="value-label">1881</text>
+<text x="0" y="407" class="axis-label">86-7954</text>
+<rect x="130" y="392" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="407" class="value-label">1881</text>
+<text x="0" y="433" class="axis-label">86-8279</text>
+<rect x="130" y="418" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="433" class="value-label">1881</text>
+<text x="0" y="459" class="axis-label">86-8672</text>
+<rect x="130" y="444" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="459" class="value-label">1881</text>
+<text x="0" y="485" class="axis-label">L3-A524</text>
+<rect x="130" y="470" width="360.0" height="20" rx="3" fill="#7c3aed"></rect>
+<text x="496.0" y="485" class="value-label">1881</text>
+<text x="450.0" y="538" class="axis-label">miRNA features</text>
+</svg>
