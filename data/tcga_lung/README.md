@@ -50,6 +50,7 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | ----------------------------------- | ----------------------------------------------------------------- |
 | `generate_manifest.py`              | Queries the GDC API and (re)writes all manifests + metadata below |
 | `extract_patient_metadata.py`       | Extracts patient clinical metadata plus mutation/expression file indexes |
+| `extract_important_lung_genes.py`   | Streams public GDC files and extracts important LUAD/LUSC gene data |
 | `download.py`                       | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
 | `gdc_manifest.tcga_lung.txt`        | Combined gdc-client manifest (all 1,053 slides)                   |
 | `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
@@ -62,6 +63,7 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `gdc_manifest.mutation.tcga_lung.txt` | gdc-client manifest for masked somatic mutation MAF files        |
 | `gdc_manifest.expression.tcga_lung.txt` | gdc-client manifest for RNA-seq STAR-count expression files    |
 | `patient_metadata_summary.tcga_lung.json` | Counts and missingness for the extracted patient metadata     |
+| `important_lung_genes/`             | Focused mutation, RNA expression, and RPPA protein expression tables for important LUAD/LUSC genes |
 | `summary.json`                      | Counts + total size for quick reference                           |
 
 The manifests and metadata are committed so you don't need network access just
@@ -99,6 +101,33 @@ two `gdc_manifest.*.tcga_lung.txt` files can be used with `gdc-client`:
 gdc-client download -m gdc_manifest.mutation.tcga_lung.txt -d ./molecular_data/mutation -n 8
 gdc-client download -m gdc_manifest.expression.tcga_lung.txt -d ./molecular_data/expression -n 8
 ```
+
+## Important LUAD/LUSC genes
+
+To extract a compact public TCGA dataset for important lung adenocarcinoma and
+lung squamous cell carcinoma genes, run:
+
+```bash
+python extract_important_lung_genes.py
+```
+
+The extractor streams public GDC files and writes focused outputs under
+`important_lung_genes/`:
+
+- `important_lung_cancer_genes.csv` — the selected important genes and why they
+  were included.
+- `important_mutations.tcga_lung.csv` — MAF mutation rows for those genes.
+- `important_gene_expression.tcga_lung.csv` — RNA-seq STAR count/TPM/FPKM rows
+  for those genes.
+- `important_protein_expression.tcga_lung.csv` — RPPA protein-expression rows
+  where the TCGA antibody target maps to one of those genes.
+- `important_lung_gene_summary.tcga_lung.json` — counts by gene/project and
+  extraction notes.
+
+Important limitation: MAF files capture small variants such as SNVs/indels.
+Targetable fusions (`ALK`, `ROS1`, `RET`, `NTRK`) and copy-number events
+(`SOX2`, `FGFR1`, `TP63`, etc.) require additional fusion/CNV data types and
+are not fully represented by the mutation MAF output.
 
 ## Quick start
 
