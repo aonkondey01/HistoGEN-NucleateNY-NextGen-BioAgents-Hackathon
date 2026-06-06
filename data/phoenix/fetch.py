@@ -19,6 +19,7 @@ Usage:
     python fetch.py                       # grab the default atlas file
     python fetch.py --file atlas/<other>.h5ad
     python fetch.py --list                # list files in the dataset
+    python extract_slide_readouts.py --case TCGA-56-5898   # subset atlas cells
 """
 
 from __future__ import annotations
