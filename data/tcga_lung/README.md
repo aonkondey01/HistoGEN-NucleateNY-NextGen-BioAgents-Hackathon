@@ -52,6 +52,7 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `extract_patient_metadata.py`       | Extracts patient clinical metadata plus mutation/expression file indexes |
 | `extract_important_lung_genes.py`   | Streams public GDC files and extracts important LUAD/LUSC gene data |
 | `visualize_important_lung_genes.py` | Builds an HTML/SVG visual summary report from the extracted tables |
+| `generate_visualization_powerpoint.py` | Builds a PowerPoint deck from the SVG plots in `visual_report/plots/` |
 | `download.py`                       | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
 | `gdc_manifest.tcga_lung.txt`        | Combined gdc-client manifest (all 1,053 slides)                   |
 | `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
@@ -162,6 +163,19 @@ The report and plot gallery summarize:
 Direct drug-resistance labels are not uniformly available in the extracted GDC
 clinical fields, so the report uses survival, progression/recurrence, disease
 response, and treatment outcome fields as exploratory clinical endpoints.
+
+Build a PowerPoint deck containing all visualizations:
+
+```bash
+pip install python-pptx pillow cairosvg
+python generate_visualization_powerpoint.py
+```
+
+Output:
+
+```text
+important_lung_genes/visual_report/TCGA_Lung_Visual_Summary.pptx
+```
 
 ## Quick start
 
