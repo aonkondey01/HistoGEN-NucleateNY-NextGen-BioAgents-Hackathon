@@ -1,0 +1,242 @@
+[
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "ALK",
+    "has_rppa_target": false,
+    "notes": "Usually detected as a fusion, not fully captured by MAF SNV/indel calls.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_driver",
+    "disease_context": "LUAD",
+    "gene": "BRAF",
+    "has_rppa_target": true,
+    "notes": "BRAF V600E is clinically actionable.",
+    "rppa_targets": "BRAF; BRAF_pS445"
+  },
+  {
+    "category": "cell_cycle_tumor_suppressor",
+    "disease_context": "LUSC",
+    "gene": "CDKN2A",
+    "has_rppa_target": true,
+    "notes": "Cell-cycle tumor suppressor loss is common in LUSC.",
+    "rppa_targets": "P16INK4A"
+  },
+  {
+    "category": "oxidative_stress_pathway",
+    "disease_context": "LUSC",
+    "gene": "CUL3",
+    "has_rppa_target": false,
+    "notes": "NRF2/KEAP1/CUL3 pathway.",
+    "rppa_targets": null
+  },
+  {
+    "category": "kinase",
+    "disease_context": "LUSC",
+    "gene": "DDR2",
+    "has_rppa_target": false,
+    "notes": "Less common LUSC kinase alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_driver",
+    "disease_context": "LUAD",
+    "gene": "EGFR",
+    "has_rppa_target": true,
+    "notes": "Activating EGFR mutations are clinically actionable in LUAD.",
+    "rppa_targets": "EGFR; EGFR_pY1068; EGFR_pY1173"
+  },
+  {
+    "category": "targetable_driver",
+    "disease_context": "LUAD",
+    "gene": "ERBB2",
+    "has_rppa_target": true,
+    "notes": "HER2/ERBB2 insertions and amplifications can be actionable.",
+    "rppa_targets": "HER2; HER2_pY1248"
+  },
+  {
+    "category": "tumor_suppressor",
+    "disease_context": "LUSC",
+    "gene": "FAT1",
+    "has_rppa_target": false,
+    "notes": "Common LUSC tumor suppressor alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "copy_number_driver",
+    "disease_context": "LUSC",
+    "gene": "FGFR1",
+    "has_rppa_target": false,
+    "notes": "Potential therapeutic relevance, often amplified.",
+    "rppa_targets": null
+  },
+  {
+    "category": "oxidative_stress_pathway",
+    "disease_context": "LUAD,LUSC",
+    "gene": "KEAP1",
+    "has_rppa_target": false,
+    "notes": "NRF2/oxidative-stress pathway alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "chromatin_modifier",
+    "disease_context": "LUSC",
+    "gene": "KMT2C",
+    "has_rppa_target": false,
+    "notes": "Chromatin modifier alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "chromatin_modifier",
+    "disease_context": "LUSC",
+    "gene": "KMT2D",
+    "has_rppa_target": false,
+    "notes": "Chromatin modifier alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_driver",
+    "disease_context": "LUAD",
+    "gene": "KRAS",
+    "has_rppa_target": false,
+    "notes": "Common LUAD driver; KRAS G12C is clinically actionable.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_driver",
+    "disease_context": "LUAD",
+    "gene": "MET",
+    "has_rppa_target": true,
+    "notes": "MET exon 14 skipping/amplification can be actionable; MAF may not fully capture exon skipping.",
+    "rppa_targets": "CMET; CMET_pY1235"
+  },
+  {
+    "category": "ras_pathway",
+    "disease_context": "LUAD",
+    "gene": "NF1",
+    "has_rppa_target": false,
+    "notes": "RAS pathway alteration.",
+    "rppa_targets": null
+  },
+  {
+    "category": "oxidative_stress_pathway",
+    "disease_context": "LUAD,LUSC",
+    "gene": "NFE2L2",
+    "has_rppa_target": true,
+    "notes": "NRF2 transcription factor; recurrent in LUSC.",
+    "rppa_targets": "NRF2"
+  },
+  {
+    "category": "squamous_differentiation",
+    "disease_context": "LUSC",
+    "gene": "NOTCH1",
+    "has_rppa_target": true,
+    "notes": "Squamous differentiation/tumor suppressor pathway.",
+    "rppa_targets": "NOTCH1; Notch1-cleaved"
+  },
+  {
+    "category": "squamous_differentiation",
+    "disease_context": "LUSC",
+    "gene": "NOTCH2",
+    "has_rppa_target": false,
+    "notes": "Squamous differentiation/tumor suppressor pathway.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "NTRK1",
+    "has_rppa_target": false,
+    "notes": "Rare targetable fusion gene.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "NTRK2",
+    "has_rppa_target": false,
+    "notes": "Rare targetable fusion gene.",
+    "rppa_targets": null
+  },
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "NTRK3",
+    "has_rppa_target": false,
+    "notes": "Rare targetable fusion gene.",
+    "rppa_targets": null
+  },
+  {
+    "category": "pi3k_pathway",
+    "disease_context": "LUAD,LUSC",
+    "gene": "PIK3CA",
+    "has_rppa_target": true,
+    "notes": "PI3K pathway mutation/amplification.",
+    "rppa_targets": "PI3KP110ALPHA"
+  },
+  {
+    "category": "pi3k_pathway",
+    "disease_context": "LUSC",
+    "gene": "PTEN",
+    "has_rppa_target": true,
+    "notes": "PI3K pathway dysregulation through PTEN loss.",
+    "rppa_targets": "PTEN"
+  },
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "RET",
+    "has_rppa_target": true,
+    "notes": "Usually detected as a fusion.",
+    "rppa_targets": "RET_pY905"
+  },
+  {
+    "category": "targetable_fusion_driver",
+    "disease_context": "LUAD",
+    "gene": "ROS1",
+    "has_rppa_target": false,
+    "notes": "Usually detected as a fusion.",
+    "rppa_targets": null
+  },
+  {
+    "category": "tumor_suppressor",
+    "disease_context": "LUAD",
+    "gene": "SMARCA4",
+    "has_rppa_target": false,
+    "notes": "Associated with aggressive biology in subsets of LUAD.",
+    "rppa_targets": null
+  },
+  {
+    "category": "squamous_lineage",
+    "disease_context": "LUSC",
+    "gene": "SOX2",
+    "has_rppa_target": true,
+    "notes": "Squamous lineage driver, often amplified.",
+    "rppa_targets": "Sox2"
+  },
+  {
+    "category": "tumor_suppressor",
+    "disease_context": "LUAD",
+    "gene": "STK11",
+    "has_rppa_target": true,
+    "notes": "Important LUAD co-mutation and immunotherapy-resistance context.",
+    "rppa_targets": "LKB1"
+  },
+  {
+    "category": "tumor_suppressor",
+    "disease_context": "LUAD,LUSC",
+    "gene": "TP53",
+    "has_rppa_target": true,
+    "notes": "Very common in lung cancer, especially LUSC.",
+    "rppa_targets": "P53"
+  },
+  {
+    "category": "squamous_lineage",
+    "disease_context": "LUSC",
+    "gene": "TP63",
+    "has_rppa_target": true,
+    "notes": "Squamous lineage driver, often amplified.",
+    "rppa_targets": "P63"
+  }
+]
