@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/peat-nucleate-logo.png" alt="PEAT-Nucleate logo" width="320" />
+</p>
+
 # PEAT-Nucleate-BIoHack-2026
 
 ## HistoTME
