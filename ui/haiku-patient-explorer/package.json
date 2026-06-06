@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "generate-data": "python3 scripts/generate_demo_data.py",
-    "dev": "npm run generate-data && vite",
+    "dev": "vite",
     "build": "npm run generate-data && vite build",
     "preview": "vite preview"
   },
