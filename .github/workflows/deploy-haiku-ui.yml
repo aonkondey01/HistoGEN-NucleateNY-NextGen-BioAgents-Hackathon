@@ -1,0 +1,51 @@
+name: Deploy Haiku UI to GitHub Pages
+
+on:
+  push:
+    branches: [cursor/emma-research-slide-deck-5384]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ui/haiku-patient-explorer/package-lock.json
+
+      - name: Install Python deps for demo data
+        run: pip install pandas scikit-learn umap-learn numpy
+
+      - name: Build UI
+        working-directory: ui/haiku-patient-explorer
+        env:
+          GITHUB_PAGES: "true"
+        run: |
+          npm ci
+          python3 scripts/generate_demo_data.py
+          npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ui/haiku-patient-explorer/dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

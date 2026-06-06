@@ -1,29 +1,28 @@
 # How to open the Haiku Patient Explorer UI
 
-The UI is a **local web app** — it does not open from the PowerPoint file. You must run a small server, then open a link in your browser.
+The interactive UI is **not** the PowerPoint file. It is a web app you open in a browser.
 
 ---
 
-## Option 1 — Cursor Cloud (recommended if you use the agent)
+## Easiest: GitHub Pages (no ports, no install)
 
-1. Open the **Terminal** in Cursor (bottom of the screen).
-2. Paste and run:
+After the deploy workflow runs on branch `cursor/emma-research-slide-deck-5384`:
 
-   ```bash
-   bash /workspace/scripts/run_haiku_ui.sh
-   ```
+**https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/**
 
-3. Wait until you see: `Local: http://localhost:5173/`
-4. Open the **Ports** panel:
-   - Bottom bar → click **Ports** (next to Terminal)
-   - Or menu: **View → Ports**
-5. Find **5173** in the list → click **Open in Browser** (globe icon).
+### One-time setup (repo owner)
 
-If Ports is empty, click **Forward a Port** → enter `5173`.
+1. GitHub repo → **Settings** → **Pages**
+2. **Build and deployment** → Source: **GitHub Actions**
+3. Push to `cursor/emma-research-slide-deck-5384` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
+
+Wait ~2–3 minutes after the workflow completes, then open the URL above.
 
 ---
 
-## Option 2 — Your own computer (clone the repo)
+## Option 2 — Your computer (local)
+
+Requires [Node.js](https://nodejs.org) 18+ and Python 3.
 
 ```bash
 git clone https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026.git
@@ -32,22 +31,28 @@ git checkout cursor/emma-research-slide-deck-5384
 bash scripts/run_haiku_ui.sh
 ```
 
-Then open in Chrome/Safari/Edge: **http://localhost:5173**
-
-Requirements: Node.js 18+ and Python 3 installed.
+Open **http://localhost:5173** in Chrome or Safari.
 
 ---
 
-## Option 3 — Manual steps
+## Option 3 — Cursor Cloud / Codespaces (ports)
 
-```bash
-cd ui/haiku-patient-explorer
-npm install
-python3 scripts/generate_demo_data.py   # first time only (~30 sec)
-npm run dev
-```
+1. Terminal:
+   ```bash
+   bash scripts/run_haiku_ui.sh
+   ```
+2. Wait for `Haiku UI → http://localhost:5173`
+3. Bottom panel → **Ports** → **5173** → globe icon → Open in Browser
 
-Open **http://localhost:5173**
+If Ports does not work, use **GitHub Pages** (above) or **Option 2** on your Mac/PC.
+
+---
+
+## PowerPoint only (no server)
+
+Download from GitHub (no run required):
+
+https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026/blob/cursor/emma-research-slide-deck-5384/docs/slides/PEAT-Nucleate-Lung-TME-Deck.pptx
 
 ---
 
@@ -55,18 +60,15 @@ Open **http://localhost:5173**
 
 | Problem | Fix |
 |---------|-----|
-| Blank page | Wait for terminal to finish; refresh browser |
-| `npm: command not found` | Install Node.js from https://nodejs.org |
-| Port 5173 in use | Run `npm run dev -- --port 5174` and open that port |
-| "Data load failed" | Run `python3 scripts/generate_demo_data.py` inside `ui/haiku-patient-explorer` |
-| No Ports tab | Use Option 2 on your local machine instead |
+| Ports tab empty | Use GitHub Pages URL or run locally |
+| `npm not found` | Install Node.js |
+| Blank page on Pages | Wait for Actions workflow; hard-refresh browser |
+| "Data load failed" | Re-run `python3 ui/haiku-patient-explorer/scripts/generate_demo_data.py` |
 
 ---
 
 ## What you should see
 
-- **Left:** colored TME heatmap
-- **Centre:** slide placeholder
-- **Right:** UMAP scatter plot with ~956 dots
-
-Click any dot to select a patient.
+- **Left:** TME spatial heatmap (changes per patient)
+- **Centre:** H&E slide placeholder
+- **Right:** UMAP plot with ~956 patients — click dots to explore
