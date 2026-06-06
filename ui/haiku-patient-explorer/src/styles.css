@@ -30,6 +30,26 @@ header {
   gap: 1rem;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+#patient-search {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.82rem;
+  width: 180px;
+}
+
+#patient-search::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
 header h1 {
   margin: 0;
   font-size: 1.15rem;
@@ -104,6 +124,10 @@ select {
   background: white;
 }
 
+.heatmap-wrap {
+  position: relative;
+}
+
 #heatmap-canvas {
   width: 100%;
   height: 100%;
@@ -111,7 +135,57 @@ select {
   cursor: crosshair;
 }
 
-.center-placeholder {
+.heatmap-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.92);
+  color: white;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  z-index: 5;
+  line-height: 1.35;
+}
+
+.heatmap-tooltip.hidden {
+  display: none;
+}
+
+.panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.panel-footer button {
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+}
+
+.panel-footer button:hover {
+  background: var(--bg);
+}
+
+#selected-label {
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 0.72rem;
+  text-align: center;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.center-placeholder,
+.slide-mock {
   height: 100%;
   display: grid;
   place-items: center;
@@ -119,6 +193,31 @@ select {
   color: var(--muted);
   text-align: center;
   padding: 1rem;
+}
+
+.slide-mock {
+  background:
+    radial-gradient(circle at 30% 40%, hsl(var(--hue) 35% 88%), transparent 45%),
+    radial-gradient(circle at 70% 60%, hsl(var(--hue) 45% 75%), transparent 40%),
+    linear-gradient(145deg, #eef2f7, #f8fafc);
+}
+
+.slide-mock-inner {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+
+.slide-mock-inner strong {
+  display: block;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+
+.slide-mock-inner span {
+  display: block;
+  font-size: 0.85rem;
 }
 
 .center-placeholder strong {
@@ -173,13 +272,31 @@ select {
   height: 100%;
 }
 
-.sig-row {
+.sig-row,
+.sig-btn {
   display: grid;
   grid-template-columns: 120px 1fr 36px;
   align-items: center;
   gap: 0.4rem;
   margin-bottom: 0.35rem;
   font-size: 0.72rem;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.15rem 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.sig-btn:hover,
+.sig-btn.active {
+  background: #eef6f6;
+}
+
+.sig-btn.active span:first-child {
+  color: var(--teal);
+  font-weight: 600;
 }
 
 .sig-row .bar {
@@ -229,6 +346,80 @@ select {
   padding: 0.35rem 0.5rem;
   font-size: 0.68rem;
   z-index: 2;
+}
+
+.legend-title {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+
+.legend-gradient-bar {
+  height: 8px;
+  width: 90px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(255, 220, 240), rgb(0, 80, 120));
+}
+
+.legend-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.scatter-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.65rem;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.legend-chip i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-gradient {
+  flex: 1;
+  min-width: 60px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(255, 220, 240), rgb(0, 80, 120));
+}
+
+.sig-picker-wrap.hidden {
+  display: none;
+}
+
+.sig-picker-wrap {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.68rem;
+  color: var(--muted);
 }
 
 .legend-item {
