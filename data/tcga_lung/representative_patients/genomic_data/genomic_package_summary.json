@@ -1,0 +1,31 @@
+{
+  "copy_number_segment_rows": 90039,
+  "downloaded_maf_files": 22,
+  "files_by_kind": {
+    "copy_number_segment": 151,
+    "gene_level_copy_number": 61,
+    "maf": 22,
+    "methylation": 26,
+    "mirna": 18
+  },
+  "gene_level_copy_number_rows": 3698003,
+  "genomic_files_indexed": 278,
+  "important_limitations": [
+    "TCGA-LUAD/LUSC somatic mutation MAF files are from WXS (whole-exome sequencing), not whole-genome sequencing (WGS).",
+    "Genome-wide mutation maps here cover exome-captured regions (~1-2% of the genome), not the full 3 Gb genome.",
+    "Copy-number data is mostly from SNP6 genotyping arrays; a small number of WGS-based CN segments exist for subset of cases.",
+    "Methylation beta-value files are EPIC/450K probe-level tables (~300 MB total).",
+    "Structural variants, gene fusions, and low-frequency variants may be absent from open MAF files."
+  ],
+  "mirna_rows": 33858,
+  "mutation_landscape_rows": 14892,
+  "output_directory": "/workspace/data/tcga_lung/representative_patients/genomic_data",
+  "patient_count": 20,
+  "raw_file_locations": {
+    "copy_number_segment": "/workspace/data/tcga_lung/representative_patients/genomic_data/raw_files/copy_number_segment",
+    "gene_level_copy_number": "/workspace/data/tcga_lung/representative_patients/genomic_data/raw_files/gene_level_copy_number",
+    "maf": "/workspace/data/tcga_lung/representative_patients/genomic_data/raw_files/maf",
+    "methylation": "/workspace/data/tcga_lung/representative_patients/genomic_data/raw_files/methylation",
+    "mirna": "/workspace/data/tcga_lung/representative_patients/genomic_data/raw_files/mirna"
+  }
+}
