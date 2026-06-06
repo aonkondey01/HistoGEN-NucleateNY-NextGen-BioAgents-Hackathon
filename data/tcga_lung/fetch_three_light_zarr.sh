@@ -23,7 +23,7 @@ echo "=== Downloading 3 slides (~1.2 GB) -> ${WSI_DIR} ==="
 python3 download.py --manifest "$MANIFEST" --out-dir "$WSI_DIR" --workers 4
 
 echo "=== Converting to light Zarr -> ${ZARR_DIR} ==="
-python3 svs_to_zarr.py --default-three --wsi-dir "$WSI_DIR" --out-dir "$ZARR_DIR"
+python3 svs_to_zarr.py --default-three --wsi-dir "$WSI_DIR" --out-dir "$ZARR_DIR" --force
 
 echo "=== Done ==="
 du -sh "$ZARR_DIR"/*.zarr
