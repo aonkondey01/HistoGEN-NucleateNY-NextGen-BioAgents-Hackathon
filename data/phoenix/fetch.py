@@ -20,6 +20,7 @@ Usage:
     python fetch.py --file atlas/<other>.h5ad
     python fetch.py --list                # list files in the dataset
     python extract_slide_readouts.py --case TCGA-56-5898   # subset atlas cells
+    python register_phoenix_to_he.py --case TCGA-56-5898 # affine + optical-flow warp
 """
 
 from __future__ import annotations

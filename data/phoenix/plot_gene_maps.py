@@ -30,17 +30,43 @@ REP_BUNDLE_ROOT = (
 GENE_LABELS = {"PDCD1": "PD-1"}
 
 
-def _load_cells(path: Path) -> tuple[np.ndarray, np.ndarray, dict[str, np.ndarray], list[str]]:
-    with path.open() as fh:
+def _registered_cells_path(bundle_dir: Path) -> Path | None:
+    reg = bundle_dir / "phoenix_registration" / "phoenix_cells_registered.csv"
+    return reg if reg.exists() else None
+
+
+def _load_cells(path: Path, bundle_dir: Path | None = None) -> tuple[np.ndarray, np.ndarray, dict[str, np.ndarray], list[str], str]:
+    reg = _registered_cells_path(bundle_dir) if bundle_dir else None
+    src = reg or path
+    with src.open() as fh:
         reader = csv.DictReader(fh)
         rows = list(reader)
     if not rows:
-        raise SystemExit(f"No rows in {path}")
-    genes = [c for c in rows[0].keys() if c not in ("cell_id", "x", "y")]
-    x = np.array([float(r["x"]) for r in rows], dtype=float)
-    y = np.array([float(r["y"]) for r in rows], dtype=float)
+        raise SystemExit(f"No rows in {src}")
+    skip = {
+        "cell_id",
+        "x",
+        "y",
+        "phoenix_x",
+        "phoenix_y",
+        "thumb_x_affine",
+        "thumb_y_affine",
+        "thumb_x",
+        "thumb_y",
+        "slide_x_l0",
+        "slide_y_l0",
+    }
+    genes = [c for c in rows[0].keys() if c not in skip]
+    if reg:
+        x = np.array([float(r["thumb_x"]) for r in rows], dtype=float)
+        y = np.array([float(r["thumb_y"]) for r in rows], dtype=float)
+        coord_src = "registered"
+    else:
+        x = np.array([float(r["x"]) for r in rows], dtype=float)
+        y = np.array([float(r["y"]) for r in rows], dtype=float)
+        coord_src = "phoenix"
     values = {g: np.array([float(r[g]) for r in rows], dtype=float) for g in genes}
-    return x, y, values, genes
+    return x, y, values, genes, coord_src
 
 
 def _thumbnail_path(bundle_dir: Path, case_id: str) -> Path | None:
@@ -66,13 +92,14 @@ def _transform_phoenix_to_thumb(
 
 
 def plot_gene_map(
-    x_phx: np.ndarray,
-    y_phx: np.ndarray,
+    x_plot: np.ndarray,
+    y_plot: np.ndarray,
     values: np.ndarray,
     gene: str,
     out: Path,
     *,
     background: Path | None = None,
+    coord_space: str = "phoenix",
     slide_wh: tuple[int, int] | None = None,
     coord_map: PhoenixCoordinateMap = DEFAULT_TCGA_MAP,
     point_size: float = 18.0,
@@ -84,21 +111,23 @@ def plot_gene_map(
         thumb = Image.open(background).convert("RGB")
         thumb_w, thumb_h = thumb.size
         img = np.asarray(thumb)
-        if slide_wh is None:
-            raise SystemExit("slide_wh is required when plotting on a thumbnail background")
-        tx, ty = _transform_phoenix_to_thumb(x_phx, y_phx, slide_wh, (thumb_w, thumb_h), coord_map)
+        if coord_space == "registered":
+            plot_x, plot_y = x_plot, y_plot
+        else:
+            if slide_wh is None:
+                raise SystemExit("slide_wh is required when plotting on a thumbnail background")
+            plot_x, plot_y = _transform_phoenix_to_thumb(x_plot, y_plot, slide_wh, (thumb_w, thumb_h), coord_map)
         fig_w = 10
         fig_h = 10 * thumb_h / max(thumb_w, 1)
         fig, ax = plt.subplots(figsize=(fig_w, max(fig_h, 6)), dpi=dpi)
         ax.imshow(img, extent=(0, thumb_w, thumb_h, 0), origin="upper", aspect="equal", zorder=0)
-        plot_x, plot_y = tx, ty
         xmin, xmax = 0, thumb_w
         ymin, ymax = 0, thumb_h
     else:
         fig, ax = plt.subplots(figsize=(10, 8), dpi=dpi)
-        plot_x, plot_y = x_phx, y_phx
-        xmin, xmax = float(x_phx.min()), float(x_phx.max())
-        ymin, ymax = float(y_phx.min()), float(y_phx.max())
+        plot_x, plot_y = x_plot, y_plot
+        xmin, xmax = float(x_plot.min()), float(x_plot.max())
+        ymin, ymax = float(y_plot.min()), float(y_plot.max())
 
     vmax = float(np.percentile(values, 99)) if values.size else 1.0
     vmax = max(vmax, 1e-6)
@@ -154,12 +183,12 @@ def main() -> int:
     if not cells_path.exists():
         raise SystemExit(f"Cells file not found: {cells_path}")
 
-    x, y, gene_values, available = _load_cells(cells_path)
+    x, y, gene_values, available, coord_src = _load_cells(cells_path, bundle_dir)
     out_dir = args.out_dir or (bundle_dir / "phoenix_gene_maps")
     background = None if args.no_background else _thumbnail_path(bundle_dir, case_id)
 
     slide_wh: tuple[int, int] | None = None
-    if background:
+    if background and coord_src != "registered":
         svs = args.svs
         if svs is None:
             wsi_root = DATA_DIR.parent / "tcga_lung" / "WSI"
@@ -184,6 +213,7 @@ def main() -> int:
             key,
             out_dir / fname,
             background=background,
+            coord_space=coord_src,
             slide_wh=slide_wh,
         )
         written.append(out)
