@@ -5,16 +5,28 @@
 ### HistoTME
 
 The HistoTME setup requires Python venv support. If `.venv-histotme` is not
-already available, install `python3.12-venv` first because the base image may
-be missing `ensurepip`.
-
-Prepare the HistoTME environment with:
+already available, install system packages first because the base image may be
+missing `ensurepip` and OpenSlide:
 
 ```bash
-bash scripts/setup_histotme.sh
+sudo apt-get install -y python3.12-venv openslide-tools
 ```
 
-This creates `.venv-histotme` for commands such as checkpoint downloads.
+Initialize the submodule, then prepare the HistoTME environment with:
+
+```bash
+git submodule update --init --recursive external/HistoTME
+bash scripts/setup_histotme.sh
+source .venv-histotme/bin/activate
+```
+
+This creates `.venv-histotme` for commands such as checkpoint downloads and
+slide-deck generation (`python scripts/build_lung_tme_slide_deck.py`).
+
+Gotcha: HistoTME pins `numpy<2`, while `data/tcga_lung/requirements.txt`
+(zarr 3 / recent tifffile) wants `numpy>=2`. Keep TCGA stdlib scripts on
+system `python3`; only install TCGA slide IO deps into `.venv-histotme` if you
+accept pinning `numpy<2` (slide fallback path may still work for pilots).
 
 ### TCGA lung slide toolkit
 
@@ -52,3 +64,15 @@ Gotchas:
 - Full cohort is ~824 GB. Use `--dry-run` and `--limit N` for pilots. `WSI/` is gitignored.
 - No lint/test suite on `main`: validate with `py_compile`, dry-run, and small pilot downloads.
 - `generate_manifest.py` without `--out-dir` overwrites committed manifests in the repo directory.
+
+### SpatialMTB UI and TCGA visual report
+
+No build step. Serve locally for browser testing:
+
+```bash
+cd ui && python3 -m http.server 8080
+cd data/tcga_lung/important_lung_genes/visual_report && python3 -m http.server 8081
+```
+
+Open `http://127.0.0.1:8080/index.html` (SpatialMTB mock dashboard) and
+`http://127.0.0.1:8081/index.html` (committed lung-gene cohort report).
