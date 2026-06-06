@@ -30,8 +30,11 @@ const app = document.querySelector("#app");
 app.innerHTML = `
   <header class="top-bar">
     <div class="brand">
+      <img src="${import.meta.env.BASE_URL}logo.png" alt="" class="brand-logo" width="40" height="40" />
+      <div>
       <h1>Haiku Patient Explorer</h1>
       <p>TCGA lung · predict targeted / immunotherapy benefit if disease recurs</p>
+      </div>
     </div>
     <div class="controls">
       <label>

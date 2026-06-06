@@ -38,6 +38,17 @@ body {
   flex-wrap: wrap;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-logo {
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
 .brand h1 {
   margin: 0;
   font-size: 1.15rem;
