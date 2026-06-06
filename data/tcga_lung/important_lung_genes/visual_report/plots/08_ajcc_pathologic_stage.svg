@@ -1,0 +1,63 @@
+<svg viewBox="0 0 840 764" role="img" aria-label="AJCC pathologic stage">
+<text x="0" y="24" class="chart-title">AJCC pathologic stage</text>
+<text x="0" y="71" class="axis-label">Stage IB</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="71" class="value-label">273</text>
+<text x="0" y="105" class="axis-label">Stage IA</text>
+<rect x="210" y="88" width="391.6" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="609.6" y="105" class="value-label">198</text>
+<text x="0" y="139" class="axis-label">Stage IIB</text>
+<rect x="210" y="122" width="300.7" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="518.7" y="139" class="value-label">152</text>
+<text x="0" y="173" class="axis-label">Stage IIIA</text>
+<rect x="210" y="156" width="233.4" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="451.4" y="173" class="value-label">118</text>
+<text x="0" y="207" class="axis-label">Stage IIA</text>
+<rect x="210" y="190" width="211.6" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="429.6" y="207" class="value-label">107</text>
+<text x="0" y="241" class="axis-label">Stage IV</text>
+<rect x="210" y="224" width="63.3" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="281.3" y="241" class="value-label">32</text>
+<text x="0" y="275" class="axis-label">Stage IIIB</text>
+<rect x="210" y="258" width="55.4" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="273.4" y="275" class="value-label">28</text>
+<text x="0" y="309" class="axis-label">missing</text>
+<rect x="210" y="292" width="23.7" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="241.7" y="309" class="value-label">12</text>
+<text x="0" y="343" class="axis-label">Stage I</text>
+<rect x="210" y="326" width="13.8" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="231.8" y="343" class="value-label">7</text>
+<text x="0" y="377" class="axis-label">Stage II</text>
+<rect x="210" y="360" width="7.9" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="225.9" y="377" class="value-label">4</text>
+<text x="0" y="411" class="axis-label">Stage IB; Stage IA</text>
+<rect x="210" y="394" width="5.9" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="223.9" y="411" class="value-label">3</text>
+<text x="0" y="445" class="axis-label">Stage I; Stage IB</text>
+<rect x="210" y="428" width="4.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="222.0" y="445" class="value-label">2</text>
+<text x="0" y="479" class="axis-label">Stage IIA; Stage IA</text>
+<rect x="210" y="462" width="4.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="222.0" y="479" class="value-label">2</text>
+<text x="0" y="513" class="axis-label">Stage III</text>
+<rect x="210" y="496" width="4.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="222.0" y="513" class="value-label">2</text>
+<text x="0" y="547" class="axis-label">Stage IIIA; Stage IB</text>
+<rect x="210" y="530" width="4.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="222.0" y="547" class="value-label">2</text>
+<text x="0" y="581" class="axis-label">Stage I; Stage IA</text>
+<rect x="210" y="564" width="2.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="220.0" y="581" class="value-label">1</text>
+<text x="0" y="615" class="axis-label">Stage I; Stage IIA</text>
+<rect x="210" y="598" width="2.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="220.0" y="615" class="value-label">1</text>
+<text x="0" y="649" class="axis-label">Stage I; Stage IVA</text>
+<rect x="210" y="632" width="2.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="220.0" y="649" class="value-label">1</text>
+<text x="0" y="683" class="axis-label">Stage IA; Stage IIB</text>
+<rect x="210" y="666" width="2.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="220.0" y="683" class="value-label">1</text>
+<text x="0" y="717" class="axis-label">Stage IA; Stage III</text>
+<rect x="210" y="700" width="2.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="220.0" y="717" class="value-label">1</text>
+</svg>

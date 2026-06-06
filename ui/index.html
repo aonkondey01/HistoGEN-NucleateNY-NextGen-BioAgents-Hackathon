@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpatialMTB — Pathology Embedding & Analysis Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #13161e;
+      --border:    #232733;
+      --accent:    #4f8ef7;
+      --accent2:   #7c5cbf;
+      --green:     #3ecf8e;
+      --yellow:    #f5c542;
+      --red:       #e05c5c;
+      --text:      #e2e6f0;
+      --muted:     #6b7280;
+      --radius:    8px;
+      --font:      'Inter', system-ui, sans-serif;
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; }
+
+    /* ── Layout ── */
+    #app {
+      display: grid;
+      grid-template-columns: 300px 1fr 340px;
+      grid-template-rows: 56px 1fr;
+      height: 100vh;
+      gap: 0;
+    }
+
+    /* ── Top bar ── */
+    #topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: visible;
+      z-index: 100;
+    }
+    #topbar .logo { font-size: 15px; font-weight: 700; letter-spacing: .5px; color: var(--accent); }
+    /* patient identity + hover card */
+    #patient-identity {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    #patient-identity .patient-code {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      cursor: default;
+      user-select: none;
+    }
+    #patient-identity .patient-code span {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .2px;
+    }
+    #patient-identity .patient-code .chevron {
+      font-size: 9px;
+      color: var(--muted);
+      transition: transform .15s;
+    }
+    #patient-identity:hover .patient-code .chevron,
+    #patient-identity.open .patient-code .chevron { transform: rotate(180deg); }
+    #patient-identity .patient-subline {
+      font-size: 10px;
+      color: var(--muted);
+      padding-left: 0;
+    }
+    #patient-identity .patient-subline em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    #patient-hover-card {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      z-index: 200;
+      width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .45), 0 0 0 1px rgba(79, 142, 247, .08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity .15s ease, transform .15s ease, visibility .15s;
+      pointer-events: none;
+    }
+    #patient-identity.open #patient-hover-card {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #patient-hover-card .phc-header {
+      padding: 10px 12px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    #patient-hover-card .phc-body {
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 0;
+    }
+    #patient-hover-card .phc-fields {
+      padding: 8px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    #patient-hover-card .phc-row {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(35, 39, 51, .6);
+      align-items: baseline;
+    }
+    #patient-hover-card .phc-row:last-child { border-bottom: none; }
+    #patient-hover-card .phc-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    #patient-hover-card .phc-value {
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+    #patient-hover-card .phc-value.archetype { color: var(--green); }
+    #patient-hover-card .phc-value.os-deceased { color: #c9a0a0; }
+    #patient-hover-card .phc-thumb-wrap {
+      padding: 10px 10px 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      border-left: 1px solid var(--border);
+    }
+    #patient-hover-card .phc-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #1a1520;
+      flex-shrink: 0;
+    }
+    #patient-hover-card .phc-thumb canvas { display: block; width: 80px; height: 80px; }
+    #patient-hover-card .phc-thumb-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+    }
+    #patient-hover-card .phc-footer {
+      padding: 6px 12px 8px;
+      border-top: 1px solid var(--border);
+      font-size: 9px;
+      color: var(--muted);
+      background: #0d0f14;
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+    #topbar .spacer { flex: 1; }
+    #topbar .badge {
+      font-size: 11px; padding: 3px 9px; border-radius: 99px;
+      background: #1a2a1a; color: var(--green); border: 1px solid #2a4a2a;
+    }
+
+    /* ── Panel shared ── */
+    .panel {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .panel:last-child { border-right: none; }
+    .panel-header {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ══ PANEL 1 — Agent Chat ══ */
+    #panel-agent { grid-column: 1; }
+    #chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg { display: flex; gap: 8px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+    }
+    .msg.agent .msg-avatar { background: #1e2d4a; color: var(--accent); }
+    .msg.user  .msg-avatar { background: #2a1e3a; color: var(--accent2); }
+    .msg-bubble {
+      max-width: 220px; padding: 8px 11px; border-radius: var(--radius); line-height: 1.5;
+    }
+    .msg.agent .msg-bubble { background: #1a1f2e; border: 1px solid var(--border); }
+    .msg.user  .msg-bubble { background: #1e1530; border: 1px solid #332050; }
+    .msg-time { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* suggestion chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px 0; flex-shrink: 0; }
+    .chip {
+      font-size: 11px; padding: 4px 9px; border-radius: 99px; cursor: pointer;
+      background: #1a1f2e; border: 1px solid var(--border); color: var(--accent);
+      transition: background .15s;
+    }
+    .chip:hover { background: #1e2d4a; }
+
+    #chat-input-row {
+      display: flex; gap: 8px; padding: 12px 14px; flex-shrink: 0;
+      border-top: 1px solid var(--border);
+    }
+    #chat-input {
+      flex: 1; background: #0d0f14; border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 7px 10px; font-size: 13px; outline: none; resize: none; height: 36px;
+    }
+    #chat-input:focus { border-color: var(--accent); }
+    #chat-send {
+      background: var(--accent); border: none; border-radius: var(--radius);
+      color: #fff; padding: 0 13px; cursor: pointer; font-weight: 600; font-size: 13px;
+      transition: opacity .15s;
+    }
+    #chat-send:hover { opacity: .85; }
+
+    /* ══ PANEL 2 — HE Image Viewer ══ */
+    #panel-viewer {
+      grid-column: 2;
+      border-right: 1px solid var(--border);
+      background: #0a0c12;
+    }
+    #viewer-toolbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+      background: var(--surface);
+    }
+    .modality-btn {
+      font-size: 12px; padding: 5px 12px; border-radius: var(--radius); cursor: pointer;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      transition: all .15s;
+    }
+    .modality-btn.active {
+      background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+    }
+    .modality-btn:not(.active):hover { border-color: var(--accent); color: var(--accent); }
+
+    .viewer-sep { width: 1px; height: 20px; background: var(--border); }
+
+    #gene-select {
+      background: #0d0f14; border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 5px 10px; font-size: 12px; cursor: pointer; outline: none;
+    }
+    #gene-select:focus { border-color: var(--accent); }
+
+    .viewer-spacer { flex: 1; }
+    .zoom-btn {
+      width: 28px; height: 28px; border-radius: var(--radius); border: 1px solid var(--border);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .zoom-btn:hover { background: var(--border); }
+
+    #he-canvas-wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    #he-canvas {
+      width: 100%; height: 100%; object-fit: contain;
+      display: block;
+    }
+    /* placeholder grid when no image loaded */
+    #he-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px; color: var(--muted);
+    }
+    #he-placeholder svg { opacity: .3; }
+    #he-placeholder p { font-size: 12px; }
+
+    /* color scale bar */
+    #colorbar {
+      padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      border-top: 1px solid var(--border); background: var(--surface);
+    }
+    #colorbar .cb-label { font-size: 11px; color: var(--muted); }
+    #colorbar .cb-gradient {
+      flex: 1; height: 8px; border-radius: 4px;
+      background: linear-gradient(to right, #0d0f14, #4f8ef7, #e05c5c);
+    }
+    #colorbar .cb-vals { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* ══ PANEL 3 — Patient Cluster + Clinical ══ */
+    #panel-clinical { grid-column: 3; border-right: none; }
+
+    /* cluster confidence card */
+    .cluster-card {
+      margin: 14px; border-radius: var(--radius); border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .cluster-card-header {
+      padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: .6px;
+      text-transform: uppercase; color: var(--muted);
+      background: #0d0f14; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .dot.yellow { background: var(--yellow); }
+    .dot.red { background: var(--red); }
+
+    .cluster-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .cluster-id {
+      font-size: 22px; font-weight: 700; color: var(--text);
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .cluster-id small { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+    .confidence-row { display: flex; align-items: center; gap: 8px; }
+    .confidence-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .confidence-bar { height: 100%; border-radius: 3px; background: var(--green); }
+    .confidence-pct { font-size: 12px; font-weight: 700; color: var(--green); min-width: 36px; text-align: right; }
+
+    .cluster-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+    .tag.hi { border-color: #3a4a2a; color: var(--green); background: #1a2a1a; }
+    .tag.med { border-color: #4a3a1a; color: var(--yellow); background: #2a2010; }
+
+    /* nearest-neighbor patients */
+    .section-title {
+      font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
+      color: var(--muted); padding: 6px 14px 4px;
+    }
+    .similar-patients { padding: 0 14px; display: flex; flex-direction: column; gap: 6px; }
+    .sp-row {
+      display: flex; align-items: center; gap: 8px;
+      background: #0d0f14; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 7px 10px;
+    }
+    .sp-id { font-weight: 600; color: var(--accent); min-width: 64px; font-size: 12px; }
+    .sp-meta { flex: 1; font-size: 11px; color: var(--muted); }
+    .sp-sim { font-size: 11px; color: var(--green); font-weight: 600; }
+
+    /* derive button */
+    .derive-wrap { padding: 14px; }
+    .derive-btn {
+      width: 100%; padding: 10px; border-radius: var(--radius); border: none; cursor: pointer;
+      font-size: 13px; font-weight: 600; letter-spacing: .3px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff; transition: opacity .15s;
+    }
+    .derive-btn:hover { opacity: .88; }
+    .derive-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* outcome plots placeholder */
+    #plots-area {
+      margin: 0 14px 14px; border-radius: var(--radius); border: 1px solid var(--border);
+      background: #0d0f14; display: none; flex-direction: column; gap: 0;
+      overflow: hidden;
+    }
+    #plots-area.visible { display: flex; }
+    .plot-placeholder {
+      padding: 16px; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border);
+      color: var(--muted); font-size: 11px; min-height: 100px;
+    }
+    .plot-placeholder:last-child { border-bottom: none; }
+    .plot-placeholder svg { opacity: .25; }
+
+    /* scrollable body in right panel */
+    #panel-clinical .panel-body {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    /* ── Haiku badge ── */
+    .haiku-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; color: var(--muted); padding: 0 14px 6px;
+    }
+    .haiku-badge svg { opacity: .5; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Top Bar ── -->
+  <header id="topbar">
+    <div class="logo">SpatialMTB</div>
+
+    <!-- Patient code + hover card (5 fields + H&E thumbnail) -->
+    <div id="patient-identity">
+      <div class="patient-code">
+        Patient <span id="patient-case-id">TCGA-55-8512</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="patient-subline"><em id="patient-subtype-inline">LUAD</em> · hover for case details</div>
+
+      <div id="patient-hover-card" role="tooltip" aria-hidden="true">
+        <div class="phc-header">Patient Case Summary</div>
+        <div class="phc-body">
+          <div class="phc-fields">
+            <div class="phc-row">
+              <span class="phc-label">TCGA case ID</span>
+              <span class="phc-value" id="phc-case-id">TCGA-55-8512</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Cancer subtype</span>
+              <span class="phc-value" id="phc-subtype">LUAD</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Driver mutation</span>
+              <span class="phc-value" id="phc-mutation">EGFR exon 19 del</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">TME archetype</span>
+              <span class="phc-value archetype" id="phc-archetype">Inflamed</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Overall survival</span>
+              <span class="phc-value os-deceased" id="phc-os">24.3 months (deceased)</span>
+            </div>
+          </div>
+          <div class="phc-thumb-wrap">
+            <div class="phc-thumb" title="Precomputed H&E thumbnail">
+              <canvas id="phc-he-thumb" width="80" height="80"></canvas>
+            </div>
+            <span class="phc-thumb-label">H&amp;E thumbnail</span>
+          </div>
+        </div>
+        <div class="phc-footer">Click patient card for full record · max 5 fields on hover</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="badge">● Analysis Ready</div>
+  </header>
+
+  <!-- ════════════════════════════════════
+       PANEL 1 — Agent Chat
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-agent">
+    <div class="panel-header">Agent Chat</div>
+
+    <div id="chat-messages">
+      <div class="msg agent">
+        <div class="msg-avatar">AI</div>
+        <div>
+          <div class="msg-bubble">
+            Hi! I'm PEAT's clinical AI. I can explain the spatial biology findings, interpret cluster assignments, and help you understand what they mean for this patient.
+          </div>
+          <div class="msg-time">Now</div>
+        </div>
+      </div>
+      <div class="msg agent">
+        <div class="msg-avatar">AI</div>
+        <div>
+          <div class="msg-bubble">
+            This slide shows elevated <strong>EGFR</strong> expression in the tumor core with notable immune infiltration at the invasion margin — consistent with a hot TME phenotype.
+          </div>
+          <div class="msg-time">Now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- suggestion chips -->
+    <div class="chips">
+      <div class="chip" onclick="sendChip(this)">What is the TME here?</div>
+      <div class="chip" onclick="sendChip(this)">Explain cluster assignment</div>
+      <div class="chip" onclick="sendChip(this)">Immunotherapy likelihood?</div>
+      <div class="chip" onclick="sendChip(this)">Key spatial patterns?</div>
+    </div>
+
+    <div id="chat-input-row">
+      <textarea id="chat-input" placeholder="Ask the agent…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+      <button id="chat-send" onclick="sendMessage()">↑</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       PANEL 2 — HE / Spatial Image Viewer
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-viewer">
+    <div id="viewer-toolbar">
+      <!-- Modality buttons -->
+      <button class="modality-btn active" onclick="setModality(this,'HE')">H&E</button>
+      <button class="modality-btn" onclick="setModality(this,'RNA')">RNA</button>
+      <button class="modality-btn" onclick="setModality(this,'Protein')">Protein</button>
+
+      <div class="viewer-sep"></div>
+
+      <!-- Gene/protein dropdown — enabled when RNA or Protein active -->
+      <select id="gene-select" title="Select gene or protein to visualize">
+        <option value="" disabled>— pick gene / protein —</option>
+        <optgroup label="Top Genes">
+          <option>EGFR</option>
+          <option>TP53</option>
+          <option>KRAS</option>
+          <option>MYC</option>
+          <option>CDH1</option>
+          <option>VEGFA</option>
+        </optgroup>
+        <optgroup label="Immune Markers">
+          <option>CD8A</option>
+          <option>FOXP3</option>
+          <option>PD-L1 (CD274)</option>
+          <option>TIGIT</option>
+        </optgroup>
+        <optgroup label="Proteins">
+          <option>p53</option>
+          <option>HER2</option>
+          <option>Ki-67</option>
+          <option>E-Cadherin</option>
+        </optgroup>
+      </select>
+
+      <div class="viewer-spacer"></div>
+
+      <!-- Zoom controls -->
+      <button class="zoom-btn" onclick="zoom(-1)" title="Zoom out">−</button>
+      <button class="zoom-btn" onclick="zoom(1)" title="Zoom in">+</button>
+      <button class="zoom-btn" style="font-size:11px;width:auto;padding:0 8px;" onclick="resetZoom()">Reset</button>
+    </div>
+
+    <div id="he-canvas-wrap">
+      <!-- Real WSI tile would go here — placeholder for demo -->
+      <canvas id="he-canvas"></canvas>
+      <div id="he-placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="4" y="4" width="56" height="56" rx="6" stroke="#6b7280" stroke-width="2"/>
+          <circle cx="22" cy="22" r="8" stroke="#6b7280" stroke-width="2"/>
+          <path d="M36 44 L50 28 L58 44" stroke="#6b7280" stroke-width="2"/>
+        </svg>
+        <p id="placeholder-label">Load a whole-slide image or select a tile from <code>data/</code></p>
+        <p style="font-size:10px;margin-top:4px;">Drag & drop .svs / .tiff / .png</p>
+      </div>
+    </div>
+
+    <div id="colorbar" style="display:none;">
+      <span class="cb-label" id="colorbar-gene">EGFR</span>
+      <div style="flex:1;">
+        <div class="cb-gradient"></div>
+        <div class="cb-vals"><span>Low</span><span>High</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       PANEL 3 — Patient Cluster & Clinical
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-clinical">
+    <div class="panel-header">Patient Cluster &amp; Clinical Insight</div>
+
+    <div class="panel-body">
+
+      <!-- Cluster Assignment Card -->
+      <div class="cluster-card">
+        <div class="cluster-card-header">
+          <div class="dot"></div>
+          Cluster Assignment · Haiku
+        </div>
+        <div class="cluster-body">
+          <div class="cluster-id">
+            Cluster 4 <small>Immune-Hot / EGFR-mutant LUAD</small>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:11px;color:var(--muted);">Assignment confidence</span>
+              <span style="font-size:11px;color:var(--green);font-weight:700;">High</span>
+            </div>
+            <div class="confidence-row">
+              <div class="confidence-bar-wrap">
+                <div class="confidence-bar" style="width:87%;"></div>
+              </div>
+              <div class="confidence-pct">87%</div>
+            </div>
+          </div>
+
+          <div class="cluster-tags">
+            <div class="tag hi">TMB-High</div>
+            <div class="tag hi">PD-L1 ≥50%</div>
+            <div class="tag med">EGFR Exon 19 del</div>
+            <div class="tag">Stage IIIA</div>
+            <div class="tag">Adenocarcinoma</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="haiku-badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.2"/>
+          <path d="M6 4v3M6 8.5v.5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Powered by Claude Haiku · embedding similarity search
+      </div>
+
+      <!-- Similar patients -->
+      <div class="section-title">Nearest Patients in Cluster 4</div>
+      <div class="similar-patients">
+        <div class="sp-row">
+          <div class="sp-id">TCGA-55-7903</div>
+          <div class="sp-meta">EGFR del19 · PD-L1 60%</div>
+          <div class="sp-sim">94%</div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-id">TCGA-55-8621</div>
+          <div class="sp-meta">EGFR del19 · TMB-H</div>
+          <div class="sp-sim">91%</div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-id">TCGA-44-2659</div>
+          <div class="sp-meta">LUAD · Stage IIIA</div>
+          <div class="sp-sim">88%</div>
+        </div>
+      </div>
+
+      <!-- Derive button -->
+      <div class="derive-wrap">
+        <button class="derive-btn" onclick="deriveInsights()">
+          Derive Clinical Characteristics &amp; Outcomes
+        </button>
+        <div class="derive-sub">Generates outcomes, treatment plans &amp; survival plots for similar patients</div>
+      </div>
+
+      <!-- Plots area (revealed on click) -->
+      <div id="plots-area">
+        <div class="plot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M4 36 L4 8 M4 36 L36 36" stroke="#6b7280" stroke-width="2"/>
+            <path d="M8 28 L16 16 L24 20 L32 8" stroke="#4f8ef7" stroke-width="2"/>
+          </svg>
+          Kaplan–Meier Overall Survival · Cluster 4 vs rest
+        </div>
+        <div class="plot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="6" y="20" width="8" height="14" rx="2" fill="#4f8ef7" opacity=".6"/>
+            <rect x="17" y="12" width="8" height="22" rx="2" fill="#7c5cbf" opacity=".6"/>
+            <rect x="28" y="16" width="8" height="18" rx="2" fill="#3ecf8e" opacity=".6"/>
+          </svg>
+          Treatment Response Rates · EGFR-TKI vs IO vs Chemo
+        </div>
+        <div class="plot-placeholder">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="12" cy="28" r="4" fill="#4f8ef7" opacity=".7"/>
+            <circle cx="20" cy="16" r="5" fill="#7c5cbf" opacity=".7"/>
+            <circle cx="30" cy="22" r="3" fill="#3ecf8e" opacity=".7"/>
+            <circle cx="24" cy="10" r="3" fill="#f5c542" opacity=".7"/>
+          </svg>
+          UMAP Embedding · Patient cluster position
+        </div>
+      </div>
+
+    </div><!-- end .panel-body -->
+  </div>
+
+</div><!-- end #app -->
+
+<script>
+  // ── Patient hover card (150 ms delay) ─────────────────────────────
+  // TODO: populate from API — GET /patients/:caseId/summary
+  const patientSummary = {
+    caseId: 'TCGA-55-8512',
+    subtype: 'LUAD',
+    driverMutation: 'EGFR exon 19 del',
+    tmeArchetype: 'Inflamed',
+    overallSurvival: '24.3 months (deceased)',
+  };
+
+  (function initPatientHoverCard() {
+    const identity = document.getElementById('patient-identity');
+    const card = document.getElementById('patient-hover-card');
+    let showTimer = null;
+    let hideTimer = null;
+    const DELAY_MS = 150;
+
+    function openCard() {
+      clearTimeout(hideTimer);
+      identity.classList.add('open');
+      card.setAttribute('aria-hidden', 'false');
+    }
+    function closeCard() {
+      clearTimeout(showTimer);
+      identity.classList.remove('open');
+      card.setAttribute('aria-hidden', 'true');
+    }
+    function scheduleOpen() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(openCard, DELAY_MS);
+    }
+    function scheduleClose() {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(closeCard, 120);
+    }
+
+    identity.addEventListener('mouseenter', scheduleOpen);
+    identity.addEventListener('mouseleave', scheduleClose);
+    card.addEventListener('mouseenter', () => { clearTimeout(hideTimer); });
+    card.addEventListener('mouseleave', scheduleClose);
+
+    // Mock H&E thumbnail — replace with precomputed tile URL from backend
+    const thumb = document.getElementById('phc-he-thumb');
+    const ctx = thumb.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 80, 80);
+    g.addColorStop(0, '#c8a0a8');
+    g.addColorStop(.35, '#e8d0d8');
+    g.addColorStop(.5, '#a87888');
+    g.addColorStop(.7, '#d4b8c0');
+    g.addColorStop(1, '#987080');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 80, 80);
+    ctx.fillStyle = 'rgba(80, 40, 60, .25)';
+    for (let i = 0; i < 18; i++) {
+      ctx.beginPath();
+      ctx.arc(Math.random() * 80, Math.random() * 80, 3 + Math.random() * 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.strokeStyle = 'rgba(60, 30, 50, .4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(10, 55); ctx.lineTo(70, 30); ctx.lineTo(75, 65);
+    ctx.stroke();
+  })();
+
+  // ── Chat ──────────────────────────────────────────────────────────
+  const agentReplies = [
+    "Based on the spatial embedding, this patient's TME shows a high degree of immune infiltration co-localised with EGFR-amplified regions — a pattern strongly predictive of response to combined EGFR-TKI + immunotherapy.",
+    "Cluster 4 patients in our TCGA cohort had a median OS of 22.4 months on EGFR-TKI monotherapy vs 31.7 months with combination therapy. This patient's profile aligns with the responder sub-group.",
+    "The PD-L1 expression you see overlaid on the H&E corresponds to regions with high CD8+ T-cell density — this is the immune-inflamed phenotype, which generally predicts better checkpoint inhibitor response.",
+    "I'd flag the stromal FOXP3+ Tregs at the invasion margin — they may blunt the immune response. Consider checking the TIGIT co-inhibitory axis.",
+  ];
+  let replyIdx = 0;
+
+  function appendMsg(text, role) {
+    const wrap = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    const avatar = role === 'agent' ? 'AI' : 'Dr';
+    div.innerHTML = `
+      <div class="msg-avatar">${avatar}</div>
+      <div>
+        <div class="msg-bubble">${text}</div>
+        <div class="msg-time">Now</div>
+      </div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function sendMessage() {
+    const inp = document.getElementById('chat-input');
+    const text = inp.value.trim();
+    if (!text) return;
+    appendMsg(text, 'user');
+    inp.value = '';
+    setTimeout(() => {
+      appendMsg(agentReplies[replyIdx % agentReplies.length], 'agent');
+      replyIdx++;
+    }, 700);
+  }
+
+  function sendChip(el) {
+    appendMsg(el.textContent, 'user');
+    setTimeout(() => {
+      appendMsg(agentReplies[replyIdx % agentReplies.length], 'agent');
+      replyIdx++;
+    }, 700);
+  }
+
+  // ── Modality toggle ───────────────────────────────────────────────
+  function setModality(btn, mode) {
+    document.querySelectorAll('.modality-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const colorbar = document.getElementById('colorbar');
+    const geneSelect = document.getElementById('gene-select');
+    const placeholder = document.getElementById('placeholder-label');
+
+    if (mode === 'HE') {
+      colorbar.style.display = 'none';
+      geneSelect.disabled = true;
+      geneSelect.style.opacity = '.4';
+      placeholder.textContent = 'Load a whole-slide image or select a tile from data/';
+    } else {
+      colorbar.style.display = 'flex';
+      geneSelect.disabled = false;
+      geneSelect.style.opacity = '1';
+      const label = mode === 'RNA' ? 'Select RNA gene to overlay' : 'Select protein to overlay';
+      placeholder.textContent = label + ' using the dropdown above';
+      updateColorbarGene();
+    }
+  }
+
+  document.getElementById('gene-select').addEventListener('change', updateColorbarGene);
+  function updateColorbarGene() {
+    const v = document.getElementById('gene-select').value;
+    if (v) document.getElementById('colorbar-gene').textContent = v;
+  }
+
+  // disable gene select initially (HE mode)
+  document.getElementById('gene-select').disabled = true;
+  document.getElementById('gene-select').style.opacity = '.4';
+
+  // ── Zoom (stub) ───────────────────────────────────────────────────
+  let scale = 1;
+  function zoom(dir) { scale = Math.max(0.5, Math.min(4, scale + dir * 0.25)); applyZoom(); }
+  function resetZoom() { scale = 1; applyZoom(); }
+  function applyZoom() {
+    document.getElementById('he-placeholder').style.transform = `scale(${scale})`;
+  }
+
+  // ── Derive insights ───────────────────────────────────────────────
+  function deriveInsights() {
+    const area = document.getElementById('plots-area');
+    area.classList.toggle('visible');
+    const btn = document.querySelector('.derive-btn');
+    btn.textContent = area.classList.contains('visible')
+      ? 'Hide Clinical Plots ↑'
+      : 'Derive Clinical Characteristics & Outcomes';
+  }
+
+  // ── Drag-drop placeholder ─────────────────────────────────────────
+  const wrap = document.getElementById('he-canvas-wrap');
+  wrap.addEventListener('dragover', e => { e.preventDefault(); wrap.style.outline = '2px dashed #4f8ef7'; });
+  wrap.addEventListener('dragleave', () => { wrap.style.outline = ''; });
+  wrap.addEventListener('drop', e => {
+    e.preventDefault(); wrap.style.outline = '';
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const ph = document.getElementById('he-placeholder');
+    const canvas = document.getElementById('he-canvas');
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        canvas.width = wrap.clientWidth;
+        canvas.height = wrap.clientHeight;
+        const ctx = canvas.getContext('2d');
+        const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+        const w = img.width * ratio, h = img.height * ratio;
+        ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+        ph.style.display = 'none';
+      };
+      img.src = url;
+    } else {
+      ph.querySelector('p').textContent = `Loaded: ${file.name} — render pipeline needed for WSI format`;
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<svg viewBox="0 0 920 518" role="img" aria-label="Death rate by mutation status (top genes)">
+<text x="0" y="24" class="chart-title">Death rate by mutation status (top genes)</text>
+<rect x="120" y="36" width="16" height="10" fill="#3b82f6"></rect>
+<text x="142" y="45" class="legend">Mutated</text>
+<rect x="230" y="36" width="16" height="10" fill="#f97316"></rect>
+<text x="252" y="45" class="legend">Not mutated</text>
+<text x="0" y="78" class="axis-label">TP53</text>
+<rect x="120" y="58" width="624.8" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="74" width="517.1" height="12" rx="3" fill="#f97316"></rect>
+<text x="752.8" y="78" class="value-label">41.9% dead vs 34.6% dead</text>
+<text x="0" y="118" class="axis-label">KMT2D</text>
+<rect x="120" y="98" width="613.5" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="114" width="585.0" height="12" rx="3" fill="#f97316"></rect>
+<text x="741.5" y="118" class="value-label">41.1% dead vs 39.2% dead</text>
+<text x="0" y="158" class="axis-label">KRAS</text>
+<rect x="120" y="138" width="533.2" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="154" width="599.4" height="12" rx="3" fill="#f97316"></rect>
+<text x="727.4" y="158" class="value-label">35.7% dead vs 40.2% dead</text>
+<text x="0" y="198" class="axis-label">KEAP1</text>
+<rect x="120" y="178" width="647.6" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="194" width="579.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="775.6" y="198" class="value-label">43.4% dead vs 38.8% dead</text>
+<text x="0" y="238" class="axis-label">FAT1</text>
+<rect x="120" y="218" width="617.7" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="234" width="585.4" height="12" rx="3" fill="#f97316"></rect>
+<text x="745.7" y="238" class="value-label">41.4% dead vs 39.2% dead</text>
+<text x="0" y="278" class="axis-label">NF1</text>
+<rect x="120" y="258" width="665.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="274" width="579.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="793.0" y="278" class="value-label">44.5% dead vs 38.8% dead</text>
+<text x="0" y="318" class="axis-label">KMT2C</text>
+<rect x="120" y="298" width="600.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="314" width="588.1" height="12" rx="3" fill="#f97316"></rect>
+<text x="728.1" y="318" class="value-label">40.2% dead vs 39.4% dead</text>
+<text x="0" y="358" class="axis-label">CDKN2A</text>
+<rect x="120" y="338" width="698.8" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="354" width="577.2" height="12" rx="3" fill="#f97316"></rect>
+<text x="826.8" y="358" class="value-label">46.8% dead vs 38.7% dead</text>
+<text x="0" y="398" class="axis-label">PIK3CA</text>
+<rect x="120" y="378" width="710.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="394" width="577.8" height="12" rx="3" fill="#f97316"></rect>
+<text x="838.0" y="398" class="value-label">47.6% dead vs 38.7% dead</text>
+<text x="0" y="438" class="axis-label">NTRK3</text>
+<rect x="120" y="418" width="653.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="434" width="583.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="781.1" y="438" class="value-label">43.8% dead vs 39.1% dead</text>
+</svg>
