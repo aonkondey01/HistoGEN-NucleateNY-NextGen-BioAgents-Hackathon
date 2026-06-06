@@ -29,7 +29,7 @@
     /* ── Layout ── */
     #app {
       display: grid;
-      grid-template-columns: 300px 1fr 340px;
+      grid-template-columns: 300px 1fr 360px;
       grid-template-rows: 56px 1fr;
       height: 100vh;
       gap: 0;
@@ -150,8 +150,6 @@
       font-weight: 500;
       line-height: 1.35;
     }
-    #patient-hover-card .phc-value.archetype { color: var(--green); }
-    #patient-hover-card .phc-value.os-deceased { color: #c9a0a0; }
     #patient-hover-card .phc-thumb-wrap {
       padding: 10px 10px 10px 0;
       display: flex;
@@ -417,6 +415,94 @@
       font-size: 10px; color: var(--muted); padding: 0 14px 6px;
     }
     .haiku-badge svg { opacity: .5; }
+
+    /* ── Embedding cluster graph ── */
+    #cluster-graph-section {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .scatter-toolbar {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .scatter-toolbar label {
+      font-size: 10px; font-weight: 600; letter-spacing: .4px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .scatter-toolbar select {
+      flex: 1; min-width: 120px;
+      background: #0d0f14; border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 4px 8px; font-size: 11px; cursor: pointer; outline: none;
+    }
+    .scatter-toolbar select:focus { border-color: var(--accent); }
+    #cluster-graph-wrap {
+      position: relative; height: 240px;
+      background: #0a0c12; border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    #scatter-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+    #scatter-legend {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(13, 15, 20, .9); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 8px; max-width: 138px;
+      pointer-events: none;
+    }
+    #scatter-legend .leg-title {
+      font-size: 9px; font-weight: 600; letter-spacing: .5px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    }
+    #scatter-legend .leg-row {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 9px; color: var(--text); line-height: 1.55;
+    }
+    #scatter-legend .leg-swatch {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    #scatter-legend .leg-gradient {
+      height: 6px; border-radius: 3px; margin: 4px 0 2px;
+    }
+    #scatter-tooltip {
+      position: absolute; z-index: 10; pointer-events: none;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 8px; font-size: 10px; line-height: 1.45;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4); max-width: 190px;
+    }
+    #scatter-tooltip .tt-id { font-weight: 600; color: var(--accent); }
+    .scatter-meta { font-size: 9px; color: var(--muted); margin-top: 6px; }
+
+    /* ── Cluster info table ── */
+    #cluster-info-table {
+      margin: 0 14px 12px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; background: #0d0f14;
+    }
+    .cit-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px; background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .cit-header .cit-id {
+      font-size: 12px; font-weight: 700; color: var(--accent);
+    }
+    .cit-header .cit-badge {
+      font-size: 9px; font-weight: 600; letter-spacing: .4px;
+      text-transform: uppercase; padding: 2px 7px; border-radius: 99px;
+      background: #1e2d4a; color: var(--accent); border: 1px solid #2a4070;
+    }
+    .cit-row {
+      display: grid; grid-template-columns: 118px 1fr;
+      gap: 8px; padding: 7px 12px;
+      border-bottom: 1px solid rgba(35, 39, 51, .6);
+      align-items: baseline;
+    }
+    .cit-row:last-child { border-bottom: none; }
+    .cit-label { font-size: 10px; color: var(--muted); font-weight: 500; }
+    .cit-value { font-size: 11px; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .cit-value.hot { color: var(--green); }
+    .cit-value.cold { color: #8aa4c8; }
+    .cit-value.warn { color: var(--yellow); }
+    .cit-value.deceased { color: #c9a0a0; }
   </style>
 </head>
 <body>
@@ -451,12 +537,12 @@
               <span class="phc-value" id="phc-mutation">EGFR exon 19 del</span>
             </div>
             <div class="phc-row">
-              <span class="phc-label">TME archetype</span>
-              <span class="phc-value archetype" id="phc-archetype">Inflamed</span>
+              <span class="phc-label">Age</span>
+              <span class="phc-value" id="phc-age">62 years</span>
             </div>
             <div class="phc-row">
-              <span class="phc-label">Overall survival</span>
-              <span class="phc-value os-deceased" id="phc-os">24.3 months (deceased)</span>
+              <span class="phc-label">Sex</span>
+              <span class="phc-value" id="phc-sex">Female</span>
             </div>
           </div>
           <div class="phc-thumb-wrap">
@@ -592,37 +678,65 @@
 
     <div class="panel-body">
 
-      <!-- Cluster Assignment Card -->
-      <div class="cluster-card">
-        <div class="cluster-card-header">
-          <div class="dot"></div>
-          Cluster Assignment · Haiku
+      <!-- Cluster embedding graph -->
+      <div id="cluster-graph-section">
+        <div class="section-title" style="padding:0 0 6px;">Patient Embedding · TCGA Lung</div>
+        <div class="scatter-toolbar">
+          <label for="colour-by-select">Colour by</label>
+          <select id="colour-by-select">
+            <option value="tmeArchetype" selected>TME archetype</option>
+            <option value="immuneStatus">Immune status</option>
+            <option value="driverMutation">Driver mutation</option>
+            <option value="signature">HistoTME signature</option>
+            <option value="osStatus">Overall survival</option>
+          </select>
+          <select id="signature-select" style="display:none;" title="HistoTME signature">
+            <option value="Treg">Treg score</option>
+            <option value="Effector_cells">Effector cells</option>
+          </select>
         </div>
-        <div class="cluster-body">
-          <div class="cluster-id">
-            Cluster 4 <small>Immune-Hot / EGFR-mutant LUAD</small>
-          </div>
+        <div id="cluster-graph-wrap">
+          <canvas id="scatter-canvas"></canvas>
+          <div id="scatter-legend"></div>
+          <div id="scatter-tooltip" style="display:none;"></div>
+        </div>
+        <div class="scatter-meta" id="scatter-meta">1,053 patients · click a dot to inspect · UMAP projection</div>
+      </div>
 
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-              <span style="font-size:11px;color:var(--muted);">Assignment confidence</span>
-              <span style="font-size:11px;color:var(--green);font-weight:700;">High</span>
-            </div>
-            <div class="confidence-row">
-              <div class="confidence-bar-wrap">
-                <div class="confidence-bar" style="width:87%;"></div>
-              </div>
-              <div class="confidence-pct">87%</div>
-            </div>
-          </div>
-
-          <div class="cluster-tags">
-            <div class="tag hi">TMB-High</div>
-            <div class="tag hi">PD-L1 ≥50%</div>
-            <div class="tag med">EGFR Exon 19 del</div>
-            <div class="tag">Stage IIIA</div>
-            <div class="tag">Adenocarcinoma</div>
-          </div>
+      <!-- Selected patient clinical info -->
+      <div class="section-title">Cluster Clinical Profile</div>
+      <div id="cluster-info-table">
+        <div class="cit-header">
+          <span class="cit-id" id="cit-patient-id">TCGA-55-8512</span>
+          <span class="cit-badge" id="cit-badge">Selected patient</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">Immune status</span>
+          <span class="cit-value hot" id="cit-immune">Immune Hot</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">TME archetype</span>
+          <span class="cit-value" id="cit-tme">Immune Inflamed</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">Pathogenic mutations</span>
+          <span class="cit-value" id="cit-mutations">EGFR exon 19 del; TP53 R273H</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">Driver mutation</span>
+          <span class="cit-value" id="cit-driver">EGFR</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">Overall survival</span>
+          <span class="cit-value deceased" id="cit-os">24.3 months (deceased)</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">PD-L1 / TMB</span>
+          <span class="cit-value" id="cit-biomarkers">PD-L1 ≥50% · TMB-High</span>
+        </div>
+        <div class="cit-row">
+          <span class="cit-label">Nearest cluster</span>
+          <span class="cit-value" id="cit-cluster">Cluster 4 · 87% confidence</span>
         </div>
       </div>
 
@@ -679,15 +793,6 @@
           </svg>
           Treatment Response Rates · EGFR-TKI vs IO vs Chemo
         </div>
-        <div class="plot-placeholder">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <circle cx="12" cy="28" r="4" fill="#4f8ef7" opacity=".7"/>
-            <circle cx="20" cy="16" r="5" fill="#7c5cbf" opacity=".7"/>
-            <circle cx="30" cy="22" r="3" fill="#3ecf8e" opacity=".7"/>
-            <circle cx="24" cy="10" r="3" fill="#f5c542" opacity=".7"/>
-          </svg>
-          UMAP Embedding · Patient cluster position
-        </div>
       </div>
 
     </div><!-- end .panel-body -->
@@ -702,11 +807,23 @@
     caseId: 'TCGA-55-8512',
     subtype: 'LUAD',
     driverMutation: 'EGFR exon 19 del',
-    tmeArchetype: 'Inflamed',
-    overallSurvival: '24.3 months (deceased)',
+    age: 62,
+    sex: 'Female',
   };
 
+  function applyPatientSummary() {
+    document.getElementById('patient-case-id').textContent = patientSummary.caseId;
+    document.getElementById('patient-subtype-inline').textContent = patientSummary.subtype;
+    document.getElementById('phc-case-id').textContent = patientSummary.caseId;
+    document.getElementById('phc-subtype').textContent = patientSummary.subtype;
+    document.getElementById('phc-mutation').textContent = patientSummary.driverMutation;
+    document.getElementById('phc-age').textContent = `${patientSummary.age} years`;
+    document.getElementById('phc-sex').textContent = patientSummary.sex;
+  }
+
   (function initPatientHoverCard() {
+    applyPatientSummary();
+
     const identity = document.getElementById('patient-identity');
     const card = document.getElementById('patient-hover-card');
     let showTimer = null;
@@ -885,6 +1002,320 @@
       ph.querySelector('p').textContent = `Loaded: ${file.name} — render pipeline needed for WSI format`;
     }
   });
+
+  // ── Cluster embedding graph ───────────────────────────────────────
+  // TODO: replace mock cohort with GET /data/tcga_lung/embedding_umap.json
+  const SELECTED_CASE_ID = patientSummary.caseId;
+  const COHORT_SIZE = 1053;
+
+  const TME_ARCHETYPES = ['Immune Desert', 'Immune Inflamed', 'Myeloid/Treg-rich', 'Stroma-high'];
+  const TME_COLORS = {
+    'Immune Desert': '#6b7280',
+    'Immune Inflamed': '#3ecf8e',
+    'Myeloid/Treg-rich': '#7c5cbf',
+    'Stroma-high': '#f5c542',
+  };
+  const IMMUNE_STATUSES = ['Immune Hot', 'Immune Cold', 'Immune Excluded'];
+  const IMMUNE_COLORS = {
+    'Immune Hot': '#3ecf8e',
+    'Immune Cold': '#6b7280',
+    'Immune Excluded': '#7c5cbf',
+  };
+  const DRIVER_MUTATIONS = ['EGFR', 'KRAS G12C', 'ALK', 'WT'];
+  const MUTATION_COLORS = {
+    EGFR: '#4f8ef7',
+    'KRAS G12C': '#e05c5c',
+    ALK: '#7c5cbf',
+    WT: '#6b7280',
+  };
+  const OS_COLORS = { alive: '#3ecf8e', deceased: '#e05c5c' };
+
+  const CLUSTER_CENTERS = [
+    { x: -4, y: 2, archetype: 'Immune Desert', immune: 'Immune Cold' },
+    { x: 3, y: 3, archetype: 'Immune Inflamed', immune: 'Immune Hot' },
+    { x: -2, y: -3, archetype: 'Myeloid/Treg-rich', immune: 'Immune Excluded' },
+    { x: 4, y: -2, archetype: 'Stroma-high', immune: 'Immune Cold' },
+  ];
+
+  function seededRandom(seed) {
+    let s = seed;
+    return () => {
+      s = (s * 16807) % 2147483647;
+      return (s - 1) / 2147483646;
+    };
+  }
+
+  function pick(rng, arr) { return arr[Math.floor(rng() * arr.length)]; }
+
+  function generateMockCohort(n) {
+    const rng = seededRandom(42);
+    const patients = [];
+    for (let i = 0; i < n; i++) {
+      const center = CLUSTER_CENTERS[i % CLUSTER_CENTERS.length];
+      const driver = pick(rng, DRIVER_MUTATIONS);
+      const osStatus = rng() > 0.42 ? 'deceased' : 'alive';
+      const osMonths = osStatus === 'deceased'
+        ? (8 + rng() * 36).toFixed(1)
+        : (12 + rng() * 48).toFixed(1);
+      const proj = i + 1;
+      const caseId = `TCGA-${String(Math.floor(rng() * 90) + 1).padStart(2, '0')}-${String(Math.floor(rng() * 9000) + 1000)}`;
+      patients.push({
+        caseId,
+        x: center.x + (rng() - 0.5) * 3.2,
+        y: center.y + (rng() - 0.5) * 3.2,
+        tmeArchetype: center.archetype,
+        immuneStatus: center.immune,
+        driverMutation: driver,
+        pathogenicMutations: driver === 'WT'
+          ? (rng() > 0.5 ? 'TP53 R175H' : 'None detected')
+          : `${driver}${driver === 'EGFR' ? ' exon 19 del' : ''}${rng() > 0.55 ? '; TP53 R273H' : ''}`,
+        osStatus,
+        osMonths: parseFloat(osMonths),
+        subtype: rng() > 0.48 ? 'LUAD' : 'LUSC',
+        pdL1: rng() > 0.6 ? '≥50%' : rng() > 0.3 ? '1–49%' : '<1%',
+        tmb: rng() > 0.65 ? 'High' : 'Intermediate',
+        cluster: (i % 4) + 1,
+        clusterConfidence: Math.floor(72 + rng() * 26),
+        signatures: {
+          Treg: rng(),
+          Effector_cells: rng(),
+        },
+      });
+    }
+
+    const selected = patients.find(p => p.caseId === SELECTED_CASE_ID);
+    if (!selected) {
+      patients[0] = {
+        caseId: SELECTED_CASE_ID,
+        x: 3.1, y: 2.8,
+        tmeArchetype: 'Immune Inflamed',
+        immuneStatus: 'Immune Hot',
+        driverMutation: 'EGFR',
+        pathogenicMutations: 'EGFR exon 19 del; TP53 R273H',
+        osStatus: 'deceased',
+        osMonths: 24.3,
+        subtype: 'LUAD',
+        pdL1: '≥50%',
+        tmb: 'High',
+        cluster: 4,
+        clusterConfidence: 87,
+        signatures: { Treg: 0.42, Effector_cells: 0.78 },
+      };
+    } else {
+      Object.assign(selected, {
+        tmeArchetype: 'Immune Inflamed',
+        immuneStatus: 'Immune Hot',
+        driverMutation: 'EGFR',
+        pathogenicMutations: 'EGFR exon 19 del; TP53 R273H',
+        osStatus: 'deceased',
+        osMonths: 24.3,
+        subtype: 'LUAD',
+        pdL1: '≥50%',
+        tmb: 'High',
+        cluster: 4,
+        clusterConfidence: 87,
+        x: 3.1, y: 2.8,
+        signatures: { Treg: 0.42, Effector_cells: 0.78 },
+      });
+    }
+    return patients;
+  }
+
+  const cohortPatients = generateMockCohort(COHORT_SIZE);
+  let selectedPatient = cohortPatients.find(p => p.caseId === SELECTED_CASE_ID) || cohortPatients[0];
+  let scatterLayout = { pad: 16, minX: 0, maxX: 1, minY: 0, maxY: 1, w: 0, h: 0 };
+  let hoveredPatient = null;
+
+  function lerpColor(c1, c2, t) {
+    const p = (hex) => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+    const a = p(c1), b = p(c2);
+    const m = a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    return `rgb(${m[0]},${m[1]},${m[2]})`;
+  }
+
+  function getPatientColor(p, colourBy, sigKey) {
+    if (colourBy === 'tmeArchetype') return TME_COLORS[p.tmeArchetype];
+    if (colourBy === 'immuneStatus') return IMMUNE_COLORS[p.immuneStatus];
+    if (colourBy === 'driverMutation') return MUTATION_COLORS[p.driverMutation];
+    if (colourBy === 'osStatus') return OS_COLORS[p.osStatus];
+    if (colourBy === 'signature') {
+      const v = p.signatures[sigKey] ?? 0;
+      return lerpColor('#1a2030', '#e05c5c', v);
+    }
+    return '#6b7280';
+  }
+
+  function updateClusterInfoTable(p, badgeText) {
+    document.getElementById('cit-patient-id').textContent = p.caseId;
+    document.getElementById('cit-badge').textContent = badgeText || 'Selected patient';
+    const immuneEl = document.getElementById('cit-immune');
+    immuneEl.textContent = p.immuneStatus;
+    immuneEl.className = 'cit-value' + (
+      p.immuneStatus === 'Immune Hot' ? ' hot'
+        : p.immuneStatus === 'Immune Cold' ? ' cold'
+          : ' warn'
+    );
+    document.getElementById('cit-tme').textContent = p.tmeArchetype;
+    document.getElementById('cit-mutations').textContent = p.pathogenicMutations;
+    document.getElementById('cit-driver').textContent = p.driverMutation;
+    const osEl = document.getElementById('cit-os');
+    osEl.textContent = `${p.osMonths} months (${p.osStatus})`;
+    osEl.className = 'cit-value' + (p.osStatus === 'deceased' ? ' deceased' : '');
+    document.getElementById('cit-biomarkers').textContent = `PD-L1 ${p.pdL1} · TMB-${p.tmb}`;
+    document.getElementById('cit-cluster').textContent = `Cluster ${p.cluster} · ${p.clusterConfidence}% confidence`;
+  }
+
+  function updateScatterLegend(colourBy, sigKey) {
+    const leg = document.getElementById('scatter-legend');
+    let html = '<div class="leg-title">Legend</div>';
+    if (colourBy === 'signature') {
+      html += `<div class="leg-gradient" style="background:linear-gradient(to right,#1a2030,#e05c5c)"></div>
+        <div class="leg-row"><span>Low → High (${sigKey.replace('_', ' ')})</span></div>`;
+    } else {
+      const maps = {
+        tmeArchetype: [TME_ARCHETYPES, TME_COLORS],
+        immuneStatus: [IMMUNE_STATUSES, IMMUNE_COLORS],
+        driverMutation: [DRIVER_MUTATIONS, MUTATION_COLORS],
+        osStatus: [['alive', 'deceased'], OS_COLORS],
+      };
+      const [keys, colors] = maps[colourBy];
+      keys.forEach(k => {
+        html += `<div class="leg-row"><span class="leg-swatch" style="background:${colors[k]}"></span>${k}</div>`;
+      });
+    }
+    leg.innerHTML = html;
+  }
+
+  function computeScatterLayout(canvas) {
+    const xs = cohortPatients.map(p => p.x);
+    const ys = cohortPatients.map(p => p.y);
+    scatterLayout.minX = Math.min(...xs);
+    scatterLayout.maxX = Math.max(...xs);
+    scatterLayout.minY = Math.min(...ys);
+    scatterLayout.maxY = Math.max(...ys);
+    scatterLayout.w = canvas.width;
+    scatterLayout.h = canvas.height;
+  }
+
+  function dataToCanvas(x, y) {
+    const { pad, minX, maxX, minY, maxY, w, h } = scatterLayout;
+    const rx = maxX - minX || 1;
+    const ry = maxY - minY || 1;
+    return {
+      cx: pad + ((x - minX) / rx) * (w - pad * 2),
+      cy: h - pad - ((y - minY) / ry) * (h - pad * 2),
+    };
+  }
+
+  function renderScatterPlot() {
+    const canvas = document.getElementById('scatter-canvas');
+    const wrap = document.getElementById('cluster-graph-wrap');
+    canvas.width = wrap.clientWidth;
+    canvas.height = wrap.clientHeight;
+    computeScatterLayout(canvas);
+
+    const colourBy = document.getElementById('colour-by-select').value;
+    const sigKey = document.getElementById('signature-select').value;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    cohortPatients.forEach(p => {
+      const { cx, cy } = dataToCanvas(p.x, p.y);
+      p._cx = cx; p._cy = cy;
+      const isSelected = p.caseId === selectedPatient.caseId;
+      const isHovered = hoveredPatient && hoveredPatient.caseId === p.caseId;
+      const r = isSelected ? 5 : isHovered ? 4.5 : 2.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = getPatientColor(p, colourBy, sigKey);
+      ctx.globalAlpha = isSelected || isHovered ? 1 : 0.72;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      if (isSelected) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(79,142,247,.6)';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+      } else if (isHovered) {
+        ctx.strokeStyle = '#e2e6f0';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    });
+
+    updateScatterLegend(colourBy, sigKey);
+  }
+
+  function findPatientAt(mx, my) {
+    let best = null;
+    let bestD = 12;
+    cohortPatients.forEach(p => {
+      const d = Math.hypot(p._cx - mx, p._cy - my);
+      if (d < bestD) { bestD = d; best = p; }
+    });
+    return best;
+  }
+
+  function showScatterTooltip(p, mx, my) {
+    const tip = document.getElementById('scatter-tooltip');
+    if (!p) { tip.style.display = 'none'; return; }
+    tip.style.display = 'block';
+    tip.innerHTML = `<div class="tt-id">${p.caseId}</div>
+      ${p.immuneStatus} · ${p.tmeArchetype}<br>
+      ${p.pathogenicMutations}<br>
+      OS: ${p.osMonths} mo (${p.osStatus})`;
+    const wrap = document.getElementById('cluster-graph-wrap');
+    const rect = wrap.getBoundingClientRect();
+    let left = mx + 12, top = my - 8;
+    if (left + 190 > wrap.clientWidth) left = mx - 200;
+    if (top + 70 > wrap.clientHeight) top = my - 72;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+
+  (function initClusterGraph() {
+    updateClusterInfoTable(selectedPatient);
+
+    const canvas = document.getElementById('scatter-canvas');
+    const colourSelect = document.getElementById('colour-by-select');
+    const sigSelect = document.getElementById('signature-select');
+
+    colourSelect.addEventListener('change', () => {
+      sigSelect.style.display = colourSelect.value === 'signature' ? 'block' : 'none';
+      renderScatterPlot();
+    });
+    sigSelect.addEventListener('change', renderScatterPlot);
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const p = findPatientAt(mx, my);
+      if (p !== hoveredPatient) {
+        hoveredPatient = p;
+        renderScatterPlot();
+      }
+      showScatterTooltip(p, mx, my);
+    });
+    canvas.addEventListener('mouseleave', () => {
+      hoveredPatient = null;
+      document.getElementById('scatter-tooltip').style.display = 'none';
+      renderScatterPlot();
+    });
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const p = findPatientAt(e.clientX - rect.left, e.clientY - rect.top);
+      if (!p) return;
+      selectedPatient = p;
+      updateClusterInfoTable(p);
+      renderScatterPlot();
+    });
+
+    renderScatterPlot();
+    window.addEventListener('resize', renderScatterPlot);
+  })();
 </script>
 </body>
 </html>
