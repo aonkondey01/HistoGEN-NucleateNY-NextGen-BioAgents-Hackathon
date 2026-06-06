@@ -6,14 +6,17 @@ const BENEFIT_COLORS = {
   "Unlikely benefit": "#dc2626",
 };
 
-const TREATMENT_COLORS = {
-  "Pharmaceutical": "#4e79a7",
-  "Chemotherapy": "#59a14f",
-  "Pharma + Radiation": "#b07aa1",
-  "Chemo + Radiation": "#edc948",
-  Radiation: "#f28e2b",
-  Surgery: "#76b7b2",
-  "None documented": "#9ca3af",
+const PREFERRED_COLORS = {
+  "Targeted therapy first": "#4e79a7",
+  "Immunotherapy first": "#e15759",
+  "Consider combination or trial": "#9ca3af",
+};
+
+const ARCHETYPE_COLORS = {
+  "Immune Desert": "#4e79a7",
+  "Immune Inflamed": "#e15759",
+  "Myeloid/Treg-rich": "#f28e2b",
+  "Stroma-high": "#76b7b2",
 };
 
 const DRIVER_COLORS = {
@@ -22,8 +25,6 @@ const DRIVER_COLORS = {
   ALK: "#edc948",
   WT: "#9c755f",
 };
-
-const OS_COLORS = { alive: "#008080", deceased: "#6b7280" };
 
 const PALETTE = [
   "#4e79a7",
@@ -40,15 +41,10 @@ const PALETTE = [
 
 function colorForValue(key, value) {
   if (value == null || value === "") return "#cbd5e1";
-  if (key === "predicted_benefit") return BENEFIT_COLORS[value] || "#94a3b8";
-  if (key === "treatment_category") return TREATMENT_COLORS[value] || "#94a3b8";
+  if (key.endsWith("_benefit")) return BENEFIT_COLORS[value] || "#94a3b8";
+  if (key === "preferred_at_recurrence") return PREFERRED_COLORS[value] || "#94a3b8";
+  if (key === "archetype") return ARCHETYPE_COLORS[value] || "#94a3b8";
   if (key === "driver_mutation") return DRIVER_COLORS[value?.split(";")[0]] || "#94a3b8";
-  if (key === "vital_status") {
-    const v = String(value).toLowerCase();
-    if (v === "alive") return OS_COLORS.alive;
-    if (v === "dead") return OS_COLORS.deceased;
-    return "#94a3b8";
-  }
   return null;
 }
 
@@ -62,35 +58,30 @@ function categoricalColors(patients, key, getter) {
 }
 
 function getColorValue(patient, colorBy) {
+  const r = patient.recurrence_predictions || {};
   switch (colorBy) {
-    case "predicted_benefit":
-      return patient.predicted_benefit?.label;
+    case "targeted_benefit":
+      return r.targeted_therapy?.label;
+    case "immunotherapy_benefit":
+      return r.immunotherapy?.label;
+    case "preferred_at_recurrence":
+      return r.preferred_at_recurrence;
+    case "archetype":
+      return patient.archetype;
     case "treatment_category":
       return patient.treatment?.category || patient.treatment_category;
     case "disease_response":
       return patient.clinical?.disease_response || patient.disease_response;
-    case "vital_status":
-      return patient.clinical?.vital_status;
     case "stage":
       return patient.stage || patient.clinical?.stage;
-    case "histology":
-      return patient.histology;
     case "driver_mutation":
       return patient.driver_mutation || patient.driver;
-    case "smoking":
-      return patient.smoking;
     default:
-      return patient.archetype;
+      return r.targeted_therapy?.label;
   }
 }
 
-export function buildEmbeddingPlot({
-  container,
-  patients,
-  colorBy,
-  selectedId,
-  onSelect,
-}) {
+export function buildEmbeddingPlot({ container, patients, colorBy, selectedId, onSelect }) {
   if (!container || !patients.length) {
     if (container) container.innerHTML = `<p class="muted" style="padding:1rem">No patients match filter.</p>`;
     return;
@@ -104,13 +95,16 @@ export function buildEmbeddingPlot({
     x: patients.map((p) => p.umap_x),
     y: patients.map((p) => p.umap_y),
     text: patients.map((p) => {
-      const b = p.predicted_benefit;
+      const r = p.recurrence_predictions || {};
+      const tgt = r.targeted_therapy || {};
+      const io = r.immunotherapy || {};
       return [
         p.patient_id,
         p.archetype,
         p.driver_mutation || p.driver,
-        p.treatment?.category || "—",
-        b ? `${b.label} (${b.score})` : "",
+        `Targeted @ recurrence: ${tgt.label || "—"} (${tgt.score ?? "—"})`,
+        `IO @ recurrence: ${io.label || "—"} (${io.score ?? "—"})`,
+        r.preferred_at_recurrence || "",
       ].join("<br>");
     }),
     customdata: patients.map((p) => p.patient_id),

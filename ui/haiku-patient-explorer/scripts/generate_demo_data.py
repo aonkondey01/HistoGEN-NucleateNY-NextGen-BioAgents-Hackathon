@@ -146,69 +146,173 @@ def _observed_benefit_label(clinical: dict) -> str:
     return "Observed: Uncertain"
 
 
-def _predict_benefit(archetype: str, driver: str, treatment_category: str) -> dict:
-    """Heuristic benefit score: TME archetype × driver × treatment alignment."""
-    score = 50.0
+TARGETED_AGENTS = {
+    "ALK": "Alectinib / Lorlatinib",
+    "EGFR": "Osimertinib",
+    "KRAS G12C": "Sotorasib / Adagrasib",
+    "MET": "Capmatinib / Tepotinib",
+    "BRAF": "Dabrafenib + Trametinib",
+    "ROS1": "Entrectinib / Crizotinib",
+    "RET": "Selpercatinib",
+    "ERBB2": "Trastuzumab deruxtecan",
+}
+
+IO_REGIMENS = {
+    "high": "Pembrolizumab monotherapy",
+    "moderate": "Pembrolizumab + chemotherapy",
+    "low": "Chemotherapy or clinical trial",
+}
+
+
+def _benefit_label(score: float) -> str:
+    if score >= 70:
+        return "Likely benefit"
+    if score >= 50:
+        return "Uncertain benefit"
+    return "Unlikely benefit"
+
+
+def _predict_targeted_at_recurrence(
+    archetype: str, driver: str, signatures: dict[str, float]
+) -> dict:
+    """Predict benefit from targeted therapy if disease recurs."""
+    primary = (driver.split(";")[0] if driver else "WT").strip()
+    score = 18.0
     reasons: list[str] = []
+    agents = "No actionable driver identified"
 
-    has_pharma = "Pharma" in treatment_category or treatment_category == "Chemotherapy"
-    has_radio = "Radiation" in treatment_category
-    no_tx = treatment_category == "None documented"
-
-    primary_driver = driver.split(";")[0] if driver else "WT"
-
-    if no_tx:
-        score = 35.0
-        reasons.append("No systemic treatment documented in TCGA record.")
-    elif primary_driver == "EGFR" and has_pharma:
-        score = 78.0 if archetype != "Immune Desert" else 68.0
-        reasons.append("EGFR-mutant NSCLC: pharmaceutical therapy is typically appropriate.")
-        if archetype == "Immune Desert":
-            reasons.append("Immune-desert TME may limit benefit from immunotherapy combinations.")
-        elif archetype == "Immune Inflamed":
-            reasons.append("Inflamed TME supports durable response to targeted therapy in many cases.")
-    elif primary_driver == "KRAS G12C" and has_pharma:
-        score = 62.0 if archetype != "Stroma-high" else 52.0
-        reasons.append("KRAS G12C: targeted inhibition can work but resistance is common.")
-        if archetype == "Myeloid/Treg-rich":
-            score -= 8.0
-            reasons.append("Myeloid/Treg-rich niche may blunt long-term benefit.")
-    elif primary_driver == "ALK" and has_pharma:
-        score = 82.0
-        reasons.append("ALK rearrangement: strong historical response to targeted inhibitors.")
-    elif primary_driver not in ("WT", "") and has_pharma:
-        score = 70.0
-        reasons.append(f"Actionable driver ({primary_driver}) with systemic therapy documented.")
-    elif primary_driver == "WT" and archetype == "Immune Inflamed" and has_pharma:
-        score = 72.0
-        reasons.append("No dominant driver but inflamed TME: better immunotherapy/chemo-IO potential.")
-    elif archetype == "Immune Desert" and has_pharma:
-        score = 42.0
-        reasons.append("Immune-desert TME without clear driver: lower expected immunotherapy benefit.")
-    elif archetype == "Stroma-high":
-        score -= 6.0
-        reasons.append("Stroma-high TME can limit drug penetration and immune access.")
+    if primary == "ALK":
+        score = 88.0
+        agents = TARGETED_AGENTS["ALK"]
+        reasons.append("ALK rearrangement: strong response to next-line ALK inhibitors at recurrence.")
+    elif primary == "EGFR":
+        score = 85.0
+        agents = TARGETED_AGENTS["EGFR"]
+        reasons.append("EGFR mutation: osimertinib-class TKIs are standard at recurrence.")
+        if archetype == "Stroma-high":
+            score -= 4.0
+            reasons.append("Stroma-high TME may modestly shorten durability of response.")
+    elif primary == "KRAS G12C":
+        score = 68.0
+        agents = TARGETED_AGENTS["KRAS G12C"]
+        reasons.append("KRAS G12C: approved targeted options exist but resistance is frequent.")
+        if archetype in ("Myeloid/Treg-rich", "Stroma-high"):
+            score -= 6.0
+            reasons.append(f"{archetype} niche may blunt long-term targeted benefit.")
+    elif primary in TARGETED_AGENTS:
+        score = 74.0
+        agents = TARGETED_AGENTS[primary]
+        reasons.append(f"Actionable {primary} alteration supports genotype-directed therapy at recurrence.")
+    elif primary not in ("WT", ""):
+        score = 65.0
+        agents = f"{primary}-directed therapy (investigational)"
+        reasons.append(f"Rare driver ({primary}) may be targetable in a trial setting.")
     else:
-        reasons.append("Moderate alignment between TME profile and documented treatment.")
-
-    if has_radio:
-        score += 4.0
-        reasons.append("Radiation included in treatment plan (local control).")
+        score = 22.0
+        reasons.append("No EGFR/ALK/KRAS G12C or other actionable driver: targeted monotherapy unlikely.")
+        reasons.append("Wild-type NSCLC at recurrence is more often IO- or chemo-directed.")
 
     score = float(np.clip(score, 5, 95))
+    return {
+        "score": round(score, 1),
+        "label": _benefit_label(score),
+        "recommended_agents": agents,
+        "reasons": reasons[:4],
+    }
 
+
+def _predict_immunotherapy_at_recurrence(
+    archetype: str, driver: str, signatures: dict[str, float], prior_systemic: bool
+) -> dict:
+    """Predict benefit from immunotherapy if disease recurs."""
+    primary = (driver.split(";")[0] if driver else "WT").strip()
+    effector = signatures.get("Effector_cells", 0.0)
+    t_cells = signatures.get("T_cells", 0.0)
+    checkpoint = signatures.get("Checkpoint_inhibition", 0.0)
+    treg = signatures.get("Treg", 0.0)
+    mdsc = signatures.get("MDSC", 0.0)
+
+    score = 48.0
+    reasons: list[str] = []
+
+    if archetype == "Immune Inflamed":
+        score += 24.0
+        reasons.append("Immune-inflamed TME: higher chance of checkpoint inhibitor response.")
+    elif archetype == "Immune Desert":
+        score -= 22.0
+        reasons.append("Immune-desert TME: low T-cell infiltration predicts poor IO monotherapy benefit.")
+    elif archetype == "Myeloid/Treg-rich":
+        score -= 14.0
+        reasons.append("Myeloid/Treg-rich niche is immunosuppressive at recurrence.")
+    elif archetype == "Stroma-high":
+        score -= 12.0
+        reasons.append("Stroma-high TME can limit immune cell access to tumor.")
+
+    if effector > 0.5 and t_cells > 0.3:
+        score += 8.0
+        reasons.append("Elevated effector/T-cell signatures support IO candidacy.")
+    if checkpoint > 0.4:
+        score += 6.0
+        reasons.append("Checkpoint-inhibition signature is elevated on H&E.")
+    if treg > 1.0 or mdsc > 1.0:
+        score -= 6.0
+        reasons.append("High Treg/MDSC signals may counteract IO benefit.")
+
+    if primary in ("EGFR", "ALK"):
+        score -= 8.0
+        reasons.append(f"{primary}-mutant disease: targeted therapy usually preferred over IO monotherapy.")
+    elif primary == "WT" and archetype != "Immune Desert":
+        score += 6.0
+        reasons.append("No dominant driver: immunotherapy ± chemo is a common recurrence strategy.")
+
+    if prior_systemic:
+        score -= 4.0
+        reasons.append("Prior systemic therapy documented; may affect next-line IO sequencing.")
+
+    score = float(np.clip(score, 5, 95))
+    label = _benefit_label(score)
     if score >= 70:
-        label = "Likely benefit"
+        regimen = IO_REGIMENS["high"]
     elif score >= 50:
-        label = "Uncertain benefit"
+        regimen = IO_REGIMENS["moderate"]
     else:
-        label = "Unlikely benefit"
+        regimen = IO_REGIMENS["low"]
 
     return {
         "score": round(score, 1),
         "label": label,
-        "recommended_class": treatment_category if not no_tx else "Consider systemic therapy",
+        "recommended_regimen": regimen,
         "reasons": reasons[:4],
+    }
+
+
+def _predict_recurrence_therapies(
+    archetype: str,
+    driver: str,
+    signatures: dict[str, float],
+    treatment_category: str,
+) -> dict:
+    """Predict targeted vs immunotherapy benefit if disease recurs."""
+    prior_systemic = treatment_category not in ("None documented", "Surgery", "Radiation")
+    targeted = _predict_targeted_at_recurrence(archetype, driver, signatures)
+    immunotherapy = _predict_immunotherapy_at_recurrence(
+        archetype, driver, signatures, prior_systemic
+    )
+
+    if targeted["score"] < 50 and immunotherapy["score"] < 50:
+        preferred = "Consider combination or trial"
+    elif targeted["score"] >= immunotherapy["score"] + 12:
+        preferred = "Targeted therapy first"
+    elif immunotherapy["score"] >= targeted["score"] + 12:
+        preferred = "Immunotherapy first"
+    else:
+        preferred = "Consider combination or trial"
+
+    return {
+        "scenario": "If disease recurs",
+        "targeted_therapy": targeted,
+        "immunotherapy": immunotherapy,
+        "preferred_at_recurrence": preferred,
     }
 
 
@@ -233,7 +337,7 @@ def build_patients_embedding() -> dict:
         driver = drivers_by_case.get(case_id, "WT")
         treatment_types = clinical.get("treatment_types")
         treatment_category = _parse_treatment_category(treatment_types)
-        prediction = _predict_benefit(archetype, driver, treatment_category)
+        recurrence = _predict_recurrence_therapies(archetype, driver, sig_map, treatment_category)
         vital = clinical.get("vital_status")
         survival_days = clinical.get("survival_time_days")
 
@@ -271,19 +375,21 @@ def build_patients_embedding() -> dict:
                     "survival_days": survival_days,
                     "observed_benefit": _observed_benefit_label(clinical),
                 },
-                "predicted_benefit": prediction,
+                "recurrence_predictions": recurrence,
             }
         )
 
     return {
         "meta": {
             "n_patients": len(patients),
-            "source": "TCGA lung + HistoTME signatures + clinical treatment metadata",
+            "source": "TCGA lung + HistoTME signatures + recurrence therapy predictions",
+            "prediction_scenario": "Targeted vs immunotherapy benefit if disease recurs",
             "projection": "UMAP on TME signature scores",
             "archetypes": ARCHETYPES,
             "color_signatures": SIGNATURES,
             "treatment_categories": sorted({p["treatment"]["category"] for p in patients}),
             "benefit_labels": ["Likely benefit", "Uncertain benefit", "Unlikely benefit"],
+            "recurrence_modalities": ["targeted_therapy", "immunotherapy"],
         },
         "patients": patients,
     }

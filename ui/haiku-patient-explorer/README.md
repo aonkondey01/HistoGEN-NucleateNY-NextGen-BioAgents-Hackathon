@@ -4,7 +4,7 @@ Three-column UI per the PEAT-Nucleate UX spec:
 
 | Panel | Component |
 |-------|-----------|
-| **Left** | Treatment received + predicted benefit (TME × driver × therapy alignment) |
+| **Left** | If disease recurs: predicted targeted vs immunotherapy benefit |
 | **Centre** | H&E slide viewer (placeholder; wire to `slide.py` thumbnails) |
 | **Right** | Embedding scatter · patient card · immune profile · survival demo |
 
@@ -37,7 +37,7 @@ Open **http://localhost:5173**
 - **Click** a dot in the UMAP plot → selects patient, updates treatment panel + card
 - **Search** case ID or treatment in the header (e.g. `TCGA-05`, `Cisplatin`)
 - **← / →** buttons → prev/next patient
-- **Color-by** dropdown → predicted benefit / treatment class / response / stage / driver
+- **Color-by** dropdown → targeted @ recurrence / IO @ recurrence / preferred approach / driver / archetype
 
 ## Data
 
@@ -50,6 +50,6 @@ python3 scripts/generate_demo_data.py
 
 Outputs:
 
-- `public/data/patients_embedding.json` — UMAP coordinates, TME signatures, treatment fields, and benefit prediction heuristic
+- `public/data/patients_embedding.json` — UMAP coordinates, TME signatures, prior treatment context, and recurrence therapy predictions
 
-Treatment fields come from `data/tcga_lung/patient_metadata.tcga_lung.json` (types, agents, response, progression). Benefit scores are a demo heuristic combining TME archetype, driver mutation, and documented therapy — not clinical advice.
+Predictions estimate benefit from **targeted therapy** (driver-driven) and **immunotherapy** (TME-driven) **if disease recurs**. Prior TCGA treatment is shown for context only. Demo heuristic — not clinical advice.

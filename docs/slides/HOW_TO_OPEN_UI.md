@@ -69,6 +69,6 @@ https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026/blob/cursor/emma-resea
 
 ## What you should see
 
-- **Left:** Treatment received + predicted benefit score
+- **Left:** Targeted vs immunotherapy benefit if disease recurs
 - **Centre:** H&E slide placeholder
 - **Right:** UMAP plot with ~956 patients — click dots to explore

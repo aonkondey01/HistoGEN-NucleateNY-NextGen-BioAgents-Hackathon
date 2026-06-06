@@ -15,14 +15,14 @@ const SIGNATURES = [
 ];
 
 const COLOR_OPTIONS = [
-  { value: "predicted_benefit", label: "Predicted benefit" },
-  { value: "treatment_category", label: "Treatment class" },
-  { value: "disease_response", label: "Observed response" },
-  { value: "vital_status", label: "Vital status" },
-  { value: "stage", label: "Stage" },
-  { value: "histology", label: "Histology" },
+  { value: "targeted_benefit", label: "Targeted therapy (at recurrence)" },
+  { value: "immunotherapy_benefit", label: "Immunotherapy (at recurrence)" },
+  { value: "preferred_at_recurrence", label: "Preferred at recurrence" },
   { value: "driver_mutation", label: "Driver mutation" },
-  { value: "smoking", label: "Smoking" },
+  { value: "archetype", label: "TME archetype" },
+  { value: "treatment_category", label: "Prior treatment class" },
+  { value: "disease_response", label: "Observed response" },
+  { value: "stage", label: "Stage" },
 ];
 
 const app = document.querySelector("#app");
@@ -31,12 +31,12 @@ app.innerHTML = `
   <header class="top-bar">
     <div class="brand">
       <h1>Haiku Patient Explorer</h1>
-      <p>TCGA lung · TME signatures · treatment &amp; benefit prediction</p>
+      <p>TCGA lung · predict targeted / immunotherapy benefit if disease recurs</p>
     </div>
     <div class="controls">
       <label>
         Search
-        <input id="search-input" type="search" placeholder="Patient ID or treatment…" autocomplete="off" />
+        <input id="search-input" type="search" placeholder="Patient ID, driver, therapy…" autocomplete="off" />
       </label>
       <label>
         Color by
@@ -52,7 +52,7 @@ app.innerHTML = `
   <main class="layout">
     <section class="panel treatment-panel">
       <div class="panel-head">
-        <h2>Treatment &amp; benefit</h2>
+        <h2>Recurrence therapy predictions</h2>
         <span id="treatment-patient-id" class="chip">—</span>
       </div>
       <div id="treatment-content" class="treatment-content">
@@ -115,7 +115,7 @@ COLOR_OPTIONS.forEach((opt) => {
 let patients = [];
 let selectedId = null;
 let filteredIds = null;
-let colorBy = "predicted_benefit";
+let colorBy = "targeted_benefit";
 
 function splitField(value) {
   if (!value) return [];
@@ -127,9 +127,12 @@ function splitField(value) {
 }
 
 function normalizePatient(p) {
-  const benefit = p.predicted_benefit || {};
+  const recurrence = p.recurrence_predictions || {};
+  const targeted = recurrence.targeted_therapy || {};
+  const immunotherapy = recurrence.immunotherapy || {};
   const treatment = p.treatment || {};
   const clinical = p.clinical || {};
+
   return {
     ...p,
     patient_id: p.patient_id || p.case_id,
@@ -139,9 +142,17 @@ function normalizePatient(p) {
     histology: p.histology || clinical.diagnosis || "Lung carcinoma",
     stage: p.stage || clinical.stage || "—",
     smoking: p.smoking || "Unknown",
-    predicted_benefit: {
-      ...benefit,
-      rationale: benefit.rationale || benefit.reasons || [],
+    recurrence_predictions: {
+      scenario: recurrence.scenario || "If disease recurs",
+      preferred_at_recurrence: recurrence.preferred_at_recurrence || "—",
+      targeted_therapy: {
+        ...targeted,
+        rationale: targeted.rationale || targeted.reasons || [],
+      },
+      immunotherapy: {
+        ...immunotherapy,
+        rationale: immunotherapy.rationale || immunotherapy.reasons || [],
+      },
     },
     treatment: {
       ...treatment,
@@ -175,6 +186,31 @@ function benefitClass(label) {
   return "benefit-uncertain";
 }
 
+function renderTherapyCard(title, therapy, detailLabel, detailValue, cssClass) {
+  const rationale = (therapy.rationale || [])
+    .map((r) => `<li>${r}</li>`)
+    .join("");
+
+  return `
+    <div class="therapy-card ${cssClass} ${benefitClass(therapy.label)}">
+      <div class="therapy-card-head">
+        <h3>${title}</h3>
+        <span class="benefit-badge ${benefitClass(therapy.label)}">${therapy.label || "—"}</span>
+      </div>
+      <div class="therapy-score-row">
+        <div class="benefit-score-ring small" style="--pct: ${therapy.score ?? 50}%">
+          <span class="benefit-score-num">${therapy.score ?? "—"}</span>
+        </div>
+        <div class="therapy-rec">
+          <span class="rec-label">${detailLabel}</span>
+          <strong>${detailValue || "—"}</strong>
+        </div>
+      </div>
+      <ul class="rationale-list compact">${rationale || "<li>No rationale available</li>"}</ul>
+    </div>
+  `;
+}
+
 function renderTreatmentPanel(patient) {
   const host = document.getElementById("treatment-content");
   const chip = document.getElementById("treatment-patient-id");
@@ -187,57 +223,63 @@ function renderTreatmentPanel(patient) {
   chip.textContent = patient.patient_id;
   const t = patient.treatment || {};
   const c = patient.clinical || {};
-  const b = patient.predicted_benefit || {};
+  const r = patient.recurrence_predictions || {};
+  const targeted = r.targeted_therapy || {};
+  const immuno = r.immunotherapy || {};
 
-  const agents = (t.agents || []).slice(0, 6);
+  const agents = (t.agents || []).slice(0, 5);
   const agentsHtml =
     agents.length > 0
       ? agents.map((a) => `<span class="agent-pill">${a}</span>`).join("")
       : `<span class="muted">No agents recorded</span>`;
 
-  const rationale = (b.rationale || [])
-    .map((r) => `<li>${r}</li>`)
-    .join("");
-
   host.innerHTML = `
-    <div class="benefit-hero ${benefitClass(b.label)}">
-      <div class="benefit-score-ring" style="--pct: ${b.score ?? 50}%">
-        <span class="benefit-score-num">${b.score ?? "—"}</span>
-      </div>
-      <div class="benefit-hero-text">
-        <div class="benefit-label">${b.label || "—"}</div>
-        <div class="benefit-sub">${b.recommended_class || t.category || "—"}</div>
-      </div>
+    <p class="scenario-banner">${r.scenario || "If disease recurs"}</p>
+    <div class="preferred-banner">
+      <span>Preferred approach</span>
+      <strong>${r.preferred_at_recurrence || "—"}</strong>
+    </div>
+
+    <div class="therapy-grid">
+      ${renderTherapyCard(
+        "Targeted therapy",
+        targeted,
+        "Suggested agents",
+        targeted.recommended_agents,
+        "therapy-targeted",
+      )}
+      ${renderTherapyCard(
+        "Immunotherapy",
+        immuno,
+        "Suggested regimen",
+        immuno.recommended_regimen,
+        "therapy-immuno",
+      )}
     </div>
 
     <div class="treatment-grid">
       <div class="treatment-block">
-        <h3>Treatment received</h3>
+        <h3>Prior treatment (context)</h3>
         <dl>
           <dt>Category</dt><dd>${t.category || "—"}</dd>
           <dt>Intent</dt><dd>${t.intent || "—"}</dd>
-          <dt>Regimen</dt><dd>${t.regimen_summary || "—"}</dd>
           <dt>Types</dt><dd>${(t.types || []).join(", ") || "—"}</dd>
         </dl>
         <div class="agent-row">${agentsHtml}</div>
       </div>
 
       <div class="treatment-block">
-        <h3>Observed outcome</h3>
+        <h3>Current status</h3>
         <dl>
-          <dt>Response</dt><dd class="outcome-${(c.disease_response || "unknown").toLowerCase().replace(/\s+/g, "-")}">${c.disease_response || "—"}</dd>
+          <dt>Response</dt><dd>${c.disease_response || "—"}</dd>
           <dt>Progression</dt><dd>${c.progression_or_recurrence || "—"}</dd>
           <dt>Vital status</dt><dd>${c.vital_status || "—"}</dd>
-          <dt>OS (days)</dt><dd>${c.overall_survival_days ?? "—"}</dd>
+          <dt>Driver</dt><dd>${patient.driver_mutation}</dd>
         </dl>
       </div>
     </div>
 
-    <div class="rationale-block">
-      <h3>Why this prediction?</h3>
-      <ul class="rationale-list">${rationale || "<li>No rationale available</li>"}</ul>
-      <p class="disclaimer muted">Demo heuristic: TME signatures + treatment class + observed response. Not clinical advice.</p>
-    </div>
+    <p class="disclaimer muted">Demo heuristic: driver mutation + TME archetype + HistoTME signatures. Predicts benefit at recurrence, not current adjuvant therapy. Not clinical advice.</p>
   `;
 }
 
@@ -248,20 +290,21 @@ function renderPatientCard(patient) {
     return;
   }
 
-  const b = patient.predicted_benefit || {};
+  const targeted = patient.recurrence_predictions?.targeted_therapy || {};
+  const immuno = patient.recurrence_predictions?.immunotherapy || {};
+
   card.innerHTML = `
     <div class="card-header">
       <div>
         <div class="patient-id">${patient.patient_id}</div>
-        <div class="patient-meta">${patient.histology} · Stage ${patient.stage} · ${patient.smoking}</div>
+        <div class="patient-meta">${patient.archetype} · ${patient.driver_mutation} · Stage ${patient.stage}</div>
       </div>
-      <span class="benefit-badge ${benefitClass(b.label)}">${b.label || "—"}</span>
     </div>
     <div class="card-grid">
-      <div><span class="label">Driver</span><strong>${patient.driver_mutation}</strong></div>
-      <div><span class="label">Treatment</span><strong>${patient.treatment_category || "—"}</strong></div>
-      <div><span class="label">Response</span><strong>${patient.disease_response || "—"}</strong></div>
-      <div><span class="label">Benefit score</span><strong>${b.score ?? "—"}/100</strong></div>
+      <div><span class="label">Targeted @ recurrence</span><strong class="${benefitClass(targeted.label)}">${targeted.label || "—"} (${targeted.score ?? "—"})</strong></div>
+      <div><span class="label">IO @ recurrence</span><strong class="${benefitClass(immuno.label)}">${immuno.label || "—"} (${immuno.score ?? "—"})</strong></div>
+      <div><span class="label">Preferred</span><strong>${patient.recurrence_predictions?.preferred_at_recurrence || "—"}</strong></div>
+      <div><span class="label">Prior tx</span><strong>${patient.treatment_category || "—"}</strong></div>
     </div>
   `;
 }
@@ -344,7 +387,6 @@ function refreshEmbedding() {
   buildEmbeddingPlot({
     container: document.getElementById("embedding-plot"),
     patients: display,
-    allPatients: patients,
     colorBy,
     selectedId,
     onSelect: selectPatient,
@@ -360,15 +402,19 @@ function applySearch(query) {
   }
   filteredIds = patients
     .filter((p) => {
+      const r = p.recurrence_predictions || {};
       const blob = [
         p.patient_id,
         p.histology,
         p.driver_mutation,
+        p.archetype,
         p.treatment_category,
-        p.disease_response,
-        p.predicted_benefit?.label,
+        r.preferred_at_recurrence,
+        r.targeted_therapy?.label,
+        r.immunotherapy?.label,
+        r.targeted_therapy?.recommended_agents,
+        r.immunotherapy?.recommended_regimen,
         ...(p.treatment?.agents || []),
-        ...(p.treatment?.types || []),
       ]
         .join(" ")
         .toLowerCase();

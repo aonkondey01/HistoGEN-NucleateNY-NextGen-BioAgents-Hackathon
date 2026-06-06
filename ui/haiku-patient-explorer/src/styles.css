@@ -163,6 +163,123 @@ body {
   font-size: 0.78rem;
 }
 
+.scenario-banner {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.preferred-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem;
+  margin-bottom: 0.65rem;
+  border-radius: 8px;
+  background: #eef6f6;
+  border: 1px solid #b8e0e0;
+  font-size: 0.72rem;
+}
+
+.preferred-banner span {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.preferred-banner strong {
+  color: var(--navy);
+  font-size: 0.85rem;
+}
+
+.therapy-grid {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+.therapy-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.65rem;
+}
+
+.therapy-card.benefit-likely {
+  background: #ecfdf5;
+  border-color: #99f6e4;
+}
+
+.therapy-card.benefit-uncertain {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.therapy-card.benefit-unlikely {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.therapy-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+
+.therapy-card-head h3 {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--navy);
+}
+
+.therapy-score-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+}
+
+.benefit-score-ring.small {
+  width: 44px;
+  height: 44px;
+}
+
+.benefit-score-ring.small .benefit-score-num {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.therapy-rec {
+  flex: 1;
+  min-width: 0;
+}
+
+.therapy-rec .rec-label {
+  display: block;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.1rem;
+}
+
+.therapy-rec strong {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  display: block;
+}
+
+.rationale-list.compact {
+  font-size: 0.68rem;
+  margin: 0;
+}
+
 .benefit-hero {
   display: flex;
   align-items: center;
@@ -424,6 +541,18 @@ body {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.card-grid strong.benefit-likely {
+  color: #065f46;
+}
+
+.card-grid strong.benefit-uncertain {
+  color: #92400e;
+}
+
+.card-grid strong.benefit-unlikely {
+  color: #991b1b;
 }
 
 .immune-bars {
