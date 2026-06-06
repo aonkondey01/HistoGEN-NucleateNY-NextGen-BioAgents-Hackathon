@@ -1,6 +1,6 @@
 # Lung cancer TME slide deck
 
-**Live UI:** https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/
+**Live UI (HistoGen):** https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/
 
 ## Files
 

@@ -1,6 +1,6 @@
-# Haiku Patient Explorer
+# HistoGen Explorer
 
-Three-column UI per the PEAT-Nucleate UX spec:
+Three-column UI for the HistoGen lung TME platform:
 
 | Panel | Component |
 |-------|-----------|

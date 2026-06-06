@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="docs/assets/peat-nucleate-logo.png" alt="PEAT-Nucleate logo" width="320" />
+  <img src="docs/assets/histogen-logo.png" alt="HistoGen logo" width="320" />
 </p>
 
-# PEAT-Nucleate-BIoHack-2026
+# HistoGen
+
+*Histology · Genomics · Lung tumor microenvironment*
 
 ## HistoTME
 
@@ -19,7 +21,7 @@ git submodule update --init --recursive
 See `docs/HISTOTME_SETUP.md` for checkpoint download, TCGA slide download,
 embedding generation, and inference commands.
 
-## Haiku Patient Explorer (interactive UI)
+## HistoGen Explorer (interactive UI)
 
 The lung cancer TME dashboard lives in `ui/haiku-patient-explorer/`.
 

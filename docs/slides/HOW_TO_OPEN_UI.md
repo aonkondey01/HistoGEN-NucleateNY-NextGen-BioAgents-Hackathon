@@ -1,4 +1,4 @@
-# How to open the Haiku Patient Explorer UI
+# How to open the HistoGen UI
 
 The interactive UI is **not** the PowerPoint file. It is a web app you open in a browser.
 
