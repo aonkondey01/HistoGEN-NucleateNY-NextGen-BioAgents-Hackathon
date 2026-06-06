@@ -1,0 +1,17 @@
+{
+  "case_id": "TCGA-60-2698",
+  "signature": "Treg",
+  "tile_size": 128,
+  "source": "phoenix_registered",
+  "tiles": [
+    {
+      "x": 846,
+      "y": 503,
+      "n_cells": 1280,
+      "Treg": 0.09491211566977047,
+      "Effector_cells": 0.14037101656314915,
+      "Macrophages": 0.09980267423573727,
+      "CAF": 0.24462349482346327
+    }
+  ]
+}

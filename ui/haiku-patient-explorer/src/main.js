@@ -166,14 +166,25 @@ function stepPatient(delta) {
   selectPatient(state.patients[next].case_id);
 }
 
-function refreshSpatialForPatient(patient) {
+async function refreshSpatialForPatient(patient) {
+  const caseId = patient.case_id;
+  const url = `/data/spatial_heatmap_${caseId}.json`;
+  try {
+    const res = await fetch(url);
+    if (res.ok) {
+      state.spatial = await res.json();
+      return;
+    }
+  } catch {
+    /* fallback below */
+  }
   state.spatial = generateSpatialTiles(patient);
 }
 
-function selectPatient(caseId, panEmbedding = true) {
+async function selectPatient(caseId, panEmbedding = true) {
   state.selectedCaseId = caseId;
   const p = getSelectedPatient();
-  refreshSpatialForPatient(p);
+  await refreshSpatialForPatient(p);
   renderPatientCard();
   renderImmuneProfile();
   renderSurvival();
@@ -243,14 +254,21 @@ function renderSurvival() {
 
 function renderSlideViewer() {
   const p = getSelectedPatient();
-  const hue = hashHue(p?.case_id || "");
+  const caseId = p?.case_id ?? "";
+  const thumbUrl = `/data/slides/${caseId}.thumbnail.png`;
+  const hue = hashHue(caseId);
   document.getElementById("slide-viewer").innerHTML = `
-    <div class="slide-mock" style="--hue:${hue}">
-      <div class="slide-mock-inner">
-        <strong>${p?.case_id ?? "No patient"}</strong>
-        <span>Diagnostic H&E (FFPE) — demo tissue pattern</span>
-        <small>Replace with <code>slide.py thumbnail</code> when WSI files are downloaded</small>
+    <div class="slide-viewer-wrap">
+      <img class="slide-thumb" src="${thumbUrl}" alt="H&E ${caseId}"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="slide-mock" style="--hue:${hue}; display:none;">
+        <div class="slide-mock-inner">
+          <strong>${caseId || "No patient"}</strong>
+          <span>Diagnostic H&E thumbnail not built yet</span>
+          <small>Run <code>scripts/build_representative_ui_assets.py</code></small>
+        </div>
       </div>
+      <div class="slide-caption">${caseId} · diagnostic H&E</div>
     </div>
   `;
 }

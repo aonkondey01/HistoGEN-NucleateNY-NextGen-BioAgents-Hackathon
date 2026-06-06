@@ -1,0 +1,40 @@
+{
+  "case_id": "TCGA-56-A5DR",
+  "affine_thumb": [
+    [
+      0.9717816976971481,
+      -0.0054795696693636054,
+      28.23953001712934
+    ],
+    [
+      0.005479569669361614,
+      0.9717816976971466,
+      20.04742977462546
+    ]
+  ],
+  "flow_crop_origin": [
+    76,
+    108
+  ],
+  "flow_shape": [
+    1230,
+    1152,
+    2
+  ],
+  "metrics": {
+    "tissue_overlap_affine": 0.98671875,
+    "tissue_overlap_warped": 0.99296875,
+    "icp_contour_error_px": 12.235753797960022,
+    "flow_mean_px": 3.5148847103118896,
+    "flow_max_px": 15.582338333129883
+  },
+  "coordinate_map": {
+    "magnification_scale": 2.0,
+    "swap_axes": true,
+    "offset_x": 0.0,
+    "offset_y": 0.0,
+    "flip_x": false,
+    "flip_y": false,
+    "notes": "PHOENIX obsm spatial is 20x pixels with axes swapped vs OpenSlide level-0: slide_x=phoenix_y*2, slide_y=phoenix_x*2"
+  }
+}

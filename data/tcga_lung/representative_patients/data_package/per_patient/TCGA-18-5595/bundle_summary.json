@@ -6,5 +6,7 @@
   "project_id": "TCGA-LUSC",
   "rna_rows": 60660,
   "rppa_rows": 487,
-  "slide_count": 1
+  "slide_count": 1,
+  "phoenix_cells": 1280,
+  "phoenix_genes": 377
 }

@@ -1,0 +1,40 @@
+{
+  "case_id": "TCGA-73-A9RS",
+  "affine_thumb": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "flow_crop_origin": [
+    19,
+    0
+  ],
+  "flow_shape": [
+    1036,
+    1501,
+    2
+  ],
+  "metrics": {
+    "tissue_overlap_affine": 0.9796875,
+    "tissue_overlap_warped": 0.9921875,
+    "icp_contour_error_px": 34.391078944139345,
+    "flow_mean_px": 0.7500624060630798,
+    "flow_max_px": 11.479887008666992
+  },
+  "coordinate_map": {
+    "magnification_scale": 2.0,
+    "swap_axes": true,
+    "offset_x": 0.0,
+    "offset_y": 0.0,
+    "flip_x": false,
+    "flip_y": false,
+    "notes": "PHOENIX obsm spatial is 20x pixels with axes swapped vs OpenSlide level-0: slide_x=phoenix_y*2, slide_y=phoenix_x*2"
+  }
+}
