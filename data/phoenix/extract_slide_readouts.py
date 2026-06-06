@@ -27,6 +27,8 @@ from typing import Any
 
 import numpy as np
 
+from coordinate_map import DEFAULT_TCGA_MAP
+
 DATA_DIR = Path(__file__).resolve().parent
 DEFAULT_ATLAS = DATA_DIR / "atlas" / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
 DEFAULT_DEMO_ZARR = DATA_DIR / "demo" / "demo.zarr"
@@ -293,6 +295,7 @@ def write_outputs(
             "slide_previews": sorted(p.name for p in previews_dir.glob("*.png")),
         },
         "gdc_slide": slide_meta,
+        "coordinate_map": DEFAULT_TCGA_MAP.as_dict(),
     }
     (bundle_dir / "phoenix_summary.json").write_text(json.dumps(summary, indent=2))
     return summary

@@ -20,6 +20,8 @@ import numpy as np
 from matplotlib import colors
 from PIL import Image
 
+from coordinate_map import DEFAULT_TCGA_MAP, PhoenixCoordinateMap, slide_dimensions
+
 DATA_DIR = Path(__file__).resolve().parent
 REP_BUNDLE_ROOT = (
     DATA_DIR.parent / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
@@ -49,35 +51,61 @@ def _thumbnail_path(bundle_dir: Path, case_id: str) -> Path | None:
     return matches[0] if matches else None
 
 
+def _transform_phoenix_to_thumb(
+    x_phx: np.ndarray,
+    y_phx: np.ndarray,
+    slide_wh: tuple[int, int],
+    thumb_wh: tuple[int, int],
+    coord_map: PhoenixCoordinateMap,
+) -> tuple[np.ndarray, np.ndarray]:
+    tx = np.empty_like(x_phx)
+    ty = np.empty_like(y_phx)
+    for i, (xp, yp) in enumerate(zip(x_phx, y_phx)):
+        tx[i], ty[i] = coord_map.phoenix_to_thumbnail(xp, yp, slide_wh, thumb_wh)
+    return tx, ty
+
+
 def plot_gene_map(
-    x: np.ndarray,
-    y: np.ndarray,
+    x_phx: np.ndarray,
+    y_phx: np.ndarray,
     values: np.ndarray,
     gene: str,
     out: Path,
     *,
     background: Path | None = None,
+    slide_wh: tuple[int, int] | None = None,
+    coord_map: PhoenixCoordinateMap = DEFAULT_TCGA_MAP,
     point_size: float = 18.0,
     dpi: int = 150,
 ) -> Path:
     label = GENE_LABELS.get(gene, gene)
-    xmin, xmax = float(x.min()), float(x.max())
-    ymin, ymax = float(y.min()), float(y.max())
-
-    fig_w = 10
-    fig_h = 10 * (ymax - ymin) / max(xmax - xmin, 1.0)
-    fig, ax = plt.subplots(figsize=(fig_w, max(fig_h, 6)), dpi=dpi)
 
     if background and background.exists():
-        img = np.asarray(Image.open(background).convert("RGB"))
-        ax.imshow(img, extent=(xmin, xmax, ymax, ymin), origin="upper", aspect="auto", zorder=0)
+        thumb = Image.open(background).convert("RGB")
+        thumb_w, thumb_h = thumb.size
+        img = np.asarray(thumb)
+        if slide_wh is None:
+            raise SystemExit("slide_wh is required when plotting on a thumbnail background")
+        tx, ty = _transform_phoenix_to_thumb(x_phx, y_phx, slide_wh, (thumb_w, thumb_h), coord_map)
+        fig_w = 10
+        fig_h = 10 * thumb_h / max(thumb_w, 1)
+        fig, ax = plt.subplots(figsize=(fig_w, max(fig_h, 6)), dpi=dpi)
+        ax.imshow(img, extent=(0, thumb_w, thumb_h, 0), origin="upper", aspect="equal", zorder=0)
+        plot_x, plot_y = tx, ty
+        xmin, xmax = 0, thumb_w
+        ymin, ymax = 0, thumb_h
+    else:
+        fig, ax = plt.subplots(figsize=(10, 8), dpi=dpi)
+        plot_x, plot_y = x_phx, y_phx
+        xmin, xmax = float(x_phx.min()), float(x_phx.max())
+        ymin, ymax = float(y_phx.min()), float(y_phx.max())
 
     vmax = float(np.percentile(values, 99)) if values.size else 1.0
     vmax = max(vmax, 1e-6)
     norm = colors.PowerNorm(gamma=0.6, vmin=0.0, vmax=vmax)
     sc = ax.scatter(
-        x,
-        y,
+        plot_x,
+        plot_y,
         c=values,
         s=point_size,
         cmap="inferno",
@@ -109,6 +137,7 @@ def main() -> int:
     p.add_argument("--out-dir", type=Path, help="output directory for PNGs")
     p.add_argument("--genes", nargs="+", required=True, help="gene symbols to plot")
     p.add_argument("--no-background", action="store_true", help="skip H&E thumbnail underlay")
+    p.add_argument("--svs", type=Path, help="diagnostic .svs for slide dimensions (auto-detect if omitted)")
     args = p.parse_args()
 
     if args.cells:
@@ -129,6 +158,17 @@ def main() -> int:
     out_dir = args.out_dir or (bundle_dir / "phoenix_gene_maps")
     background = None if args.no_background else _thumbnail_path(bundle_dir, case_id)
 
+    slide_wh: tuple[int, int] | None = None
+    if background:
+        svs = args.svs
+        if svs is None:
+            wsi_root = DATA_DIR.parent / "tcga_lung" / "WSI"
+            matches = sorted(wsi_root.rglob(f"*{case_id}*.svs"))
+            svs = matches[0] if matches else None
+        if svs is None or not svs.exists():
+            raise SystemExit(f"Need --svs or downloaded WSI for {case_id} to map coordinates")
+        slide_wh = slide_dimensions(svs)
+
     written: list[Path] = []
     for gene in args.genes:
         key = gene
@@ -137,7 +177,15 @@ def main() -> int:
         if key not in gene_values:
             raise SystemExit(f"Gene {gene!r} not in {cells_path} (available example: {available[:8]}...)")
         fname = f"{case_id}.{GENE_LABELS.get(key, key)}.png".replace("/", "-")
-        out = plot_gene_map(x, y, gene_values[key], key, out_dir / fname, background=background)
+        out = plot_gene_map(
+            x,
+            y,
+            gene_values[key],
+            key,
+            out_dir / fname,
+            background=background,
+            slide_wh=slide_wh,
+        )
         written.append(out)
         print(f"wrote {out}")
 
