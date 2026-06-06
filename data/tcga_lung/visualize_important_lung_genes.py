@@ -272,7 +272,25 @@ def histogram(values: list[float], title: str, bins: int = 12, width: int = 840,
     return "\n".join(parts)
 
 
-def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], title: str, width: int = 840, height: int = 330) -> str:
+def format_p_value(p_value: float | None) -> str:
+    if p_value is None:
+        return "n/a"
+    if p_value < 0.001:
+        return f"{p_value:.2e}"
+    return f"{p_value:.4f}"
+
+
+def km_curve(
+    group_a: list[dict[str, float]],
+    group_b: list[dict[str, float]],
+    title: str,
+    *,
+    group_a_label: str = "Group A",
+    group_b_label: str = "Group B",
+    p_value: float | None = None,
+    width: int = 840,
+    height: int = 360,
+) -> str:
     def curve(group: list[dict[str, float]]) -> list[tuple[float, float]]:
         if not group:
             return [(0, 1)]
@@ -290,8 +308,10 @@ def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], t
     pts_a = curve(group_a)
     pts_b = curve(group_b)
     max_t = max([p[0] for p in pts_a + pts_b] or [1]) or 1
-    left, top, chart_w, chart_h = 58, 54, width - 100, 210
+    left, top, chart_w, chart_h = 72, 72, width - 112, 210
     bottom = top + chart_h
+    events_a = int(sum(r["event"] for r in group_a))
+    events_b = int(sum(r["event"] for r in group_b))
 
     def path(points: list[tuple[float, float]]) -> str:
         d = []
@@ -309,20 +329,22 @@ def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], t
     parts = [
         f'<svg viewBox="0 0 {width} {height}" role="img" aria-label="{esc(title)}">',
         f'<text x="0" y="24" class="chart-title">{esc(title)}</text>',
+        f'<text x="0" y="44" class="axis-label">Kaplan-Meier survival probability by follow-up time (days). Log-rank p = {esc(format_p_value(p_value))}.</text>',
         f'<rect x="{left}" y="{top}" width="{chart_w}" height="{chart_h}" fill="white" stroke="#cbd5e1"></rect>',
         f'<line x1="{left}" y1="{bottom}" x2="{left + chart_w}" y2="{bottom}" stroke="#94a3b8"></line>',
         f'<line x1="{left}" y1="{top}" x2="{left}" y2="{bottom}" stroke="#94a3b8"></line>',
         f'<path d="{path(pts_a)}" fill="none" stroke="{COLORS["blue"]}" stroke-width="3"></path>',
         f'<path d="{path(pts_b)}" fill="none" stroke="{COLORS["orange"]}" stroke-width="3"></path>',
-        f'<text x="{left}" y="{bottom + 24}" class="axis-label">0 days</text>',
-        f'<text x="{left + chart_w - 70}" y="{bottom + 24}" class="axis-label">{fmt_num(max_t, 0)} days</text>',
-        f'<text x="{left + chart_w / 2 - 40}" y="{bottom + 44}" class="axis-label">Survival time</text>',
-        f'<text x="{left - 42}" y="{top + 5}" class="axis-label">1.0</text>',
-        f'<text x="{left - 42}" y="{bottom}" class="axis-label">0.0</text>',
+        f'<text x="{left}" y="{bottom + 24}" class="axis-label">0</text>',
+        f'<text x="{left + chart_w - 70}" y="{bottom + 24}" class="axis-label">{fmt_num(max_t, 0)}</text>',
+        f'<text x="{left + chart_w / 2 - 70}" y="{bottom + 44}" class="axis-label">Follow-up time (days)</text>',
+        f'<text x="8" y="{top + chart_h / 2 + 40}" class="axis-label" transform="rotate(-90 8 {top + chart_h / 2 + 40})">Survival probability</text>',
+        f'<text x="{left - 8}" y="{top + 8}" class="axis-label" text-anchor="end">1.0</text>',
+        f'<text x="{left - 8}" y="{bottom}" class="axis-label" text-anchor="end">0.0</text>',
         f'<rect x="{left + 8}" y="{top + 12}" width="14" height="10" fill="{COLORS["blue"]}"></rect>',
-        f'<text x="{left + 28}" y="{top + 22}" class="legend">Group A, n={len(group_a)}</text>',
-        f'<rect x="{left + 150}" y="{top + 12}" width="14" height="10" fill="{COLORS["orange"]}"></rect>',
-        f'<text x="{left + 170}" y="{top + 22}" class="legend">Group B, n={len(group_b)}</text>',
+        f'<text x="{left + 28}" y="{top + 22}" class="legend">{esc(group_a_label)}, n={len(group_a)}, events={events_a}</text>',
+        f'<rect x="{left + 8}" y="{top + 30}" width="14" height="10" fill="{COLORS["orange"]}"></rect>',
+        f'<text x="{left + 28}" y="{top + 40}" class="legend">{esc(group_b_label)}, n={len(group_b)}, events={events_b}</text>',
         "</svg>",
     ]
     return "\n".join(parts)
@@ -720,13 +742,31 @@ def export_standalone_plots(
         g = gene["gene"]
         if g in mutation_plot_groups:
             plot_specs.append(
-                (f"17_mutation_survival_km_{g}.svg", km_curve(*mutation_plot_groups[g], title=f"Survival by {g} mutation status"))
+                (
+                    f"17_mutation_survival_km_{g}.svg",
+                    km_curve(
+                        *mutation_plot_groups[g],
+                        title=f"Survival by {g} mutation status",
+                        group_a_label="Mutated",
+                        group_b_label="Not mutated",
+                        p_value=to_float(gene.get("logrank_p_value")),
+                    ),
+                )
             )
     for gene in (rna_survival[:3] if rna_survival else []):
         g = gene["gene"]
         if g in rna_plot_groups:
             plot_specs.append(
-                (f"18_rna_survival_km_{g}.svg", km_curve(*rna_plot_groups[g], title=f"Survival by {g} RNA expression (median split)"))
+                (
+                    f"18_rna_survival_km_{g}.svg",
+                    km_curve(
+                        *rna_plot_groups[g],
+                        title=f"Survival by {g} RNA expression (median split)",
+                        group_a_label="High expression",
+                        group_b_label="Low expression",
+                        p_value=to_float(gene.get("logrank_p_value")),
+                    ),
+                )
             )
     for row in (protein_survival[:3] if protein_survival else []):
         target = row["protein_target"]
@@ -735,7 +775,13 @@ def export_standalone_plots(
             plot_specs.append(
                 (
                     f"19_protein_survival_km_{safe}.svg",
-                    km_curve(*protein_plot_groups[target], title=f"Survival by {target} RPPA expression (median split)"),
+                    km_curve(
+                        *protein_plot_groups[target],
+                        title=f"Survival by {target} RPPA expression (median split)",
+                        group_a_label="High protein",
+                        group_b_label="Low protein",
+                        p_value=to_float(row.get("logrank_p_value")),
+                    ),
                 )
             )
 
@@ -824,23 +870,41 @@ def render_report(
     mutation_cases = sum(1 for row in patient_rows if int(float(row.get("mutation_file_count") or 0)) > 0)
     expression_cases = sum(1 for row in patient_rows if int(float(row.get("expression_file_count") or 0)) > 0)
 
-    top_mut_gene = mutation_survival[0]["gene"] if mutation_survival else None
-    top_rna_gene = rna_survival[0]["gene"] if rna_survival else None
-    top_protein_target = protein_survival[0]["protein_target"] if protein_survival else None
+    top_mut = mutation_survival[0] if mutation_survival else None
+    top_rna = rna_survival[0] if rna_survival else None
+    top_protein = protein_survival[0] if protein_survival else None
 
     mutation_km = (
-        km_curve(*mutation_plot_groups[top_mut_gene], title=f"Survival by {top_mut_gene} mutation: mutated vs not mutated")
-        if top_mut_gene and top_mut_gene in mutation_plot_groups
+        km_curve(
+            *mutation_plot_groups[top_mut["gene"]],
+            title=f"Survival by {top_mut['gene']} mutation: mutated vs not mutated",
+            group_a_label="Mutated",
+            group_b_label="Not mutated",
+            p_value=to_float(top_mut.get("logrank_p_value")),
+        )
+        if top_mut and top_mut["gene"] in mutation_plot_groups
         else "<p>No mutation survival curve available.</p>"
     )
     rna_km = (
-        km_curve(*rna_plot_groups[top_rna_gene], title=f"Survival by {top_rna_gene} RNA expression: high vs low")
-        if top_rna_gene and top_rna_gene in rna_plot_groups
+        km_curve(
+            *rna_plot_groups[top_rna["gene"]],
+            title=f"Survival by {top_rna['gene']} RNA expression: high vs low",
+            group_a_label="High expression",
+            group_b_label="Low expression",
+            p_value=to_float(top_rna.get("logrank_p_value")),
+        )
+        if top_rna and top_rna["gene"] in rna_plot_groups
         else "<p>No RNA expression survival curve available.</p>"
     )
     protein_km = (
-        km_curve(*protein_plot_groups[top_protein_target], title=f"Survival by {top_protein_target} RPPA expression: high vs low")
-        if top_protein_target and top_protein_target in protein_plot_groups
+        km_curve(
+            *protein_plot_groups[top_protein["protein_target"]],
+            title=f"Survival by {top_protein['protein_target']} RPPA expression: high vs low",
+            group_a_label="High protein",
+            group_b_label="Low protein",
+            p_value=to_float(top_protein.get("logrank_p_value")),
+        )
+        if top_protein and top_protein["protein_target"] in protein_plot_groups
         else "<p>No protein expression survival curve available.</p>"
     )
 
@@ -925,7 +989,7 @@ def render_report(
 
   <div class="panel">
     <h2>5. Exploratory survival associations</h2>
-    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Expression and protein analyses use per-gene median splits. P-values are useful for prioritizing review, not as definitive biomarkers.</p>
+    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Y-axis = survival probability (fraction alive). X-axis = follow-up time in days from TCGA clinical fields. Expression and protein analyses use per-gene median splits. P-values are shown on each curve and in the tables below.</p>
     <h3>Mutation status vs survival</h3>
     {table_html(mutation_survival, ["gene", "mutated_n", "not_mutated_n", "mutated_events", "not_mutated_events", "mutated_km_median_survival_days", "not_mutated_km_median_survival_days", "logrank_p_value"], limit=12)}
     {mutation_km}
