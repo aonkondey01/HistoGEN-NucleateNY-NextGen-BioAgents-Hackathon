@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start HistoGen UI with Biohub protein structure proxy.
+# Start HistoGEN UI with Biohub protein structure proxy.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 UI="$ROOT/ui"
