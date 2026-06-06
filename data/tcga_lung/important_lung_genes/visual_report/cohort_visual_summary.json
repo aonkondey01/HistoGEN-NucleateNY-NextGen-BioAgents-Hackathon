@@ -1,0 +1,42 @@
+{
+  "ethnicity_counts": {
+    "hispanic or latino": 14,
+    "missing": 293,
+    "not hispanic or latino": 649
+  },
+  "expression_analyzable_patients": 951,
+  "important_mutation_rows": 3012,
+  "important_protein_expression_rows": 12724,
+  "important_rna_expression_rows": 32310,
+  "method_notes": [
+    "Report uses public TCGA/GDC data already extracted in this repository.",
+    "Survival tests are unadjusted two-group log-rank comparisons.",
+    "RNA and protein survival tests use median splits and should be treated as exploratory.",
+    "Resistance is approximated with available progression/recurrence, disease response, and survival fields because direct resistance labels are sparse."
+  ],
+  "mutation_analyzable_patients": 932,
+  "mutation_survival_tests": 29,
+  "patient_count": 956,
+  "project_counts": {
+    "TCGA-LUAD": 478,
+    "TCGA-LUSC": 478
+  },
+  "protein_survival_tests": 20,
+  "race_counts": {
+    "american indian or alaska native": 1,
+    "asian": 17,
+    "black or african american": 81,
+    "missing": 176,
+    "white": 681
+  },
+  "rna_survival_tests": 30,
+  "sex_counts": {
+    "female": 377,
+    "male": 579
+  },
+  "slide_count": 1053,
+  "vital_status_counts": {
+    "Alive": 582,
+    "Dead": 374
+  }
+}

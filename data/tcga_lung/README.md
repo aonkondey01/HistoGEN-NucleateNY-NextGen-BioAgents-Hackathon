@@ -51,6 +51,7 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `generate_manifest.py`              | Queries the GDC API and (re)writes all manifests + metadata below |
 | `extract_patient_metadata.py`       | Extracts patient clinical metadata plus mutation/expression file indexes |
 | `extract_important_lung_genes.py`   | Streams public GDC files and extracts important LUAD/LUSC gene data |
+| `visualize_important_lung_genes.py` | Builds an HTML/SVG visual summary report from the extracted tables |
 | `download.py`                       | Downloads slides from a manifest (gdc-client or built-in HTTP)    |
 | `gdc_manifest.tcga_lung.txt`        | Combined gdc-client manifest (all 1,053 slides)                   |
 | `gdc_manifest.TCGA-LUAD.txt`        | Per-project manifest (541 slides)                                 |
@@ -64,6 +65,7 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `gdc_manifest.expression.tcga_lung.txt` | gdc-client manifest for RNA-seq STAR-count expression files    |
 | `patient_metadata_summary.tcga_lung.json` | Counts and missingness for the extracted patient metadata     |
 | `important_lung_genes/`             | Focused mutation, RNA expression, and RPPA protein expression tables for important LUAD/LUSC genes |
+| `important_lung_genes/visual_report/index.html` | Browser-viewable cohort, mutation, clinical, and survival summary |
 | `summary.json`                      | Counts + total size for quick reference                           |
 
 The manifests and metadata are committed so you don't need network access just
@@ -128,6 +130,34 @@ Important limitation: MAF files capture small variants such as SNVs/indels.
 Targetable fusions (`ALK`, `ROS1`, `RET`, `NTRK`) and copy-number events
 (`SOX2`, `FGFR1`, `TP63`, etc.) require additional fusion/CNV data types and
 are not fully represented by the mutation MAF output.
+
+## Visual summary report
+
+To build the dependency-free HTML/SVG report:
+
+```bash
+python visualize_important_lung_genes.py
+```
+
+Open the generated report in Cursor or a browser:
+
+```text
+important_lung_genes/visual_report/index.html
+```
+
+The report summarizes:
+
+- number of patients/samples and slide counts,
+- clinical demographics such as age, sex, race/ethnicity, smoking, stage, and
+  vital status,
+- important-gene mutation frequencies by LUAD/LUSC,
+- clinical summaries by mutation status,
+- exploratory Kaplan-Meier/log-rank survival comparisons for mutation status,
+  RNA expression median splits, and RPPA protein-expression median splits.
+
+Direct drug-resistance labels are not uniformly available in the extracted GDC
+clinical fields, so the report uses survival, progression/recurrence, disease
+response, and treatment outcome fields as exploratory clinical endpoints.
 
 ## Quick start
 
