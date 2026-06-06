@@ -1,63 +1,54 @@
-# AGENTS.md
+# Agent instructions
 
 ## Cursor Cloud specific instructions
 
-### What this repo is
+### HistoTME
 
-PEAT-Nucleate-BIoHack-2026 is a **Python CLI data toolkit** for downloading lung TCGA H&E diagnostic whole-slide images from the NCI Genomic Data Commons (GDC). There is no web server, database, Docker stack, or test/lint CI on `main`.
+The HistoTME setup requires Python venv support. If `.venv-histotme` is not
+already available, install `python3.12-venv` first because the base image may
+be missing `ensurepip`.
 
-All scripts live under `data/tcga_lung/`. See `data/tcga_lung/README.md` for the full workflow.
+Prepare the HistoTME environment with:
 
-### Services
+```bash
+bash scripts/setup_histotme.sh
+```
+
+This creates `.venv-histotme` for commands such as checkpoint downloads.
+
+### TCGA lung slide toolkit
+
+PEAT-Nucleate-BIoHack-2026 includes a Python CLI data toolkit for downloading
+lung TCGA H&E diagnostic whole-slide images from the NCI Genomic Data Commons
+(GDC). All scripts live under `data/tcga_lung/`. See `data/tcga_lung/README.md`
+for the full workflow.
 
 | Component | Required? | Notes |
 |-----------|-----------|-------|
-| Python 3 | Yes | Stdlib only on `main` (`download.py`, `generate_manifest.py`) |
-| GDC API (`api.gdc.cancer.gov`) | For live fetch/download | Open access; no API key or token |
+| Python 3 | Yes | Stdlib for `download.py`, `generate_manifest.py` |
+| GDC API (`api.gdc.cancer.gov`) | For live fetch/download | Open access; no API key |
 | `gdc-client` | Optional | Auto-detected; falls back to built-in HTTP downloader |
 | `slide.py` + pip deps | For slide IO/rendering | `pip install -r requirements.txt`; optional `openslide-tools` + `openslide-python` |
-
-No long-running services to start.
-
-### Common commands
 
 Run from `data/tcga_lung/`:
 
 ```bash
-# Syntax check
-python3 -m py_compile download.py generate_manifest.py
-
-# Preview download (no network writes beyond manifest parse)
+python3 -m py_compile download.py generate_manifest.py slide.py
 python3 download.py --manifest gdc_manifest.tcga_lung.txt --out-dir ./WSI --dry-run --limit 3
-
-# Pilot download (one slide ~400–700 MB)
-python3 download.py --manifest gdc_manifest.tcga_lung.txt --out-dir ./WSI --limit 1
-
-# Refresh manifests from GDC (writes to --out-dir; use /tmp to avoid dirtying the repo)
-python3 generate_manifest.py --out-dir /tmp/tcga_manifest_test
 ```
 
-### Slide IO setup
-
-`slide.py` and `requirements.txt` provide thumbnails, crops, and tiling. Install once per VM:
+Slide IO setup (once per VM):
 
 ```bash
 sudo apt-get install -y openslide-tools   # optional but preferred backend
 pip3 install -r data/tcga_lung/requirements.txt openslide-python
 ```
 
-After downloading at least one `.svs` into `WSI/` (from `data/tcga_lung/`):
+`slide.py` auto-detects OpenSlide when installed; otherwise it falls back to
+`tifffile` + `zarr`.
 
-```bash
-python3 slide.py info WSI/<file_id>/*.svs
-python3 slide.py thumbnail WSI/<file_id>/*.svs --out /tmp/thumb.png
-```
+Gotchas:
 
-`slide.py` auto-detects OpenSlide when installed; otherwise it falls back to `tifffile` + `zarr`.
-
-### Gotchas
-
-- **Disk space**: full cohort is ~824 GB. Use `--dry-run` and `--limit N` for pilots. `WSI/` is gitignored.
-- **No lint/test suite**: validate with `py_compile`, dry-run, and small pilot downloads.
-- **Detached HEAD**: cloud VMs may checkout a specific commit; use `git checkout main` before branching.
-- **Manifest regeneration**: `generate_manifest.py` without `--out-dir` overwrites committed manifests in the repo directory.
+- Full cohort is ~824 GB. Use `--dry-run` and `--limit N` for pilots. `WSI/` is gitignored.
+- No lint/test suite on `main`: validate with `py_compile`, dry-run, and small pilot downloads.
+- `generate_manifest.py` without `--out-dir` overwrites committed manifests in the repo directory.

@@ -1,0 +1,17 @@
+.venv*/
+.venv-histotme/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# HistoTME runtime artifacts
+models/
+outputs/
+external/HistoTME/checkpoints/
+external/HistoTME/predictions/
+
+# Large pathology inputs and generated feature files
+data/**/WSI/
+data/**/*.svs
+data/**/*.h5
+data/**/*.hdf5

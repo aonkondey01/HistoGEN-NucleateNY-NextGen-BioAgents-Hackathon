@@ -6,3 +6,10 @@ WSI/
 *.svs
 *.svs.part
 *.limit.txt
+
+# Downloaded molecular payloads can be several GB; commit manifests instead
+molecular_data/
+*.maf.gz
+*.maf.gz.part
+*.rna_seq.*.tsv
+*.rna_seq.*.tsv.part

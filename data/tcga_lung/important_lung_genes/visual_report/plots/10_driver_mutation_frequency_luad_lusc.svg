@@ -1,0 +1,87 @@
+<svg viewBox="0 0 920 918" role="img" aria-label="Driver mutation frequency by LUAD/LUSC">
+<text x="0" y="24" class="chart-title">Driver mutation frequency by LUAD/LUSC</text>
+<rect x="120" y="36" width="16" height="10" fill="#3b82f6"></rect>
+<text x="142" y="45" class="legend">LUAD</text>
+<rect x="210" y="36" width="16" height="10" fill="#f97316"></rect>
+<text x="232" y="45" class="legend">LUSC</text>
+<text x="0" y="78" class="axis-label">TP53</text>
+<rect x="120" y="58" width="427.8" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="74" width="710.0" height="12" rx="3" fill="#f97316"></rect>
+<text x="838.0" y="78" class="value-label">236/467 LUAD, 390/465 LUSC</text>
+<text x="0" y="118" class="axis-label">KMT2D</text>
+<rect x="120" y="98" width="74.3" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="114" width="191.2" height="12" rx="3" fill="#f97316"></rect>
+<text x="319.2" y="118" class="value-label">41/467 LUAD, 105/465 LUSC</text>
+<text x="0" y="158" class="axis-label">KRAS</text>
+<rect x="120" y="138" width="239.3" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="154" width="14.6" height="12" rx="3" fill="#f97316"></rect>
+<text x="367.3" y="158" class="value-label">132/467 LUAD, 8/465 LUSC</text>
+<text x="0" y="198" class="axis-label">KEAP1</text>
+<rect x="120" y="178" width="150.5" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="194" width="96.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="278.5" y="198" class="value-label">83/467 LUAD, 53/465 LUSC</text>
+<text x="0" y="238" class="axis-label">FAT1</text>
+<rect x="120" y="218" width="90.6" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="234" width="120.2" height="12" rx="3" fill="#f97316"></rect>
+<text x="248.2" y="238" class="value-label">50/467 LUAD, 66/465 LUSC</text>
+<text x="0" y="278" class="axis-label">NF1</text>
+<rect x="120" y="258" width="97.9" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="274" width="101.9" height="12" rx="3" fill="#f97316"></rect>
+<text x="229.9" y="278" class="value-label">54/467 LUAD, 56/465 LUSC</text>
+<text x="0" y="318" class="axis-label">KMT2C</text>
+<rect x="120" y="298" width="81.6" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="314" width="103.8" height="12" rx="3" fill="#f97316"></rect>
+<text x="231.8" y="318" class="value-label">45/467 LUAD, 57/465 LUSC</text>
+<text x="0" y="358" class="axis-label">CDKN2A</text>
+<rect x="120" y="338" width="45.3" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="354" width="125.6" height="12" rx="3" fill="#f97316"></rect>
+<text x="253.6" y="358" class="value-label">25/467 LUAD, 69/465 LUSC</text>
+<text x="0" y="398" class="axis-label">PIK3CA</text>
+<rect x="120" y="378" width="47.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="394" width="101.9" height="12" rx="3" fill="#f97316"></rect>
+<text x="229.9" y="398" class="value-label">26/467 LUAD, 56/465 LUSC</text>
+<text x="0" y="438" class="axis-label">NTRK3</text>
+<rect x="120" y="418" width="85.2" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="434" width="60.1" height="12" rx="3" fill="#f97316"></rect>
+<text x="213.2" y="438" class="value-label">47/467 LUAD, 33/465 LUSC</text>
+<text x="0" y="478" class="axis-label">EGFR</text>
+<rect x="120" y="458" width="116.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="474" width="27.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="244.0" y="478" class="value-label">64/467 LUAD, 15/465 LUSC</text>
+<text x="0" y="518" class="axis-label">NFE2L2</text>
+<rect x="120" y="498" width="18.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="514" width="118.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="246.3" y="518" class="value-label">10/467 LUAD, 65/465 LUSC</text>
+<text x="0" y="558" class="axis-label">STK11</text>
+<rect x="120" y="538" width="119.6" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="554" width="5.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="247.6" y="558" class="value-label">66/467 LUAD, 3/465 LUSC</text>
+<text x="0" y="598" class="axis-label">ROS1</text>
+<rect x="120" y="578" width="36.3" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="594" width="78.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="206.3" y="598" class="value-label">20/467 LUAD, 43/465 LUSC</text>
+<text x="0" y="638" class="axis-label">NOTCH1</text>
+<rect x="120" y="618" width="39.9" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="634" width="67.4" height="12" rx="3" fill="#f97316"></rect>
+<text x="195.4" y="638" class="value-label">22/467 LUAD, 37/465 LUSC</text>
+<text x="0" y="678" class="axis-label">PTEN</text>
+<rect x="120" y="658" width="10.9" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="674" width="96.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="224.5" y="678" class="value-label">6/467 LUAD, 53/465 LUSC</text>
+<text x="0" y="718" class="axis-label">SMARCA4</text>
+<rect x="120" y="698" width="68.9" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="714" width="34.6" height="12" rx="3" fill="#f97316"></rect>
+<text x="196.9" y="718" class="value-label">38/467 LUAD, 19/465 LUSC</text>
+<text x="0" y="758" class="axis-label">BRAF</text>
+<rect x="120" y="738" width="68.9" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="754" width="23.7" height="12" rx="3" fill="#f97316"></rect>
+<text x="196.9" y="758" class="value-label">38/467 LUAD, 13/465 LUSC</text>
+<text x="0" y="798" class="axis-label">ALK</text>
+<rect x="120" y="778" width="54.4" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="794" width="36.4" height="12" rx="3" fill="#f97316"></rect>
+<text x="182.4" y="798" class="value-label">30/467 LUAD, 20/465 LUSC</text>
+<text x="0" y="838" class="axis-label">NOTCH2</text>
+<rect x="120" y="818" width="38.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="834" width="40.1" height="12" rx="3" fill="#f97316"></rect>
+<text x="168.1" y="838" class="value-label">21/467 LUAD, 22/465 LUSC</text>
+</svg>
