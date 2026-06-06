@@ -4,7 +4,7 @@ Three-column UI per the PEAT-Nucleate UX spec:
 
 | Panel | Component |
 |-------|-----------|
-| **Left** | TME spatial heatmap (tile-level signature scores) |
+| **Left** | Treatment received + predicted benefit (TME × driver × therapy alignment) |
 | **Centre** | H&E slide viewer (placeholder; wire to `slide.py` thumbnails) |
 | **Right** | Embedding scatter · patient card · immune profile · survival demo |
 
@@ -34,16 +34,14 @@ Open **http://localhost:5173**
 
 ### Interactions
 
-- **Click** a dot in the UMAP plot → selects patient, updates heatmap + card
-- **Search** case ID in the header (e.g. `TCGA-05`)
-- **← / →** buttons or keyboard arrows → prev/next patient
-- **Hover** heatmap tiles → signature value tooltip
-- **Click** immune profile bars → switch heatmap signature
-- **Color-by** dropdown → archetype / driver / signature / OS
+- **Click** a dot in the UMAP plot → selects patient, updates treatment panel + card
+- **Search** case ID or treatment in the header (e.g. `TCGA-05`, `Cisplatin`)
+- **← / →** buttons → prev/next patient
+- **Color-by** dropdown → predicted benefit / treatment class / response / stage / driver
 
 ## Data
 
-Demo JSON is generated from TCGA lung case list + HistoTME example signatures:
+Demo JSON is generated from TCGA lung clinical metadata + HistoTME example signatures:
 
 ```bash
 python3 scripts/generate_demo_data.py
@@ -52,11 +50,6 @@ python3 scripts/generate_demo_data.py
 
 Outputs:
 
-- `public/data/patients_embedding.json` — UMAP coordinates + archetype / driver / signatures
-- `public/data/spatial_heatmap_demo.json` — tile heatmap for selected patient
+- `public/data/patients_embedding.json` — UMAP coordinates, TME signatures, treatment fields, and benefit prediction heuristic
 
-Replace spatial JSON with real `predict_spatial.py` output when available.
-
-## Branch
-
-Commit UI work to `cursor/emma-research-slide-deck-5384`.
+Treatment fields come from `data/tcga_lung/patient_metadata.tcga_lung.json` (types, agents, response, progression). Benefit scores are a demo heuristic combining TME archetype, driver mutation, and documented therapy — not clinical advice.
