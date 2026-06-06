@@ -1,6 +1,9 @@
 __pycache__/
 *.pyc
 
+# Generated slide PNG previews (copied into per_patient bundles when extracted)
+previews/
+
 # Downloaded whole-slide images (hundreds of GB) — never commit
 WSI/
 *.svs
