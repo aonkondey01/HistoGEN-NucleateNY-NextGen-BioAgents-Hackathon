@@ -1,0 +1,77 @@
+{
+  "source_powerpoint": "Representative_20_Patients_Summary.pptx",
+  "selected_slides": [
+    5,
+    7,
+    8,
+    9,
+    14,
+    17,
+    22
+  ],
+  "figures": [
+    {
+      "slide_number": 5,
+      "title": "Age at diagnosis distribution",
+      "stem": "slide05_age_at_diagnosis_distribution",
+      "files": [
+        "slide05_age_at_diagnosis_distribution.png",
+        "slide05_age_at_diagnosis_distribution.svg"
+      ]
+    },
+    {
+      "slide_number": 7,
+      "title": "Vital status",
+      "stem": "slide07_vital_status",
+      "files": [
+        "slide07_vital_status.png",
+        "slide07_vital_status.svg"
+      ]
+    },
+    {
+      "slide_number": 8,
+      "title": "Sex distribution",
+      "stem": "slide08_sex_distribution",
+      "files": [
+        "slide08_sex_distribution.png",
+        "slide08_sex_distribution.svg"
+      ]
+    },
+    {
+      "slide_number": 9,
+      "title": "AJCC pathologic stage",
+      "stem": "slide09_ajcc_pathologic_stage",
+      "files": [
+        "slide09_ajcc_pathologic_stage.png",
+        "slide09_ajcc_pathologic_stage.svg"
+      ]
+    },
+    {
+      "slide_number": 14,
+      "title": "Top driver-gene mutation frequency",
+      "stem": "slide14_top_driver_gene_mutation_frequency",
+      "files": [
+        "slide14_top_driver_gene_mutation_frequency.png",
+        "slide14_top_driver_gene_mutation_frequency.svg"
+      ]
+    },
+    {
+      "slide_number": 17,
+      "title": "Variant classification (cohort-wide)",
+      "stem": "slide17_variant_classification_cohort_wide",
+      "files": [
+        "slide17_variant_classification_cohort_wide.png",
+        "slide17_variant_classification_cohort_wide.svg"
+      ]
+    },
+    {
+      "slide_number": 22,
+      "title": "Treatment types (patient mentions)",
+      "stem": "slide22_treatment_types_patient_mentions",
+      "files": [
+        "slide22_treatment_types_patient_mentions.png",
+        "slide22_treatment_types_patient_mentions.svg"
+      ]
+    }
+  ]
+}
