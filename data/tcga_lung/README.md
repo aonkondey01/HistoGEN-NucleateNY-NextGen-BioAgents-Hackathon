@@ -66,6 +66,8 @@ Slide* → Project: *TCGA-LUAD/LUSC* → add to cart → download manifest).
 | `patient_metadata_summary.tcga_lung.json` | Counts and missingness for the extracted patient metadata     |
 | `important_lung_genes/`             | Focused mutation, RNA expression, and RPPA protein expression tables for important LUAD/LUSC genes |
 | `important_lung_genes/visual_report/index.html` | Browser-viewable cohort, mutation, clinical, and survival summary |
+| `important_lung_genes/visual_report/gallery.html` | Standalone plot gallery for all SVG charts |
+| `important_lung_genes/visual_report/plots/` | Individual SVG plots for cohort, demographics, mutations, and survival |
 | `summary.json`                      | Counts + total size for quick reference                           |
 
 The manifests and metadata are committed so you don't need network access just
@@ -143,9 +145,11 @@ Open the generated report in Cursor or a browser:
 
 ```text
 important_lung_genes/visual_report/index.html
+important_lung_genes/visual_report/gallery.html
+important_lung_genes/visual_report/plots/
 ```
 
-The report summarizes:
+The report and plot gallery summarize:
 
 - number of patients/samples and slide counts,
 - clinical demographics such as age, sex, race/ethnicity, smoking, stage, and

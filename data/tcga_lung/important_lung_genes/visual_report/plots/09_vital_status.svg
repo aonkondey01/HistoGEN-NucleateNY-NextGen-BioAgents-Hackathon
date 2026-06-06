@@ -1,0 +1,9 @@
+<svg viewBox="0 0 840 152" role="img" aria-label="Vital status">
+<text x="0" y="24" class="chart-title">Vital status</text>
+<text x="0" y="71" class="axis-label">Alive</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#dc2626"></rect>
+<text x="758.0" y="71" class="value-label">582</text>
+<text x="0" y="105" class="axis-label">Dead</text>
+<rect x="210" y="88" width="347.0" height="24" rx="4" fill="#dc2626"></rect>
+<text x="565.0" y="105" class="value-label">374</text>
+</svg>

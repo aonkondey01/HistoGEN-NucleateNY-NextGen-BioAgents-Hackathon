@@ -543,6 +543,241 @@ def median_split_survival_associations(
     return rows, groups_for_plot
 
 
+def write_svg(path: Path, svg: str) -> None:
+    path.write_text(svg if svg.lstrip().startswith("<?xml") else svg)
+
+
+def clinical_comparison_chart(
+    clinical_rows: list[dict[str, Any]],
+    title: str,
+    metric: str,
+    *,
+    genes: list[str] | None = None,
+    width: int = 920,
+) -> str:
+    """Grouped bar chart comparing mutated vs not-mutated clinical metrics."""
+    by_gene: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
+    for row in clinical_rows:
+        by_gene[row["gene"]][row["group"]] = row
+    selected = genes or [r["gene"] for r in sorted(clinical_rows, key=lambda r: (-r["n"], r["gene"]))][:10]
+    selected = [g for g in selected if g in by_gene][:10]
+    top = 58
+    left = 120
+    right = 90
+    row_h = 28
+    gap = 12
+    height = top + len(selected) * (row_h + gap) + 60
+    max_val = 1.0
+    for gene in selected:
+        for group in ("mutated", "not_mutated"):
+            row = by_gene[gene].get(group, {})
+            if metric == "death_rate":
+                n = row.get("n") or 0
+                val = (row.get("dead") or 0) / n * 100 if n else 0
+            elif metric == "median_age":
+                val = row.get("median_age_at_diagnosis_years") or 0
+            elif metric == "stage_advanced_rate":
+                n = row.get("n") or 0
+                val = (row.get("stage_iii_or_iv") or 0) / n * 100 if n else 0
+            else:
+                val = 0
+            max_val = max(max_val, float(val))
+    scale_w = width - left - right
+    parts = [
+        f'<svg viewBox="0 0 {width} {height}" role="img" aria-label="{esc(title)}">',
+        f'<text x="0" y="24" class="chart-title">{esc(title)}</text>',
+        f'<rect x="{left}" y="36" width="16" height="10" fill="{COLORS["blue"]}"></rect>',
+        f'<text x="{left + 22}" y="45" class="legend">Mutated</text>',
+        f'<rect x="{left + 110}" y="36" width="16" height="10" fill="{COLORS["orange"]}"></rect>',
+        f'<text x="{left + 132}" y="45" class="legend">Not mutated</text>',
+    ]
+    for i, gene in enumerate(selected):
+        y = top + i * (row_h + gap)
+        mut = by_gene[gene].get("mutated", {})
+        wt = by_gene[gene].get("not_mutated", {})
+        if metric == "death_rate":
+            mut_val = (mut.get("dead") or 0) / (mut.get("n") or 1) * 100
+            wt_val = (wt.get("dead") or 0) / (wt.get("n") or 1) * 100
+            suffix = "% dead"
+        elif metric == "median_age":
+            mut_val = mut.get("median_age_at_diagnosis_years") or 0
+            wt_val = wt.get("median_age_at_diagnosis_years") or 0
+            suffix = " yrs"
+        else:
+            mut_val = (mut.get("stage_iii_or_iv") or 0) / (mut.get("n") or 1) * 100
+            wt_val = (wt.get("stage_iii_or_iv") or 0) / (wt.get("n") or 1) * 100
+            suffix = "% stage III/IV"
+        mut_w = scale_w * float(mut_val) / max_val
+        wt_w = scale_w * float(wt_val) / max_val
+        parts.append(f'<text x="0" y="{y + 20}" class="axis-label">{esc(gene)}</text>')
+        parts.append(f'<rect x="{left}" y="{y}" width="{mut_w:.1f}" height="12" rx="3" fill="{COLORS["blue"]}"></rect>')
+        parts.append(f'<rect x="{left}" y="{y + 16}" width="{wt_w:.1f}" height="12" rx="3" fill="{COLORS["orange"]}"></rect>')
+        parts.append(
+            f'<text x="{left + max(mut_w, wt_w) + 8:.1f}" y="{y + 20}" class="value-label">'
+            f'{fmt_num(mut_val, 1)}{suffix} vs {fmt_num(wt_val, 1)}{suffix}</text>'
+        )
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
+def survival_pvalue_chart(
+    rows: list[dict[str, Any]],
+    label_field: str,
+    title: str,
+    *,
+    width: int = 840,
+    max_items: int = 15,
+) -> str:
+    scored = []
+    for row in rows:
+        p = row.get("logrank_p_value")
+        if p is None or p == "":
+            continue
+        p = float(p)
+        scored.append((row[label_field], -math.log10(max(p, 1e-300))))
+    scored.sort(key=lambda kv: -kv[1])
+    counts = Counter({label: score for label, score in scored[:max_items]})
+    return bar_chart(counts, title, width=width, color=COLORS["purple"], max_items=max_items)
+
+
+def cohort_overview_chart(
+    patient_count: int,
+    slide_count: int,
+    mutation_cases: int,
+    expression_cases: int,
+    width: int = 840,
+) -> str:
+    items = {
+        "Patients/cases": patient_count,
+        "Diagnostic slides": slide_count,
+        "With mutation files": mutation_cases,
+        "With RNA expression files": expression_cases,
+    }
+    return bar_chart(items, "Cohort size and data availability", width=width, color=COLORS["green"])
+
+
+def export_standalone_plots(
+    plots_dir: Path,
+    *,
+    patients: dict[str, dict[str, str]],
+    mutation_freq: list[dict[str, Any]],
+    clinical_rows: list[dict[str, Any]],
+    mutation_survival: list[dict[str, Any]],
+    mutation_plot_groups: dict[str, tuple[list[dict[str, float]], list[dict[str, float]]]],
+    rna_survival: list[dict[str, Any]],
+    rna_plot_groups: dict[str, tuple[list[dict[str, float]], list[dict[str, float]]]],
+    protein_survival: list[dict[str, Any]],
+    protein_plot_groups: dict[str, tuple[list[dict[str, float]], list[dict[str, float]]]],
+) -> list[str]:
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    patient_rows = list(patients.values())
+    project_counts = count_values(patient_rows, "project_id")
+    sex_counts = count_values(patient_rows, "sex")
+    race_counts = count_values(patient_rows, "race")
+    ethnicity_counts = count_values(patient_rows, "ethnicity")
+    smoking_counts = count_values(patient_rows, "tobacco_smoking_status")
+    vital_counts = count_values(patient_rows, "vital_status")
+    stage_counts = count_values(patient_rows, "ajcc_pathologic_stage")
+    ages = [to_float(row.get("age_at_diagnosis_years")) for row in patient_rows]
+    ages = [v for v in ages if v is not None]
+    slide_count = sum(int(float(row.get("slide_count") or 0)) for row in patient_rows)
+    mutation_cases = sum(1 for row in patient_rows if int(float(row.get("mutation_file_count") or 0)) > 0)
+    expression_cases = sum(1 for row in patient_rows if int(float(row.get("expression_file_count") or 0)) > 0)
+
+    top_genes = [r["gene"] for r in mutation_freq[:10]]
+    plot_specs: list[tuple[str, str]] = [
+        ("01_cohort_size_and_availability.svg", cohort_overview_chart(len(patient_rows), slide_count, mutation_cases, expression_cases)),
+        ("02_luad_vs_lusc_patient_counts.svg", bar_chart(project_counts, "LUAD vs LUSC patient counts", color=COLORS["purple"])),
+        ("03_age_distribution.svg", histogram(ages, "Age distribution at diagnosis")),
+        ("04_sex_distribution.svg", bar_chart(sex_counts, "Sex distribution", color=COLORS["blue"])),
+        ("05_race_distribution.svg", bar_chart(race_counts, "Race distribution", color=COLORS["green"])),
+        ("06_ethnicity_distribution.svg", bar_chart(ethnicity_counts, "Ethnicity distribution", color=COLORS["orange"])),
+        ("07_smoking_history.svg", bar_chart(smoking_counts, "Smoking history", color=COLORS["gray"])),
+        ("08_ajcc_pathologic_stage.svg", bar_chart(stage_counts, "AJCC pathologic stage", color=COLORS["purple"])),
+        ("09_vital_status.svg", bar_chart(vital_counts, "Vital status", color=COLORS["red"])),
+        ("10_driver_mutation_frequency_luad_lusc.svg", grouped_mutation_chart(mutation_freq, "Driver mutation frequency by LUAD/LUSC")),
+        (
+            "11_clinical_death_rate_by_mutation_status.svg",
+            clinical_comparison_chart(clinical_rows, "Death rate by mutation status (top genes)", "death_rate", genes=top_genes),
+        ),
+        (
+            "12_clinical_median_age_by_mutation_status.svg",
+            clinical_comparison_chart(clinical_rows, "Median age by mutation status (top genes)", "median_age", genes=top_genes),
+        ),
+        (
+            "13_clinical_advanced_stage_by_mutation_status.svg",
+            clinical_comparison_chart(clinical_rows, "Stage III/IV rate by mutation status (top genes)", "stage_advanced_rate", genes=top_genes),
+        ),
+        ("14_mutation_survival_pvalues.svg", survival_pvalue_chart(mutation_survival, "gene", "Mutation survival association strength (-log10 p)")),
+        ("15_rna_expression_survival_pvalues.svg", survival_pvalue_chart(rna_survival, "gene", "RNA expression survival association strength (-log10 p)")),
+        (
+            "16_protein_expression_survival_pvalues.svg",
+            survival_pvalue_chart(protein_survival, "protein_target", "RPPA protein survival association strength (-log10 p)"),
+        ),
+    ]
+
+    for gene in (mutation_survival[:3] if mutation_survival else []):
+        g = gene["gene"]
+        if g in mutation_plot_groups:
+            plot_specs.append(
+                (f"17_mutation_survival_km_{g}.svg", km_curve(*mutation_plot_groups[g], title=f"Survival by {g} mutation status"))
+            )
+    for gene in (rna_survival[:3] if rna_survival else []):
+        g = gene["gene"]
+        if g in rna_plot_groups:
+            plot_specs.append(
+                (f"18_rna_survival_km_{g}.svg", km_curve(*rna_plot_groups[g], title=f"Survival by {g} RNA expression (median split)"))
+            )
+    for row in (protein_survival[:3] if protein_survival else []):
+        target = row["protein_target"]
+        if target in protein_plot_groups:
+            safe = target.replace("/", "_")
+            plot_specs.append(
+                (
+                    f"19_protein_survival_km_{safe}.svg",
+                    km_curve(*protein_plot_groups[target], title=f"Survival by {target} RPPA expression (median split)"),
+                )
+            )
+
+    written: list[str] = []
+    for filename, svg in plot_specs:
+        path = plots_dir / filename
+        write_svg(path, svg)
+        written.append(filename)
+
+    gallery_items = "\n".join(
+        f'    <section class="plot-card"><h3>{esc(name)}</h3><img src="plots/{esc(name)}" alt="{esc(name)}"></section>'
+        for name in written
+    )
+    gallery = f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TCGA Lung Plot Gallery</title>
+  <style>
+    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; background: #f8fafc; color: #0f172a; }}
+    h1 {{ margin-bottom: 8px; }}
+    .subtitle {{ color: #475569; margin-bottom: 24px; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 20px; }}
+    .plot-card {{ background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }}
+    .plot-card h3 {{ margin: 0 0 12px 0; font-size: 16px; }}
+    .plot-card img {{ width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 8px; background: white; }}
+    a {{ color: #2563eb; }}
+  </style>
+</head>
+<body>
+  <h1>TCGA Lung Plot Gallery</h1>
+  <p class="subtitle">Standalone SVG plots for cohort demographics, driver mutations, clinical comparisons, and exploratory survival associations. Also see <a href="index.html">index.html</a> for the full report.</p>
+  <div class="grid">
+{gallery_items}
+  </div>
+</body>
+</html>
+"""
+    (plots_dir.parent / "gallery.html").write_text(gallery)
+    return written
+
+
 def table_html(rows: list[dict[str, Any]], fields: list[str], *, limit: int = 12) -> str:
     shown = rows[:limit]
     if not shown:
@@ -709,8 +944,11 @@ def render_report(
 
   <div class="panel">
     <h2>Generated files</h2>
+    <p class="note">Open <a href="gallery.html"><code>gallery.html</code></a> to browse every standalone SVG plot, or inspect files under <code>plots/</code>.</p>
     <ul>
       <li><code>index.html</code> - this visual report</li>
+      <li><code>gallery.html</code> - standalone plot gallery for Cursor/browser preview</li>
+      <li><code>plots/</code> - individual SVG charts for cohort, demographics, mutations, clinical comparisons, and survival</li>
       <li><code>cohort_visual_summary.json</code> - report-level summary counts</li>
       <li><code>driver_mutation_frequency.csv</code> - mutation frequencies by LUAD/LUSC</li>
       <li><code>clinical_by_driver_mutation.csv</code> - clinical summaries by mutation status</li>
@@ -895,7 +1133,22 @@ def main() -> int:
         protein_plot_groups,
     )
 
+    plot_files = export_standalone_plots(
+        args.out_dir / "plots",
+        patients=patients,
+        mutation_freq=mutation_freq,
+        clinical_rows=clinical_rows,
+        mutation_survival=mutation_survival,
+        mutation_plot_groups=mutation_plot_groups,
+        rna_survival=rna_survival,
+        rna_plot_groups=rna_plot_groups,
+        protein_survival=protein_survival,
+        protein_plot_groups=protein_plot_groups,
+    )
+
     print(f"Wrote visual report to {args.out_dir / 'index.html'}")
+    print(f"Wrote plot gallery to {args.out_dir / 'gallery.html'}")
+    print(f"Wrote {len(plot_files)} standalone SVG plots to {args.out_dir / 'plots'}")
     print(json.dumps(cohort_summary, indent=2))
     return 0
 

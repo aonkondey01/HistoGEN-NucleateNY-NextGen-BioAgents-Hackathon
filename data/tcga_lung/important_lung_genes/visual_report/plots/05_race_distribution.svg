@@ -1,0 +1,18 @@
+<svg viewBox="0 0 840 254" role="img" aria-label="Race distribution">
+<text x="0" y="24" class="chart-title">Race distribution</text>
+<text x="0" y="71" class="axis-label">white</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#16a34a"></rect>
+<text x="758.0" y="71" class="value-label">681</text>
+<text x="0" y="105" class="axis-label">missing</text>
+<rect x="210" y="88" width="139.6" height="24" rx="4" fill="#16a34a"></rect>
+<text x="357.6" y="105" class="value-label">176</text>
+<text x="0" y="139" class="axis-label">black or african american</text>
+<rect x="210" y="122" width="64.2" height="24" rx="4" fill="#16a34a"></rect>
+<text x="282.2" y="139" class="value-label">81</text>
+<text x="0" y="173" class="axis-label">asian</text>
+<rect x="210" y="156" width="13.5" height="24" rx="4" fill="#16a34a"></rect>
+<text x="231.5" y="173" class="value-label">17</text>
+<text x="0" y="207" class="axis-label">american indian or alaska native</text>
+<rect x="210" y="190" width="1.0" height="24" rx="4" fill="#16a34a"></rect>
+<text x="219.0" y="207" class="value-label">1</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg viewBox="0 0 840 300" role="img" aria-label="Age distribution at diagnosis">
+<text x="0" y="24" class="chart-title">Age distribution at diagnosis</text>
+<line x1="55" y1="240" x2="805" y2="240" stroke="#94a3b8"></line>
+<line x1="55" y1="70" x2="55" y2="240" stroke="#94a3b8"></line>
+<rect x="57.0" y="239.1" width="58.5" height="0.9" fill="#16a34a"></rect>
+<rect x="119.5" y="226.9" width="58.5" height="13.1" fill="#16a34a"></rect>
+<rect x="182.0" y="226.9" width="58.5" height="13.1" fill="#16a34a"></rect>
+<rect x="244.5" y="205.2" width="58.5" height="34.8" fill="#16a34a"></rect>
+<rect x="307.0" y="178.0" width="58.5" height="62.0" fill="#16a34a"></rect>
+<rect x="369.5" y="124.5" width="58.5" height="115.5" fill="#16a34a"></rect>
+<rect x="432.0" y="106.6" width="58.5" height="133.4" fill="#16a34a"></rect>
+<rect x="494.5" y="70.0" width="58.5" height="170.0" fill="#16a34a"></rect>
+<rect x="557.0" y="79.4" width="58.5" height="160.6" fill="#16a34a"></rect>
+<rect x="619.5" y="142.3" width="58.5" height="97.7" fill="#16a34a"></rect>
+<rect x="682.0" y="198.7" width="58.5" height="41.3" fill="#16a34a"></rect>
+<rect x="744.5" y="232.5" width="58.5" height="7.5" fill="#16a34a"></rect>
+<text x="55" y="264" class="axis-label">33.3</text>
+<text x="763" y="264" class="axis-label">90</text>
+<text x="385.0" y="284" class="axis-label">Age at diagnosis, years</text>
+</svg>
