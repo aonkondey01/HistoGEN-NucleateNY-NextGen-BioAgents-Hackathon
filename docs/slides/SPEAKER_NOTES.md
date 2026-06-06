@@ -2,6 +2,10 @@
 
 Approximate timing: **12–15 minutes** (14 slides).
 
+Stack on `main`: **PHOENIX** (virtual spatial transcriptomics atlas), **GigaTIME**
+(virtual mIF from H&E), **Claude Haiku** (patient similarity + vMTB agent in the
+SpatialMTB UI).
+
 ---
 
 ## Slide 1 — Title (~30 sec)
@@ -37,33 +41,48 @@ Patients with identical drivers occupy different TME states — immune desert, m
 
 ---
 
-## Slide 5 — HistoTME (~1 min)
+## Slide 5 — PHOENIX + GigaTIME (~1 min)
 
-HistoTME infers 29 curated gene-expression signatures from H&E using foundation-model patch embeddings and multiple-instance learning. No extra staining. Published in NSCLC; HistoTMEv2 extends pan-cancer. Bulk mode = one profile per slide; spatial mode = tile-level maps.
+**PHOENIX** provides a pan-cancer TCGA cell atlas with spatial NEST embeddings —
+a reference for virtual spatial transcriptomics at population scale.
+
+**GigaTIME** translates routine H&E into virtual multiplex immunofluorescence
+(21 protein channels) for TME phenotyping without extra staining.
+
+Together they let us ask ecosystem questions on archived diagnostic slides.
 
 ---
 
-## Slide 6 — 29 signatures (~1 min)
+## Slide 6 — TME readouts (~1 min)
 
-Stress interpretability: Treg, MDSC, macrophages, effector T cells, CAF, angiogenesis, EMT — real biology. Downstream clustering yields Immune Desert vs Immune Inflamed, validated against IHC in published work. Immune Inflamed predicted better ICI outcomes than PD-L1 alone in several subgroups.
+Stress interpretability: immune infiltration, macrophage programs, stromal
+barriers, angiogenesis, hypoxia — real biology inferred from morphology and
+reference atlases. Cluster patients by combined virtual RNA + protein signatures;
+compare to trial outcomes within mutation strata.
 
 ---
 
 ## Slide 7 — Bulk vs spatial (~45 sec)
 
-Point to the figure. Spatial mode is the pitch differentiator — one H&E slide becomes a multi-layer TME map. This is a computational screening analogue of spatial transcriptomics.
+Spatial maps are the pitch differentiator — one H&E slide becomes layered virtual
+RNA and protein views. This is a computational screening analogue of multiplex
+imaging and spatial transcriptomics.
 
 ---
 
 ## Slide 8 — Repo pipeline (~1 min)
 
-This repo wires it together: 1,053 TCGA lung diagnostic slides, download scripts, HistoTME inference, outputs for a dashboard. Pilot with 3 slides for the hackathon; scale to full cohort later.
+This repo wires it together: TCGA lung diagnostic slides, PHOENIX atlas fetch,
+GigaTIME inference helpers, light-Zarr slide stores, and the SpatialMTB UI.
+Pilot with a few slides for the hackathon; scale to the full cohort later.
 
 ---
 
-## Slide 9 — vs spatial transcriptomics (~1 min)
+## Slide 9 — vs ground-truth spatial (~1 min)
 
-Don't position HistoTME as a replacement. Visium/Xenium = ground truth, limited scale. HistoTME = screening on archived H&E. Proposed workflow: screen with HistoTME → validate mechanism on a spatial transcriptomics subset.
+Don't position virtual models as replacements. Visium/Xenium / physical mIF =
+ground truth, limited scale. PHOENIX + GigaTIME = screening on archived H&E.
+Proposed workflow: screen virtually → validate mechanism on a spatial subset.
 
 ---
 
@@ -75,35 +94,23 @@ Stratify by EGFR/ALK/KRAS/wild-type. Cluster TME archetypes. Ask whether non-res
 
 ## Slide 11 — Deliverables (~1 min)
 
-Be honest about what's live vs stretch: pilot slides, bulk predictions, spatial heatmaps on exemplars, mutation-stratified clusters, UI mock-up.
+Be honest about what's live vs stretch: pilot slides, virtual RNA/protein maps on exemplars, Haiku-powered similarity clusters, SpatialMTB UI mock-up.
 
 ---
 
-## Slide 12 — Impact (~45 sec)
+## Slide 12 — Team (~30 sec)
 
-Close strong: enrich trials by TME, explain failed mutation-positive arms, use existing biobanks. "Mutation is the lock. TME is whether the key turns."
+Introduce team and roles.
 
 ---
 
-## Slide 13 — References (~15 sec)
+## Slide 13 — Ask (~30 sec)
 
-Available for Q&A.
+What we need from mentors / judges: feedback on clinical framing, access to
+comparator cohorts, or partnership on validation.
 
 ---
 
 ## Slide 14 — Thank you
 
-Invite questions on trials, spatial validation, and demo timeline.
-
----
-
-## Anticipated Q&A
-
-**"Is this real spatial transcriptomics?"**  
-No — it's predicted signature activity from H&E, validated against RNA signatures and IHC. Spatial transcriptomics is the validation layer.
-
-**"Why TCGA if there are no trial arms?"**  
-Large lung cohort with H&E + molecular data for hypothesis generation; trial biobanks next.
-
-**"EGFR patients respond great to TKIs — why focus on failure?"**  
-Initial response is strong; we're explaining resistance, combination failures, and heterogeneity of durability.
+Close with the one-liner: *same mutation, different ecosystem, different outcome.*

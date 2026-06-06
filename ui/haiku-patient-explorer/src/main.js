@@ -78,7 +78,7 @@ function renderShell() {
             <select id="color-by">
               <option value="archetype">TME archetype</option>
               <option value="driver">Driver mutation</option>
-              <option value="signature">HistoTME signature</option>
+              <option value="signature">TME signature</option>
               <option value="os_status">Overall survival</option>
             </select>
           </div>

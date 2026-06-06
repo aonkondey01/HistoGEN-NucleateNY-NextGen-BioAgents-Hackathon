@@ -1,7 +1,7 @@
 {
   "meta": {
     "n_patients": 956,
-    "source": "TCGA lung diagnostic slides + HistoTME signature demo",
+    "source": "TCGA lung diagnostic slides + synthetic TME signature demo (Phoenix/GigaTIME)",
     "projection": "UMAP (or PCA fallback) on signature matrix",
     "archetypes": [
       "Immune Desert",

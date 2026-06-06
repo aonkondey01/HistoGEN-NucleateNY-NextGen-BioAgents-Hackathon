@@ -12,7 +12,6 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[3]
 UI_DATA = Path(__file__).resolve().parents[1] / "public" / "data"
 SLIDES_META = ROOT / "data" / "tcga_lung" / "slides_metadata.tcga_lung.json"
-PANTCGA = ROOT / "external" / "HistoTME" / "example_data" / "pantcga_tme_signatures.csv"
 
 ARCHETYPES = [
     "Immune Desert",
@@ -34,20 +33,10 @@ SIGNATURES = [
 
 
 def _load_signature_matrix() -> tuple[list[str], np.ndarray]:
-    if not PANTCGA.exists():
-        rng = np.random.default_rng(42)
-        ids = [f"TCGA-DEMO-{i:04d}" for i in range(200)]
-        return ids, rng.normal(size=(200, len(SIGNATURES)))
-
-    import pandas as pd
-
-    df = pd.read_csv(PANTCGA, index_col=0)
-    lung_mask = df.index.str.startswith("TCGA-") & (
-        df.index.str.contains("-LU", regex=False) | df.index.str.contains("OR-A", regex=False)
-    )
-    lung = df.loc[lung_mask] if lung_mask.any() else df.iloc[: min(400, len(df))]
-    cols = [c for c in lung.columns if c in SIGNATURES] or list(lung.columns[: len(SIGNATURES)])
-    return list(lung.index.astype(str)), lung[cols].fillna(0).to_numpy(dtype=float)
+    """Synthetic TME signature matrix for demo UMAP (replace with Phoenix/GigaTIME outputs)."""
+    rng = np.random.default_rng(42)
+    ids = [f"TCGA-DEMO-{i:04d}" for i in range(200)]
+    return ids, rng.normal(size=(200, len(SIGNATURES)))
 
 
 def _umap_2d(matrix: np.ndarray) -> np.ndarray:
@@ -108,7 +97,7 @@ def build_patients_embedding() -> dict:
     return {
         "meta": {
             "n_patients": len(patients),
-            "source": "TCGA lung diagnostic slides + HistoTME signature demo",
+            "source": "TCGA lung diagnostic slides + synthetic TME signature demo (Phoenix/GigaTIME)",
             "projection": "UMAP (or PCA fallback) on signature matrix",
             "archetypes": ARCHETYPES,
             "drivers": DRIVERS,

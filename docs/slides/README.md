@@ -1,6 +1,7 @@
 # Lung cancer TME slide deck
 
-**Live UI:** https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/
+Static pitch assets for PEAT-Nucleate BioHack 2026. The live stack is
+**PHOENIX + GigaTIME + Haiku** (see root `README.md`).
 
 ## Files
 
@@ -9,18 +10,11 @@
 | `PEAT-Nucleate-Lung-TME-Deck.pptx` | 14-slide PowerPoint deck (speaker notes included) |
 | `SPEAKER_NOTES.md` | Plain-text speaker notes for quick editing |
 
-## Regenerate the deck
+## Customization
 
-After editing slide content in `scripts/build_lung_tme_slide_deck.py`:
-
-```bash
-pip install python-pptx
-python scripts/build_lung_tme_slide_deck.py
-```
-
-## Customization tips
-
-- **Team / author names:** edit slide 1 in the build script (`cred` textbox).
-- **Trial table:** edit the `rows` list on slide 3.
-- **Figures:** HistoTME diagrams are pulled from `external/HistoTME/figures/` (requires submodule init).
+- **Team / author names:** edit slide 1 directly in PowerPoint.
+- **Trial table:** edit slide 3 in PowerPoint.
 - **Export to PDF:** open in PowerPoint or LibreOffice Impress → File → Export as PDF.
+
+The committed `.pptx` is the source of truth; there is no deck build script on
+`main`.
