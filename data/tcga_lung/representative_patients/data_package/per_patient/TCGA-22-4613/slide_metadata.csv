@@ -1,0 +1,2 @@
+file_id,file_name,md5sum,file_size,state,data_format,project_id,case_submitter_id,case_id,sample_type,sample_submitter_id
+2c943b62-a6d7-4c19-b743-cea09ef5c1c8,TCGA-22-4613-01Z-00-DX1.4BC3B7B8-99E7-4744-8F5A-089ECCDE144E.svs,37a920cf269f29e5c7f17a7c979d1c11,807231543,released,SVS,TCGA-LUSC,TCGA-22-4613,2c8877f9-ee7f-4216-97ad-d2939a13daa4,Primary Tumor,TCGA-22-4613-01Z

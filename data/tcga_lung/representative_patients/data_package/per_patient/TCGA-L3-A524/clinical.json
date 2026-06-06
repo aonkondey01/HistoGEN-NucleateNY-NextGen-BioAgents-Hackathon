@@ -1,0 +1,144 @@
+{
+  "age_at_diagnosis_days": 16765,
+  "age_at_diagnosis_years": 45.9,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IIB",
+  "ajcc_pathologic_t": "T3",
+  "alcohol_history": null,
+  "case_id": "ff7099e1-8ff9-48e4-842d-46e98076e7e6",
+  "case_submitter_id": "TCGA-L3-A524",
+  "cigarettes_per_day": null,
+  "days_to_birth": -16765,
+  "days_to_death": 490,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 490,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": 350,
+  "days_to_treatment_start": 197,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 16765,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IIB",
+      "ajcc_pathologic_t": "T3",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 490.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Squamous cell carcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "days_to_treatment_end": 350,
+          "days_to_treatment_start": 197,
+          "therapeutic_agents": "Cisplatin",
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 350,
+          "days_to_treatment_start": 197,
+          "therapeutic_agents": "Gemcitabine",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 1,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "pack_years_smoked": 25.6,
+      "tobacco_smoking_onset_year": 1979,
+      "tobacco_smoking_status": "Current Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 4,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 490,
+      "disease_response": "Unknown"
+    },
+    {
+      "days_to_follow_up": 449,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 490,
+      "disease_response": "Unknown"
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 490,
+  "mutation_file_count": 1,
+  "pack_years_smoked": 25.6,
+  "primary_diagnosis": "Squamous cell carcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUSC",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "female",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-L3-A524-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 1,
+  "survival_time_days": 490,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Cisplatin; Gemcitabine",
+  "tobacco_smoking_onset_year": "1979",
+  "tobacco_smoking_status": "Current Smoker",
+  "treatment_intent_types": "Adjuvant",
+  "treatment_or_therapy": "no; yes",
+  "treatment_outcomes": "Complete Response",
+  "treatment_types": "Radiation Therapy, NOS; Chemotherapy",
+  "treatments": [
+    {
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "days_to_treatment_end": 350,
+      "days_to_treatment_start": 197,
+      "therapeutic_agents": "Cisplatin",
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 350,
+      "days_to_treatment_start": 197,
+      "therapeutic_agents": "Gemcitabine",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Dead",
+  "year_of_birth": null,
+  "years_smoked": null
+}

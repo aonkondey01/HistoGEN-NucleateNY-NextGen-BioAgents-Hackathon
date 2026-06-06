@@ -1,0 +1,235 @@
+{
+  "age_at_diagnosis_days": 28711,
+  "age_at_diagnosis_years": 78.61,
+  "ajcc_pathologic_m": "MX",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IB",
+  "ajcc_pathologic_t": "T2a",
+  "alcohol_history": null,
+  "case_id": "dd46c83e-6551-485b-b935-f3beed891244",
+  "case_submitter_id": "TCGA-55-7815",
+  "cigarettes_per_day": null,
+  "days_to_birth": -28119,
+  "days_to_death": null,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 773,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": 592,
+  "days_to_treatment_end": 616,
+  "days_to_treatment_start": 493,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 28711,
+      "days_to_diagnosis": 592,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        },
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 28119,
+      "ajcc_pathologic_m": "MX",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IB",
+      "ajcc_pathologic_t": "T2a",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 773.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "days_to_treatment_end": 616,
+          "days_to_treatment_start": 616,
+          "therapeutic_agents": null,
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Radiation, External Beam"
+        },
+        {
+          "days_to_treatment_start": 706,
+          "therapeutic_agents": "Unknown",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Treatment Ongoing",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 585,
+          "days_to_treatment_start": 493,
+          "therapeutic_agents": "Unknown",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Chemotherapy"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 28585,
+      "days_to_diagnosis": 466,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "initial_disease_status": "Recurrent Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        },
+        {
+          "initial_disease_status": "Recurrent Disease",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 3,
+  "disease_response": "TF-Tumor Free; WT-With Tumor",
+  "ethnicity": null,
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Lifelong Non-Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 6,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 54,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 773,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": 466,
+      "progression_or_recurrence": "Yes"
+    },
+    {
+      "days_to_follow_up": 592,
+      "days_to_progression": 592,
+      "progression_or_recurrence": "Yes"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 773,
+      "disease_response": "WT-With Tumor"
+    }
+  ],
+  "initial_disease_status": "Progressive Disease; Recurrent Disease",
+  "last_follow_up_days": 773,
+  "mutation_file_count": 1,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Adenocarcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "Yes; No",
+  "progression_or_recurrence": "Yes",
+  "project_id": "TCGA-LUAD",
+  "race": null,
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-55-7815-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 773,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": null,
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Lifelong Non-Smoker",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "no; yes",
+  "treatment_outcomes": "Progressive Disease; Treatment Ongoing",
+  "treatment_types": "Surgery, NOS; Radiation Therapy, NOS; Pharmaceutical Therapy, NOS; Radiation, External Beam; Chemotherapy",
+  "treatments": [
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "days_to_treatment_end": 616,
+      "days_to_treatment_start": 616,
+      "therapeutic_agents": null,
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Radiation, External Beam"
+    },
+    {
+      "days_to_treatment_start": 706,
+      "therapeutic_agents": "Unknown",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Treatment Ongoing",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 585,
+      "days_to_treatment_start": 493,
+      "therapeutic_agents": "Unknown",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "initial_disease_status": "Recurrent Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "initial_disease_status": "Recurrent Disease",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}

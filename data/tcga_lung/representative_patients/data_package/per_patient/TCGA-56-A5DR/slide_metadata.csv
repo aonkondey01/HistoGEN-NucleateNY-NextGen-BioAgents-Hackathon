@@ -1,0 +1,2 @@
+file_id,file_name,md5sum,file_size,state,data_format,project_id,case_submitter_id,case_id,sample_type,sample_submitter_id
+381e90b2-6341-4563-a752-f1156e26d288,TCGA-56-A5DR-01Z-00-DX1.F8F196F2-9380-490E-9D77-ABAC1E58BC5C.svs,2b5a657ebaba2ec9319df5de13292434,69136728,released,SVS,TCGA-LUSC,TCGA-56-A5DR,2a0b4559-5ece-4b79-9c89-2ebe7cf82905,Primary Tumor,TCGA-56-A5DR-01Z

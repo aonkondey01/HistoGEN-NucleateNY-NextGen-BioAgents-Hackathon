@@ -1,0 +1,118 @@
+{
+  "age_at_diagnosis_days": 18611,
+  "age_at_diagnosis_years": 50.95,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0; N2b",
+  "ajcc_pathologic_stage": "Stage IB",
+  "ajcc_pathologic_t": "T2; T4a",
+  "alcohol_history": null,
+  "case_id": "628b1bc3-825b-4d0e-a4cd-57eeaf98e798",
+  "case_submitter_id": "TCGA-18-5595",
+  "cigarettes_per_day": null,
+  "days_to_birth": -18611,
+  "days_to_death": 827,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 827,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": null,
+  "days_to_treatment_start": -259,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 18611,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IB",
+      "ajcc_pathologic_t": "T2",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 827.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Squamous cell carcinoma, NOS",
+      "prior_malignancy": "yes",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No"
+    },
+    {
+      "age_at_diagnosis": null,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N2b",
+      "ajcc_pathologic_t": "T4a",
+      "primary_diagnosis": "Not Reported",
+      "treatments": [
+        {
+          "days_to_treatment_start": -259,
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "days_to_treatment_start": -259,
+          "therapeutic_agents": "Cisplatin",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 2,
+  "disease_response": null,
+  "ethnicity": null,
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Lifelong Non-Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 2,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 827
+    },
+    {
+      "days_to_follow_up": 827
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 827,
+  "mutation_file_count": 1,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Squamous cell carcinoma, NOS",
+  "prior_malignancy": "yes",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUSC",
+  "race": null,
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-18-5595-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 1,
+  "survival_time_days": 827,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Cisplatin",
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Lifelong Non-Smoker",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "yes",
+  "treatment_outcomes": null,
+  "treatment_types": "Radiation Therapy, NOS; Pharmaceutical Therapy, NOS",
+  "treatments": [
+    {
+      "days_to_treatment_start": -259,
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "days_to_treatment_start": -259,
+      "therapeutic_agents": "Cisplatin",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Dead",
+  "year_of_birth": null,
+  "years_smoked": null
+}

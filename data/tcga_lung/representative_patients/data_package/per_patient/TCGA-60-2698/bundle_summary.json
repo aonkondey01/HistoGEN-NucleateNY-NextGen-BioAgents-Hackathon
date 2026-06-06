@@ -1,0 +1,10 @@
+{
+  "case_id": "fd9ee494-65fe-4de4-adff-7952a059b17f",
+  "case_submitter_id": "TCGA-60-2698",
+  "molecular_file_count": 3,
+  "mutation_rows": 2198,
+  "project_id": "TCGA-LUSC",
+  "rna_rows": 60660,
+  "rppa_rows": 487,
+  "slide_count": 1
+}

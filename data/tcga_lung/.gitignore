@@ -13,3 +13,7 @@ molecular_data/
 *.maf.gz.part
 *.rna_seq.*.tsv
 *.rna_seq.*.tsv.part
+
+# Representative-patient genome-wide RNA tables are regenerated locally (~400 MB)
+representative_patients/data_package/genome_wide_gene_expression.csv
+representative_patients/data_package/per_patient/*/genome_wide_gene_expression.csv

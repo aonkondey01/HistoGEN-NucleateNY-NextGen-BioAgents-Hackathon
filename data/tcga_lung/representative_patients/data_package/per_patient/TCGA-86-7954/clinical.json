@@ -1,0 +1,147 @@
+{
+  "age_at_diagnosis_days": 25062,
+  "age_at_diagnosis_years": 68.62,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IB",
+  "ajcc_pathologic_t": "T2",
+  "alcohol_history": null,
+  "case_id": "079ae0b3-b64b-4b8e-ab7d-225b8046568c",
+  "case_submitter_id": "TCGA-86-7954",
+  "cigarettes_per_day": null,
+  "days_to_birth": -25062,
+  "days_to_death": null,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 605,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": 81,
+  "days_to_treatment_start": 55,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 25062,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IB",
+      "ajcc_pathologic_t": "T2",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 605.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Bronchiolo-alveolar adenocarcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "days_to_treatment_end": 81,
+          "days_to_treatment_start": 55,
+          "therapeutic_agents": "Carboplatin",
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 81,
+          "days_to_treatment_start": 55,
+          "therapeutic_agents": "Paclitaxel",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 1,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "pack_years_smoked": 8,
+      "tobacco_smoking_onset_year": 1963,
+      "tobacco_smoking_status": "Current Reformed Smoker for > 15 yrs"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 5,
+  "follow_ups": [
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 605,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 0,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 605,
+      "disease_response": "TF-Tumor Free"
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 605,
+  "mutation_file_count": 1,
+  "pack_years_smoked": 8,
+  "primary_diagnosis": "Bronchiolo-alveolar adenocarcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUAD",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "female",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-86-7954-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 605,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Carboplatin; Paclitaxel",
+  "tobacco_smoking_onset_year": "1963",
+  "tobacco_smoking_status": "Current Reformed Smoker for > 15 yrs",
+  "treatment_intent_types": "Adjuvant",
+  "treatment_or_therapy": "no; yes",
+  "treatment_outcomes": "Complete Response",
+  "treatment_types": "Radiation Therapy, NOS; Chemotherapy",
+  "treatments": [
+    {
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "days_to_treatment_end": 81,
+      "days_to_treatment_start": 55,
+      "therapeutic_agents": "Carboplatin",
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 81,
+      "days_to_treatment_start": 55,
+      "therapeutic_agents": "Paclitaxel",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}

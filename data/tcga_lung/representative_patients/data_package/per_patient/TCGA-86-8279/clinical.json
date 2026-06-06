@@ -1,0 +1,158 @@
+{
+  "age_at_diagnosis_days": 17032,
+  "age_at_diagnosis_years": 46.63,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N1",
+  "ajcc_pathologic_stage": "Stage IIA",
+  "ajcc_pathologic_t": "T2a",
+  "alcohol_history": null,
+  "case_id": "2923e404-38f2-437a-b57e-23401fbe0273",
+  "case_submitter_id": "TCGA-86-8279",
+  "cigarettes_per_day": null,
+  "days_to_birth": -17032,
+  "days_to_death": null,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 949,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": 208,
+  "days_to_treatment_start": 28,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 17032,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N1",
+      "ajcc_pathologic_stage": "Stage IIA",
+      "ajcc_pathologic_t": "T2a",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 949.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "days_to_treatment_end": 119,
+          "days_to_treatment_start": 28,
+          "therapeutic_agents": "Etoposide",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 208,
+          "days_to_treatment_start": 139,
+          "therapeutic_agents": null,
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Radiation, External Beam"
+        },
+        {
+          "days_to_treatment_end": 119,
+          "days_to_treatment_start": 28,
+          "therapeutic_agents": "Cisplatin",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 1,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Lifelong Non-Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 7,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 949,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 21,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 949,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 482,
+      "disease_response": "TF-Tumor Free"
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 949,
+  "mutation_file_count": 1,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Adenocarcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUAD",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-86-8279-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 949,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Etoposide; Cisplatin",
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Lifelong Non-Smoker",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "yes",
+  "treatment_outcomes": "Complete Response",
+  "treatment_types": "Chemotherapy; Radiation, External Beam",
+  "treatments": [
+    {
+      "days_to_treatment_end": 119,
+      "days_to_treatment_start": 28,
+      "therapeutic_agents": "Etoposide",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 208,
+      "days_to_treatment_start": 139,
+      "therapeutic_agents": null,
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Radiation, External Beam"
+    },
+    {
+      "days_to_treatment_end": 119,
+      "days_to_treatment_start": 28,
+      "therapeutic_agents": "Cisplatin",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}
