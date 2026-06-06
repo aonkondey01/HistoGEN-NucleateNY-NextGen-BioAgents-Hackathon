@@ -3,6 +3,8 @@ __pycache__/
 
 # Downloaded whole-slide images (hundreds of GB) — never commit
 WSI/
+zarr/
+*.zarr/
 *.svs
 *.svs.part
 *.limit.txt
