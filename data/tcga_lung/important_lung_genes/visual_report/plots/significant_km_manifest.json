@@ -1,0 +1,23 @@
+{
+  "plot_files": [
+    "significant_km/mutation_km_NOTCH2.svg",
+    "significant_km/mutation_km_CDKN2A.svg",
+    "significant_km/rna_km_FAT1.svg",
+    "significant_km/rna_km_SOX2.svg",
+    "significant_km/rna_km_PTEN.svg",
+    "significant_km/protein_km_Sox2.svg"
+  ],
+  "significance_alpha": 0.05,
+  "significant_mutation_curves": [
+    "NOTCH2",
+    "CDKN2A"
+  ],
+  "significant_protein_curves": [
+    "Sox2"
+  ],
+  "significant_rna_curves": [
+    "FAT1",
+    "SOX2",
+    "PTEN"
+  ]
+}

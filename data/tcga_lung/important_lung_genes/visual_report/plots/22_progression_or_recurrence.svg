@@ -1,0 +1,9 @@
+<svg viewBox="0 0 840 152" role="img" aria-label="Progression or recurrence">
+<text x="0" y="24" class="chart-title">Progression or recurrence</text>
+<text x="0" y="71" class="axis-label">missing</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#dc2626"></rect>
+<text x="758.0" y="71" class="value-label">673</text>
+<text x="0" y="105" class="axis-label">Yes</text>
+<rect x="210" y="88" width="227.1" height="24" rx="4" fill="#dc2626"></rect>
+<text x="445.1" y="105" class="value-label">283</text>
+</svg>

@@ -76,6 +76,50 @@ COLORS = {
     "dark": "#0f172a",
 }
 
+SIGNIFICANCE_ALPHA = 0.05
+
+
+def is_significant(row: dict[str, Any], *, alpha: float = SIGNIFICANCE_ALPHA) -> bool:
+    p = to_float(row.get("logrank_p_value"))
+    return p is not None and p < alpha
+
+
+def significant_survival_rows(rows: list[dict[str, Any]], *, alpha: float = SIGNIFICANCE_ALPHA) -> list[dict[str, Any]]:
+    return [row for row in rows if is_significant(row, alpha=alpha)]
+
+
+def km_curves_html(
+    rows: list[dict[str, Any]],
+    plot_groups: dict[str, tuple[list[dict[str, float]], list[dict[str, float]]]],
+    *,
+    key_field: str,
+    group_a_label: str,
+    group_b_label: str,
+    title_prefix: str,
+    alpha: float = SIGNIFICANCE_ALPHA,
+) -> str:
+    sig_rows = significant_survival_rows(rows, alpha=alpha)
+    if not sig_rows:
+        return f"<p>No significant Kaplan-Meier curves at p &lt; {alpha}.</p>"
+    parts = ['<div class="grid">']
+    for row in sig_rows:
+        key = row[key_field]
+        if key not in plot_groups:
+            continue
+        parts.append(
+            "<div>"
+            + km_curve(
+                *plot_groups[key],
+                title=f"{title_prefix}: {key}",
+                group_a_label=group_a_label,
+                group_b_label=group_b_label,
+                p_value=to_float(row.get("logrank_p_value")),
+            )
+            + "</div>"
+        )
+    parts.append("</div>")
+    return "\n".join(parts)
+
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="") as fh:
@@ -272,7 +316,25 @@ def histogram(values: list[float], title: str, bins: int = 12, width: int = 840,
     return "\n".join(parts)
 
 
-def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], title: str, width: int = 840, height: int = 330) -> str:
+def format_p_value(p_value: float | None) -> str:
+    if p_value is None:
+        return "n/a"
+    if p_value < 0.001:
+        return f"{p_value:.2e}"
+    return f"{p_value:.4f}"
+
+
+def km_curve(
+    group_a: list[dict[str, float]],
+    group_b: list[dict[str, float]],
+    title: str,
+    *,
+    group_a_label: str = "Group A",
+    group_b_label: str = "Group B",
+    p_value: float | None = None,
+    width: int = 840,
+    height: int = 360,
+) -> str:
     def curve(group: list[dict[str, float]]) -> list[tuple[float, float]]:
         if not group:
             return [(0, 1)]
@@ -290,8 +352,10 @@ def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], t
     pts_a = curve(group_a)
     pts_b = curve(group_b)
     max_t = max([p[0] for p in pts_a + pts_b] or [1]) or 1
-    left, top, chart_w, chart_h = 58, 54, width - 100, 210
+    left, top, chart_w, chart_h = 72, 72, width - 112, 210
     bottom = top + chart_h
+    events_a = int(sum(r["event"] for r in group_a))
+    events_b = int(sum(r["event"] for r in group_b))
 
     def path(points: list[tuple[float, float]]) -> str:
         d = []
@@ -309,20 +373,22 @@ def km_curve(group_a: list[dict[str, float]], group_b: list[dict[str, float]], t
     parts = [
         f'<svg viewBox="0 0 {width} {height}" role="img" aria-label="{esc(title)}">',
         f'<text x="0" y="24" class="chart-title">{esc(title)}</text>',
+        f'<text x="0" y="44" class="axis-label">Kaplan-Meier survival probability by follow-up time (days). Log-rank p = {esc(format_p_value(p_value))}.</text>',
         f'<rect x="{left}" y="{top}" width="{chart_w}" height="{chart_h}" fill="white" stroke="#cbd5e1"></rect>',
         f'<line x1="{left}" y1="{bottom}" x2="{left + chart_w}" y2="{bottom}" stroke="#94a3b8"></line>',
         f'<line x1="{left}" y1="{top}" x2="{left}" y2="{bottom}" stroke="#94a3b8"></line>',
         f'<path d="{path(pts_a)}" fill="none" stroke="{COLORS["blue"]}" stroke-width="3"></path>',
         f'<path d="{path(pts_b)}" fill="none" stroke="{COLORS["orange"]}" stroke-width="3"></path>',
-        f'<text x="{left}" y="{bottom + 24}" class="axis-label">0 days</text>',
-        f'<text x="{left + chart_w - 70}" y="{bottom + 24}" class="axis-label">{fmt_num(max_t, 0)} days</text>',
-        f'<text x="{left + chart_w / 2 - 40}" y="{bottom + 44}" class="axis-label">Survival time</text>',
-        f'<text x="{left - 42}" y="{top + 5}" class="axis-label">1.0</text>',
-        f'<text x="{left - 42}" y="{bottom}" class="axis-label">0.0</text>',
+        f'<text x="{left}" y="{bottom + 24}" class="axis-label">0</text>',
+        f'<text x="{left + chart_w - 70}" y="{bottom + 24}" class="axis-label">{fmt_num(max_t, 0)}</text>',
+        f'<text x="{left + chart_w / 2 - 70}" y="{bottom + 44}" class="axis-label">Follow-up time (days)</text>',
+        f'<text x="8" y="{top + chart_h / 2 + 40}" class="axis-label" transform="rotate(-90 8 {top + chart_h / 2 + 40})">Survival probability</text>',
+        f'<text x="{left - 8}" y="{top + 8}" class="axis-label" text-anchor="end">1.0</text>',
+        f'<text x="{left - 8}" y="{bottom}" class="axis-label" text-anchor="end">0.0</text>',
         f'<rect x="{left + 8}" y="{top + 12}" width="14" height="10" fill="{COLORS["blue"]}"></rect>',
-        f'<text x="{left + 28}" y="{top + 22}" class="legend">Group A, n={len(group_a)}</text>',
-        f'<rect x="{left + 150}" y="{top + 12}" width="14" height="10" fill="{COLORS["orange"]}"></rect>',
-        f'<text x="{left + 170}" y="{top + 22}" class="legend">Group B, n={len(group_b)}</text>',
+        f'<text x="{left + 28}" y="{top + 22}" class="legend">{esc(group_a_label)}, n={len(group_a)}, events={events_a}</text>',
+        f'<rect x="{left + 8}" y="{top + 30}" width="14" height="10" fill="{COLORS["orange"]}"></rect>',
+        f'<text x="{left + 28}" y="{top + 40}" class="legend">{esc(group_b_label)}, n={len(group_b)}, events={events_b}</text>',
         "</svg>",
     ]
     return "\n".join(parts)
@@ -656,6 +722,96 @@ def cohort_overview_chart(
     return bar_chart(items, "Cohort size and data availability", width=width, color=COLORS["green"])
 
 
+TREATMENT_COVERAGE_FIELDS = [
+    "prior_treatment",
+    "treatment_types",
+    "treatment_or_therapy",
+    "therapeutic_agents",
+    "disease_response",
+    "progression_or_recurrence",
+    "treatment_outcomes",
+    "days_to_treatment_start",
+]
+
+
+def split_field_counts(rows: Iterable[dict[str, str]], field: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        val = (row.get(field) or "").strip()
+        if not val:
+            continue
+        for part in val.split(";"):
+            part = part.strip()
+            if part:
+                counts[part] += 1
+    return counts
+
+
+def field_coverage_counts(rows: list[dict[str, str]], fields: list[str]) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for field in fields:
+        label = field.replace("_", " ")
+        counts[label] = sum(1 for row in rows if (row.get(field) or "").strip())
+    return counts
+
+
+def yes_no_field_counts(rows: list[dict[str, str]], field: str, *, title_yes: str, title_no: str, title_missing: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        val = (row.get(field) or "").strip().lower()
+        if not val:
+            counts[title_missing] += 1
+        elif "yes" in val:
+            counts[title_yes] += 1
+        elif "no" in val:
+            counts[title_no] += 1
+        else:
+            counts[val] += 1
+    return counts
+
+
+def resistance_proxy_counts(rows: list[dict[str, str]]) -> Counter[str]:
+    """Summarize progression/recurrence and progressive-disease outcome proxies."""
+    counts: Counter[str] = Counter()
+    for row in rows:
+        progression = (row.get("progression_or_recurrence") or "").strip().lower()
+        if progression == "yes":
+            counts["Progression/recurrence reported"] += 1
+        outcomes = split_field_counts([row], "treatment_outcomes")
+        if "Progressive Disease" in outcomes:
+            counts["Treatment outcome: Progressive Disease"] += 1
+        response = (row.get("disease_response") or "").strip()
+        if response == "WT-With Tumor":
+            counts["Disease response: with tumor"] += 1
+    return counts
+
+
+def build_treatment_summary(rows: list[dict[str, str]]) -> dict[str, Any]:
+    total = len(rows)
+    coverage = {
+        field: sum(1 for row in rows if (row.get(field) or "").strip())
+        for field in TREATMENT_COVERAGE_FIELDS
+    }
+    return {
+        "patient_count": total,
+        "field_coverage": coverage,
+        "field_coverage_pct": {
+            field: round(100 * count / total, 1) if total else 0.0
+            for field, count in coverage.items()
+        },
+        "top_treatment_types": dict(split_field_counts(rows, "treatment_types").most_common(10)),
+        "top_therapeutic_agents": dict(split_field_counts(rows, "therapeutic_agents").most_common(10)),
+        "disease_response_counts": dict(count_values(rows, "disease_response")),
+        "progression_or_recurrence_counts": dict(count_values(rows, "progression_or_recurrence")),
+        "treatment_outcome_counts": dict(split_field_counts(rows, "treatment_outcomes")),
+        "resistance_proxy_counts": dict(resistance_proxy_counts(rows)),
+        "notes": [
+            "Direct drug-resistance labels are not uniformly available in public TCGA clinical data.",
+            "Progression/recurrence, disease response, and treatment outcomes are used as resistance proxies.",
+        ],
+    }
+
+
 def export_standalone_plots(
     plots_dir: Path,
     *,
@@ -714,36 +870,159 @@ def export_standalone_plots(
             "16_protein_expression_survival_pvalues.svg",
             survival_pvalue_chart(protein_survival, "protein_target", "RPPA protein survival association strength (-log10 p)"),
         ),
+        (
+            "17_treatment_field_coverage.svg",
+            bar_chart(
+                field_coverage_counts(patient_rows, TREATMENT_COVERAGE_FIELDS),
+                "Treatment and outcome field coverage (patients with data)",
+                color=COLORS["green"],
+            ),
+        ),
+        (
+            "18_prior_treatment_status.svg",
+            bar_chart(
+                yes_no_field_counts(
+                    patient_rows,
+                    "prior_treatment",
+                    title_yes="Any prior treatment reported",
+                    title_no="No prior treatment reported",
+                    title_missing="Not reported",
+                ),
+                "Prior treatment status",
+                color=COLORS["blue"],
+            ),
+        ),
+        (
+            "19_treatment_types.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "treatment_types"),
+                "Reported treatment types",
+                color=COLORS["purple"],
+                max_items=12,
+            ),
+        ),
+        (
+            "20_top_therapeutic_agents.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "therapeutic_agents"),
+                "Top therapeutic agents",
+                color=COLORS["orange"],
+                max_items=12,
+            ),
+        ),
+        (
+            "21_disease_response.svg",
+            bar_chart(
+                count_values(patient_rows, "disease_response"),
+                "Disease response",
+                color=COLORS["gray"],
+            ),
+        ),
+        (
+            "22_progression_or_recurrence.svg",
+            bar_chart(
+                count_values(patient_rows, "progression_or_recurrence"),
+                "Progression or recurrence",
+                color=COLORS["red"],
+            ),
+        ),
+        (
+            "23_treatment_outcomes.svg",
+            bar_chart(
+                split_field_counts(patient_rows, "treatment_outcomes"),
+                "Treatment outcomes",
+                color=COLORS["blue"],
+            ),
+        ),
+        (
+            "24_resistance_proxies.svg",
+            bar_chart(
+                resistance_proxy_counts(patient_rows),
+                "Resistance proxies (progression, progressive disease, residual tumor)",
+                color=COLORS["red"],
+            ),
+        ),
     ]
 
-    for gene in (mutation_survival[:3] if mutation_survival else []):
-        g = gene["gene"]
-        if g in mutation_plot_groups:
-            plot_specs.append(
-                (f"17_mutation_survival_km_{g}.svg", km_curve(*mutation_plot_groups[g], title=f"Survival by {g} mutation status"))
+    sig_mutation = significant_survival_rows(mutation_survival)
+    sig_rna = significant_survival_rows(rna_survival)
+    sig_protein = significant_survival_rows(protein_survival)
+
+    significant_km_dir = plots_dir / "significant_km"
+    significant_km_dir.mkdir(parents=True, exist_ok=True)
+    for old in plots_dir.glob("*survival_km*.svg"):
+        old.unlink(missing_ok=True)
+    for old in significant_km_dir.glob("*.svg"):
+        old.unlink(missing_ok=True)
+
+    for row in sig_mutation:
+        g = row["gene"]
+        if g not in mutation_plot_groups:
+            continue
+        filename = f"mutation_km_{g}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *mutation_plot_groups[g],
+                    title=f"Survival by {g} mutation status",
+                    group_a_label="Mutated",
+                    group_b_label="Not mutated",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
-    for gene in (rna_survival[:3] if rna_survival else []):
-        g = gene["gene"]
-        if g in rna_plot_groups:
-            plot_specs.append(
-                (f"18_rna_survival_km_{g}.svg", km_curve(*rna_plot_groups[g], title=f"Survival by {g} RNA expression (median split)"))
+        )
+    for row in sig_rna:
+        g = row["gene"]
+        if g not in rna_plot_groups:
+            continue
+        filename = f"rna_km_{g}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *rna_plot_groups[g],
+                    title=f"Survival by {g} RNA expression (median split)",
+                    group_a_label="High expression",
+                    group_b_label="Low expression",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
-    for row in (protein_survival[:3] if protein_survival else []):
+        )
+    for row in sig_protein:
         target = row["protein_target"]
-        if target in protein_plot_groups:
-            safe = target.replace("/", "_")
-            plot_specs.append(
-                (
-                    f"19_protein_survival_km_{safe}.svg",
-                    km_curve(*protein_plot_groups[target], title=f"Survival by {target} RPPA expression (median split)"),
-                )
+        if target not in protein_plot_groups:
+            continue
+        safe = target.replace("/", "_")
+        filename = f"protein_km_{safe}.svg"
+        plot_specs.append(
+            (
+                f"significant_km/{filename}",
+                km_curve(
+                    *protein_plot_groups[target],
+                    title=f"Survival by {target} RPPA expression (median split)",
+                    group_a_label="High protein",
+                    group_b_label="Low protein",
+                    p_value=to_float(row.get("logrank_p_value")),
+                ),
             )
+        )
 
     written: list[str] = []
     for filename, svg in plot_specs:
         path = plots_dir / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
         write_svg(path, svg)
         written.append(filename)
+
+    manifest = {
+        "significance_alpha": SIGNIFICANCE_ALPHA,
+        "significant_mutation_curves": [r["gene"] for r in sig_mutation],
+        "significant_rna_curves": [r["gene"] for r in sig_rna],
+        "significant_protein_curves": [r["protein_target"] for r in sig_protein],
+        "plot_files": [name for name in written if name.startswith("significant_km/")],
+    }
+    write_json(plots_dir / "significant_km_manifest.json", manifest)
 
     gallery_items = "\n".join(
         f'    <section class="plot-card"><h3>{esc(name)}</h3><img src="plots/{esc(name)}" alt="{esc(name)}"></section>'
@@ -824,24 +1103,29 @@ def render_report(
     mutation_cases = sum(1 for row in patient_rows if int(float(row.get("mutation_file_count") or 0)) > 0)
     expression_cases = sum(1 for row in patient_rows if int(float(row.get("expression_file_count") or 0)) > 0)
 
-    top_mut_gene = mutation_survival[0]["gene"] if mutation_survival else None
-    top_rna_gene = rna_survival[0]["gene"] if rna_survival else None
-    top_protein_target = protein_survival[0]["protein_target"] if protein_survival else None
-
-    mutation_km = (
-        km_curve(*mutation_plot_groups[top_mut_gene], title=f"Survival by {top_mut_gene} mutation: mutated vs not mutated")
-        if top_mut_gene and top_mut_gene in mutation_plot_groups
-        else "<p>No mutation survival curve available.</p>"
+    mutation_km = km_curves_html(
+        mutation_survival,
+        mutation_plot_groups,
+        key_field="gene",
+        group_a_label="Mutated",
+        group_b_label="Not mutated",
+        title_prefix="Mutation",
     )
-    rna_km = (
-        km_curve(*rna_plot_groups[top_rna_gene], title=f"Survival by {top_rna_gene} RNA expression: high vs low")
-        if top_rna_gene and top_rna_gene in rna_plot_groups
-        else "<p>No RNA expression survival curve available.</p>"
+    rna_km = km_curves_html(
+        rna_survival,
+        rna_plot_groups,
+        key_field="gene",
+        group_a_label="High expression",
+        group_b_label="Low expression",
+        title_prefix="RNA expression",
     )
-    protein_km = (
-        km_curve(*protein_plot_groups[top_protein_target], title=f"Survival by {top_protein_target} RPPA expression: high vs low")
-        if top_protein_target and top_protein_target in protein_plot_groups
-        else "<p>No protein expression survival curve available.</p>"
+    protein_km = km_curves_html(
+        protein_survival,
+        protein_plot_groups,
+        key_field="protein_target",
+        group_a_label="High protein",
+        group_b_label="Low protein",
+        title_prefix="RPPA protein",
     )
 
     cards = [
@@ -925,21 +1209,31 @@ def render_report(
 
   <div class="panel">
     <h2>5. Exploratory survival associations</h2>
-    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Expression and protein analyses use per-gene median splits. P-values are useful for prioritizing review, not as definitive biomarkers.</p>
-    <h3>Mutation status vs survival</h3>
-    {table_html(mutation_survival, ["gene", "mutated_n", "not_mutated_n", "mutated_events", "not_mutated_events", "mutated_km_median_survival_days", "not_mutated_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <p class="note">Kaplan-Meier/log-rank summaries are exploratory and unadjusted. Only curves with log-rank p &lt; {SIGNIFICANCE_ALPHA} are plotted below. Y-axis = survival probability (fraction alive). X-axis = follow-up time in days from TCGA clinical fields.</p>
+    <h3>Significant mutation status vs survival</h3>
+    {table_html([r for r in mutation_survival if is_significant(r)], ["gene", "mutated_n", "not_mutated_n", "mutated_events", "not_mutated_events", "mutated_km_median_survival_days", "not_mutated_km_median_survival_days", "logrank_p_value"], limit=12)}
     {mutation_km}
-    <h3>RNA expression vs survival</h3>
-    {table_html(rna_survival, ["gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <h3>Significant RNA expression vs survival</h3>
+    {table_html([r for r in rna_survival if is_significant(r)], ["gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
     {rna_km}
-    <h3>Protein/RPPA expression vs survival</h3>
-    {table_html(protein_survival, ["protein_target", "gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
+    <h3>Significant protein/RPPA expression vs survival</h3>
+    {table_html([r for r in protein_survival if is_significant(r)], ["protein_target", "gene", "median_split_cutoff", "high_n", "low_n", "high_events", "low_events", "high_km_median_survival_days", "low_km_median_survival_days", "logrank_p_value"], limit=12)}
     {protein_km}
   </div>
 
   <div class="panel">
-    <h2>6. Resistance/progression caveat</h2>
-    <p class="note">The current public clinical table has survival, disease response, progression/recurrence, and treatment outcome fields, but direct drug-resistance labels are sparse/not uniformly available. The report therefore uses survival and progression/recurrence as exploratory clinical endpoints.</p>
+    <h2>6. Treatment history and resistance proxies</h2>
+    <p class="note">Public TCGA clinical data includes treatment types, agents, disease response, progression/recurrence, and treatment outcomes, but direct drug-resistance labels are sparse. The charts below summarize available treatment history and use progression, progressive disease, and residual-tumor response as resistance proxies.</p>
+    <div class="grid">
+      <div>{bar_chart(field_coverage_counts(patient_rows, TREATMENT_COVERAGE_FIELDS), "Treatment field coverage", color=COLORS["green"])}</div>
+      <div>{bar_chart(yes_no_field_counts(patient_rows, "prior_treatment", title_yes="Any prior treatment reported", title_no="No prior treatment reported", title_missing="Not reported"), "Prior treatment status", color=COLORS["blue"])}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "treatment_types"), "Treatment types", color=COLORS["purple"], max_items=10)}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "therapeutic_agents"), "Top therapeutic agents", color=COLORS["orange"], max_items=10)}</div>
+      <div>{bar_chart(count_values(patient_rows, "disease_response"), "Disease response", color=COLORS["gray"])}</div>
+      <div>{bar_chart(count_values(patient_rows, "progression_or_recurrence"), "Progression or recurrence", color=COLORS["red"])}</div>
+      <div>{bar_chart(split_field_counts(patient_rows, "treatment_outcomes"), "Treatment outcomes", color=COLORS["blue"])}</div>
+      <div>{bar_chart(resistance_proxy_counts(patient_rows), "Resistance proxies", color=COLORS["red"])}</div>
+    </div>
   </div>
 
   <div class="panel">
@@ -948,7 +1242,8 @@ def render_report(
     <ul>
       <li><code>index.html</code> - this visual report</li>
       <li><code>gallery.html</code> - standalone plot gallery for Cursor/browser preview</li>
-      <li><code>plots/</code> - individual SVG charts for cohort, demographics, mutations, clinical comparisons, and survival</li>
+      <li><code>plots/significant_km/</code> - Kaplan-Meier curves with log-rank p &lt; {SIGNIFICANCE_ALPHA}</li>
+      <li><code>plots/significant_km_manifest.json</code> - list of significant KM curves</li>
       <li><code>cohort_visual_summary.json</code> - report-level summary counts</li>
       <li><code>driver_mutation_frequency.csv</code> - mutation frequencies by LUAD/LUSC</li>
       <li><code>clinical_by_driver_mutation.csv</code> - clinical summaries by mutation status</li>
@@ -1095,6 +1390,7 @@ def main() -> int:
     write_csv(args.out_dir / "rna_expression_survival_associations.csv", rna_survival, expression_survival_fields)
     write_csv(args.out_dir / "protein_expression_survival_associations.csv", protein_survival, protein_survival_fields)
 
+    treatment_summary = build_treatment_summary(patient_rows)
     cohort_summary = {
         "patient_count": len(patient_rows),
         "slide_count": sum(int(float(row.get("slide_count") or 0)) for row in patient_rows),
@@ -1111,13 +1407,29 @@ def main() -> int:
         "mutation_survival_tests": len(mutation_survival),
         "rna_survival_tests": len(rna_survival),
         "protein_survival_tests": len(protein_survival),
+        "treatment_summary": treatment_summary,
         "method_notes": [
             "Report uses public TCGA/GDC data already extracted in this repository.",
             "Survival tests are unadjusted two-group log-rank comparisons.",
             "RNA and protein survival tests use median splits and should be treated as exploratory.",
-            "Resistance is approximated with available progression/recurrence, disease response, and survival fields because direct resistance labels are sparse.",
+            "Resistance is approximated with available progression/recurrence, disease response, and treatment outcomes because direct resistance labels are sparse.",
         ],
     }
+    write_csv(
+        args.out_dir / "treatment_and_resistance_summary.csv",
+        [
+            {"metric": "patients", "category": "all", "count": treatment_summary["patient_count"]},
+            *[
+                {"metric": "field_coverage", "category": field, "count": count}
+                for field, count in treatment_summary["field_coverage"].items()
+            ],
+            *[
+                {"metric": "resistance_proxy", "category": label, "count": count}
+                for label, count in treatment_summary["resistance_proxy_counts"].items()
+            ],
+        ],
+        ["metric", "category", "count"],
+    )
     write_json(args.out_dir / "cohort_visual_summary.json", cohort_summary)
 
     render_report(

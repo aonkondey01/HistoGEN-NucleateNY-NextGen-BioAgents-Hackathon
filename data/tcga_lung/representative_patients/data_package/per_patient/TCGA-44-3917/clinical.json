@@ -1,0 +1,122 @@
+{
+  "age_at_diagnosis_days": 12179,
+  "age_at_diagnosis_years": 33.34,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IB",
+  "ajcc_pathologic_t": "T2",
+  "alcohol_history": null,
+  "case_id": "7099597a-b208-45b5-b9e0-11ab40d5e497",
+  "case_submitter_id": "TCGA-44-3917",
+  "cigarettes_per_day": null,
+  "days_to_birth": -12179,
+  "days_to_death": null,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 1183,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": null,
+  "days_to_treatment_start": null,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 12179,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IB",
+      "ajcc_pathologic_t": "T2",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 1183.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "therapeutic_agents": null,
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 1,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "pack_years_smoked": 16,
+      "tobacco_smoking_onset_year": 1993,
+      "tobacco_smoking_status": "Current Smoker"
+    }
+  ],
+  "expression_file_count": 2,
+  "follow_up_count": 4,
+  "follow_ups": [
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 392,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 1183,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 1183,
+      "disease_response": "TF-Tumor Free"
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 1183,
+  "mutation_file_count": 2,
+  "pack_years_smoked": 16,
+  "primary_diagnosis": "Adenocarcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUAD",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "female",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-44-3917-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 1183,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": null,
+  "tobacco_smoking_onset_year": "1993",
+  "tobacco_smoking_status": "Current Smoker",
+  "treatment_intent_types": "Adjuvant",
+  "treatment_or_therapy": "no",
+  "treatment_outcomes": null,
+  "treatment_types": "Pharmaceutical Therapy, NOS; Radiation Therapy, NOS",
+  "treatments": [
+    {
+      "therapeutic_agents": null,
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}

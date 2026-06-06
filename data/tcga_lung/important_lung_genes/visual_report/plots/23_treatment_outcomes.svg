@@ -1,0 +1,18 @@
+<svg viewBox="0 0 840 254" role="img" aria-label="Treatment outcomes">
+<text x="0" y="24" class="chart-title">Treatment outcomes</text>
+<text x="0" y="71" class="axis-label">Complete Response</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="758.0" y="71" class="value-label">121</text>
+<text x="0" y="105" class="axis-label">Progressive Disease</text>
+<rect x="210" y="88" width="276.7" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="494.7" y="105" class="value-label">62</text>
+<text x="0" y="139" class="axis-label">Treatment Ongoing</text>
+<rect x="210" y="122" width="165.1" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="383.1" y="139" class="value-label">37</text>
+<text x="0" y="173" class="axis-label">Stable Disease</text>
+<rect x="210" y="156" width="93.7" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="311.7" y="173" class="value-label">21</text>
+<text x="0" y="207" class="axis-label">Partial Response</text>
+<rect x="210" y="190" width="44.6" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="262.6" y="207" class="value-label">10</text>
+</svg>

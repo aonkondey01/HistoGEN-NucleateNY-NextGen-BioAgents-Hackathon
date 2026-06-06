@@ -1,0 +1,330 @@
+{
+  "age_at_diagnosis_days": 24209,
+  "age_at_diagnosis_years": 66.28,
+  "ajcc_pathologic_m": "M1",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IV",
+  "ajcc_pathologic_t": "T2",
+  "alcohol_history": null,
+  "case_id": "a3f6bc1c-19ab-4eeb-a9ac-3d2fac850bde",
+  "case_submitter_id": "TCGA-86-7701",
+  "cigarettes_per_day": null,
+  "days_to_birth": -24209,
+  "days_to_death": null,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 947,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": 424,
+  "days_to_treatment_end": 929,
+  "days_to_treatment_start": 27,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 24209,
+      "ajcc_pathologic_m": "M1",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IV",
+      "ajcc_pathologic_t": "T2",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 947.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "days_to_treatment_end": 207,
+          "days_to_treatment_start": 27,
+          "therapeutic_agents": "Cisplatin",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 601,
+          "days_to_treatment_start": 454,
+          "therapeutic_agents": "Tyrosine Kinase Inhibitor",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Stable Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 601,
+          "days_to_treatment_start": 454,
+          "therapeutic_agents": "Zoledronic Acid",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Stable Disease",
+          "treatment_type": "Ancillary Treatment"
+        },
+        {
+          "days_to_treatment_end": 601,
+          "days_to_treatment_start": 454,
+          "therapeutic_agents": "Docetaxel",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Stable Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 929,
+          "days_to_treatment_start": 917,
+          "therapeutic_agents": null,
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Radiation, External Beam"
+        },
+        {
+          "days_to_treatment_start": 936,
+          "therapeutic_agents": "Docetaxel",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Treatment Ongoing",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_start": 936,
+          "therapeutic_agents": "Gemcitabine",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Treatment Ongoing",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_start": 706,
+          "therapeutic_agents": "Zoledronic Acid",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Treatment Ongoing",
+          "treatment_type": "Ancillary Treatment"
+        },
+        {
+          "days_to_treatment_end": 207,
+          "days_to_treatment_start": 27,
+          "therapeutic_agents": "Etoposide",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Complete Response",
+          "treatment_type": "Chemotherapy"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 25109,
+      "days_to_diagnosis": 900,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        },
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 24633,
+      "days_to_diagnosis": 424,
+      "primary_diagnosis": "Adenocarcinoma, NOS",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        },
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "initial_disease_status": "Progressive Disease",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 3,
+  "disease_response": "WT-With Tumor; TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Lifelong Non-Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 9,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 474,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 947,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": 900,
+      "days_to_progression": 900,
+      "progression_or_recurrence": "Yes"
+    },
+    {
+      "days_to_follow_up": 947,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": 11,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 424,
+      "days_to_progression": 424,
+      "progression_or_recurrence": "Yes"
+    }
+  ],
+  "initial_disease_status": "Progressive Disease",
+  "last_follow_up_days": 947,
+  "mutation_file_count": 1,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Adenocarcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No; Yes",
+  "progression_or_recurrence": "Yes",
+  "project_id": "TCGA-LUAD",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-86-7701-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 947,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Cisplatin; Tyrosine Kinase Inhibitor; Zoledronic Acid; Docetaxel; Gemcitabine; Etoposide",
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Lifelong Non-Smoker",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "yes; no",
+  "treatment_outcomes": "Complete Response; Stable Disease; Progressive Disease; Treatment Ongoing",
+  "treatment_types": "Chemotherapy; Ancillary Treatment; Radiation, External Beam; Pharmaceutical Therapy, NOS; Surgery, NOS; Radiation Therapy, NOS",
+  "treatments": [
+    {
+      "days_to_treatment_end": 207,
+      "days_to_treatment_start": 27,
+      "therapeutic_agents": "Cisplatin",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 601,
+      "days_to_treatment_start": 454,
+      "therapeutic_agents": "Tyrosine Kinase Inhibitor",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Stable Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 601,
+      "days_to_treatment_start": 454,
+      "therapeutic_agents": "Zoledronic Acid",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Stable Disease",
+      "treatment_type": "Ancillary Treatment"
+    },
+    {
+      "days_to_treatment_end": 601,
+      "days_to_treatment_start": 454,
+      "therapeutic_agents": "Docetaxel",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Stable Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 929,
+      "days_to_treatment_start": 917,
+      "therapeutic_agents": null,
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Radiation, External Beam"
+    },
+    {
+      "days_to_treatment_start": 936,
+      "therapeutic_agents": "Docetaxel",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Treatment Ongoing",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_start": 936,
+      "therapeutic_agents": "Gemcitabine",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Treatment Ongoing",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_start": 706,
+      "therapeutic_agents": "Zoledronic Acid",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Treatment Ongoing",
+      "treatment_type": "Ancillary Treatment"
+    },
+    {
+      "days_to_treatment_end": 207,
+      "days_to_treatment_start": 27,
+      "therapeutic_agents": "Etoposide",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Complete Response",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "initial_disease_status": "Progressive Disease",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}

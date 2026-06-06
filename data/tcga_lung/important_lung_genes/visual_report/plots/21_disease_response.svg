@@ -1,0 +1,18 @@
+<svg viewBox="0 0 840 254" role="img" aria-label="Disease response">
+<text x="0" y="24" class="chart-title">Disease response</text>
+<text x="0" y="71" class="axis-label">TF-Tumor Free</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#64748b"></rect>
+<text x="758.0" y="71" class="value-label">561</text>
+<text x="0" y="105" class="axis-label">WT-With Tumor</text>
+<rect x="210" y="88" width="174.2" height="24" rx="4" fill="#64748b"></rect>
+<text x="392.2" y="105" class="value-label">181</text>
+<text x="0" y="139" class="axis-label">missing</text>
+<rect x="210" y="122" width="114.5" height="24" rx="4" fill="#64748b"></rect>
+<text x="332.5" y="139" class="value-label">119</text>
+<text x="0" y="173" class="axis-label">WT-With Tumor; TF-Tumor Free</text>
+<rect x="210" y="156" width="52.9" height="24" rx="4" fill="#64748b"></rect>
+<text x="270.9" y="173" class="value-label">55</text>
+<text x="0" y="207" class="axis-label">TF-Tumor Free; WT-With Tumor</text>
+<rect x="210" y="190" width="38.5" height="24" rx="4" fill="#64748b"></rect>
+<text x="256.5" y="207" class="value-label">40</text>
+</svg>

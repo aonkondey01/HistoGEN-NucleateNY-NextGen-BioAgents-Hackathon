@@ -1,0 +1,120 @@
+{
+  "age_at_diagnosis_days": 25793,
+  "age_at_diagnosis_years": 70.62,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N1",
+  "ajcc_pathologic_stage": "Stage IIIA",
+  "ajcc_pathologic_t": "T3",
+  "alcohol_history": null,
+  "case_id": "8e6020a1-68df-4d57-ad4e-33acc0861fb3",
+  "case_submitter_id": "TCGA-85-8277",
+  "cigarettes_per_day": null,
+  "days_to_birth": -25793,
+  "days_to_death": 307,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 307,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": null,
+  "days_to_treatment_start": null,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 25793,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N1",
+      "ajcc_pathologic_stage": "Stage IIIA",
+      "ajcc_pathologic_t": "T3",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 307.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Squamous cell carcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "unknown",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "therapeutic_agents": null,
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "unknown",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 1,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Lifelong Non-Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 4,
+  "follow_ups": [
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 11,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 307,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 307,
+      "disease_response": "TF-Tumor Free"
+    }
+  ],
+  "initial_disease_status": null,
+  "last_follow_up_days": 307,
+  "mutation_file_count": 1,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Squamous cell carcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUSC",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-85-8277-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 1,
+  "survival_time_days": 307,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": null,
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Lifelong Non-Smoker",
+  "treatment_intent_types": "Adjuvant",
+  "treatment_or_therapy": null,
+  "treatment_outcomes": null,
+  "treatment_types": "Radiation Therapy, NOS; Pharmaceutical Therapy, NOS",
+  "treatments": [
+    {
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "unknown",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "therapeutic_agents": null,
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "unknown",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Dead",
+  "year_of_birth": null,
+  "years_smoked": null
+}
