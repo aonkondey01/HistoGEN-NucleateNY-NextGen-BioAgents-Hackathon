@@ -7,6 +7,12 @@ drafts a citation-backed virtual molecular tumor board (vMTB) report.
 The active model stack is **Phoenix**, **GigaTIME**, and **Claude Haiku** (no
 HistoTME).
 
+## Live UI (GitHub Pages)
+
+**[Haiku Patient Explorer](https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/)** — interactive UMAP + spatial TME heatmap for 20 representative TCGA lung patients.
+
+> **Pages must use the `gh-pages` branch**, not `main`. If you only see this README, go to **Settings → Pages → Deploy from branch → `gh-pages` / (root)**. See [`docs/slides/HOW_TO_OPEN_UI.md`](docs/slides/HOW_TO_OPEN_UI.md).
+
 ## Stack
 
 | Layer | Tool | Role |
