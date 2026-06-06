@@ -1,0 +1,12 @@
+<svg viewBox="0 0 840 186" role="img" aria-label="Ethnicity distribution">
+<text x="0" y="24" class="chart-title">Ethnicity distribution</text>
+<text x="0" y="71" class="axis-label">not hispanic or latino</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#f97316"></rect>
+<text x="758.0" y="71" class="value-label">649</text>
+<text x="0" y="105" class="axis-label">missing</text>
+<rect x="210" y="88" width="243.8" height="24" rx="4" fill="#f97316"></rect>
+<text x="461.8" y="105" class="value-label">293</text>
+<text x="0" y="139" class="axis-label">hispanic or latino</text>
+<rect x="210" y="122" width="11.6" height="24" rx="4" fill="#f97316"></rect>
+<text x="229.6" y="139" class="value-label">14</text>
+</svg>

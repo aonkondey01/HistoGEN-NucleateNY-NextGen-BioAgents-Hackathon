@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TCGA Lung Plot Gallery</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; background: #f8fafc; color: #0f172a; }
+    h1 { margin-bottom: 8px; }
+    .subtitle { color: #475569; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 20px; }
+    .plot-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+    .plot-card h3 { margin: 0 0 12px 0; font-size: 16px; }
+    .plot-card img { width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 8px; background: white; }
+    a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <h1>TCGA Lung Plot Gallery</h1>
+  <p class="subtitle">Standalone SVG plots for cohort demographics, driver mutations, clinical comparisons, and exploratory survival associations. Also see <a href="index.html">index.html</a> for the full report.</p>
+  <div class="grid">
+    <section class="plot-card"><h3>01_cohort_size_and_availability.svg</h3><img src="plots/01_cohort_size_and_availability.svg" alt="01_cohort_size_and_availability.svg"></section>
+    <section class="plot-card"><h3>02_luad_vs_lusc_patient_counts.svg</h3><img src="plots/02_luad_vs_lusc_patient_counts.svg" alt="02_luad_vs_lusc_patient_counts.svg"></section>
+    <section class="plot-card"><h3>03_age_distribution.svg</h3><img src="plots/03_age_distribution.svg" alt="03_age_distribution.svg"></section>
+    <section class="plot-card"><h3>04_sex_distribution.svg</h3><img src="plots/04_sex_distribution.svg" alt="04_sex_distribution.svg"></section>
+    <section class="plot-card"><h3>05_race_distribution.svg</h3><img src="plots/05_race_distribution.svg" alt="05_race_distribution.svg"></section>
+    <section class="plot-card"><h3>06_ethnicity_distribution.svg</h3><img src="plots/06_ethnicity_distribution.svg" alt="06_ethnicity_distribution.svg"></section>
+    <section class="plot-card"><h3>07_smoking_history.svg</h3><img src="plots/07_smoking_history.svg" alt="07_smoking_history.svg"></section>
+    <section class="plot-card"><h3>08_ajcc_pathologic_stage.svg</h3><img src="plots/08_ajcc_pathologic_stage.svg" alt="08_ajcc_pathologic_stage.svg"></section>
+    <section class="plot-card"><h3>09_vital_status.svg</h3><img src="plots/09_vital_status.svg" alt="09_vital_status.svg"></section>
+    <section class="plot-card"><h3>10_driver_mutation_frequency_luad_lusc.svg</h3><img src="plots/10_driver_mutation_frequency_luad_lusc.svg" alt="10_driver_mutation_frequency_luad_lusc.svg"></section>
+    <section class="plot-card"><h3>11_clinical_death_rate_by_mutation_status.svg</h3><img src="plots/11_clinical_death_rate_by_mutation_status.svg" alt="11_clinical_death_rate_by_mutation_status.svg"></section>
+    <section class="plot-card"><h3>12_clinical_median_age_by_mutation_status.svg</h3><img src="plots/12_clinical_median_age_by_mutation_status.svg" alt="12_clinical_median_age_by_mutation_status.svg"></section>
+    <section class="plot-card"><h3>13_clinical_advanced_stage_by_mutation_status.svg</h3><img src="plots/13_clinical_advanced_stage_by_mutation_status.svg" alt="13_clinical_advanced_stage_by_mutation_status.svg"></section>
+    <section class="plot-card"><h3>14_mutation_survival_pvalues.svg</h3><img src="plots/14_mutation_survival_pvalues.svg" alt="14_mutation_survival_pvalues.svg"></section>
+    <section class="plot-card"><h3>15_rna_expression_survival_pvalues.svg</h3><img src="plots/15_rna_expression_survival_pvalues.svg" alt="15_rna_expression_survival_pvalues.svg"></section>
+    <section class="plot-card"><h3>16_protein_expression_survival_pvalues.svg</h3><img src="plots/16_protein_expression_survival_pvalues.svg" alt="16_protein_expression_survival_pvalues.svg"></section>
+    <section class="plot-card"><h3>17_mutation_survival_km_NOTCH2.svg</h3><img src="plots/17_mutation_survival_km_NOTCH2.svg" alt="17_mutation_survival_km_NOTCH2.svg"></section>
+    <section class="plot-card"><h3>17_mutation_survival_km_CDKN2A.svg</h3><img src="plots/17_mutation_survival_km_CDKN2A.svg" alt="17_mutation_survival_km_CDKN2A.svg"></section>
+    <section class="plot-card"><h3>17_mutation_survival_km_TP53.svg</h3><img src="plots/17_mutation_survival_km_TP53.svg" alt="17_mutation_survival_km_TP53.svg"></section>
+    <section class="plot-card"><h3>18_rna_survival_km_FAT1.svg</h3><img src="plots/18_rna_survival_km_FAT1.svg" alt="18_rna_survival_km_FAT1.svg"></section>
+    <section class="plot-card"><h3>18_rna_survival_km_SOX2.svg</h3><img src="plots/18_rna_survival_km_SOX2.svg" alt="18_rna_survival_km_SOX2.svg"></section>
+    <section class="plot-card"><h3>18_rna_survival_km_PTEN.svg</h3><img src="plots/18_rna_survival_km_PTEN.svg" alt="18_rna_survival_km_PTEN.svg"></section>
+    <section class="plot-card"><h3>19_protein_survival_km_Sox2.svg</h3><img src="plots/19_protein_survival_km_Sox2.svg" alt="19_protein_survival_km_Sox2.svg"></section>
+    <section class="plot-card"><h3>19_protein_survival_km_BRAF_pS445.svg</h3><img src="plots/19_protein_survival_km_BRAF_pS445.svg" alt="19_protein_survival_km_BRAF_pS445.svg"></section>
+    <section class="plot-card"><h3>19_protein_survival_km_CMET_pY1235.svg</h3><img src="plots/19_protein_survival_km_CMET_pY1235.svg" alt="19_protein_survival_km_CMET_pY1235.svg"></section>
+  </div>
+</body>
+</html>

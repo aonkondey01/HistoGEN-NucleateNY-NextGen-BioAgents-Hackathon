@@ -1,0 +1,61 @@
+gene,group,n,median_age_at_diagnosis_years,female,male,white,black_or_african_american,asian,alive,dead,median_survival_time_days_observed,stage_i_or_ii,stage_iii_or_iv,progression_or_recurrence_reported_yes,disease_response_values
+ALK,mutated,50,69.0,20,30,35,3,0,26,24,731.0,49,10,16,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+ALK,not_mutated,882,67.89500000000001,351,531,628,76,17,538,344,669.0,871,173,257,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+BRAF,mutated,51,66.71000000000001,19,32,33,7,0,35,16,611.0,50,8,20,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+BRAF,not_mutated,881,68.18,352,529,630,72,17,529,352,683.5,870,175,253,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+CDKN2A,mutated,94,67.11500000000001,23,71,68,7,3,50,44,671.0,94,16,22,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+CDKN2A,not_mutated,838,68.06,348,490,595,72,14,514,324,674.0,826,167,251,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+CUL3,mutated,28,65.545,10,18,22,2,0,15,13,865.5,28,4,7,TF-Tumor Free; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+CUL3,not_mutated,904,68.22,361,543,641,77,17,549,355,670.0,892,179,266,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+DDR2,mutated,35,65.425,8,27,29,1,0,23,12,666.0,35,6,10,TF-Tumor Free; WT-With Tumor
+DDR2,not_mutated,897,68.16,363,534,634,78,17,541,356,677.0,885,177,263,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+EGFR,mutated,79,65.41,47,32,54,7,6,48,31,610.0,77,19,27,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+EGFR,not_mutated,853,68.245,324,529,609,72,11,516,337,683.0,843,164,246,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+ERBB2,mutated,23,68.64500000000001,12,11,16,1,1,14,9,761.0,23,3,8,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+ERBB2,not_mutated,909,67.99,359,550,647,78,16,550,359,671.0,897,180,265,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+FAT1,mutated,116,67.73,45,71,84,16,0,68,48,626.0,114,19,31,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+FAT1,not_mutated,816,68.015,326,490,579,63,17,496,320,677.0,806,164,242,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+FGFR1,mutated,16,63.47,8,8,11,2,0,11,5,937.0,16,7,4,TF-Tumor Free; WT-With Tumor
+FGFR1,not_mutated,916,68.06,363,553,652,77,17,553,363,671.0,904,176,269,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KEAP1,mutated,136,68.55,51,85,99,18,1,77,59,716.0,134,35,43,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KEAP1,not_mutated,796,67.935,320,476,564,61,16,487,309,669.0,786,148,230,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KMT2C,mutated,102,67.73,35,67,77,5,0,61,41,731.0,100,18,27,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KMT2C,not_mutated,830,68.065,336,494,586,74,17,503,327,669.0,820,165,246,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KMT2D,mutated,146,68.59,48,98,98,9,3,86,60,671.0,144,19,46,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KMT2D,not_mutated,786,67.89500000000001,323,463,565,70,14,478,308,674.0,776,164,227,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KRAS,mutated,140,66.91,73,67,102,14,3,90,50,607.0,136,30,45,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+KRAS,not_mutated,792,68.2,298,494,561,65,14,474,318,687.0,784,153,228,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+MET,mutated,27,71.605,13,14,17,1,0,17,10,826.0,27,4,9,TF-Tumor Free; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+MET,not_mutated,905,67.92,358,547,646,78,17,547,358,670.0,893,179,264,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NF1,mutated,110,67.42,51,59,80,14,1,61,49,801.5,107,19,45,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NF1,not_mutated,822,68.115,320,502,583,65,16,503,319,669.0,813,164,228,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NFE2L2,mutated,75,68.56,18,57,53,3,1,45,30,734.0,73,8,15,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NFE2L2,not_mutated,857,67.89500000000001,353,504,610,76,16,519,338,670.0,847,175,258,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NOTCH1,mutated,59,69.13,20,39,38,7,0,32,27,585.5,58,13,13,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NOTCH1,not_mutated,873,67.87,351,522,625,72,17,532,341,680.0,862,170,260,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NOTCH2,mutated,43,69.0,14,29,30,5,0,38,5,950.0,40,3,13,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NOTCH2,not_mutated,889,67.935,357,532,633,74,17,526,363,669.5,880,180,260,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NTRK1,mutated,34,68.7,9,25,28,1,0,23,11,737.0,33,7,10,TF-Tumor Free; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NTRK1,not_mutated,898,68.0,362,536,635,78,17,541,357,670.0,887,176,263,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NTRK2,mutated,34,63.52,17,17,26,2,1,25,9,938.0,34,4,15,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor
+NTRK2,not_mutated,898,68.17,354,544,637,77,16,539,359,670.0,886,179,258,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NTRK3,mutated,80,68.59,36,44,55,8,2,45,35,704.5,79,21,26,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+NTRK3,not_mutated,852,67.97,335,517,608,71,15,519,333,670.5,841,162,247,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+PIK3CA,mutated,82,68.47999999999999,30,52,56,7,3,43,39,642.0,80,21,22,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+PIK3CA,not_mutated,850,67.99,341,509,607,72,14,521,329,674.0,840,162,251,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+PTEN,mutated,59,71.46,16,43,46,2,1,32,27,881.0,59,9,15,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+PTEN,not_mutated,873,67.82,355,518,617,77,16,532,341,666.0,861,174,258,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+RET,mutated,42,66.885,18,24,32,1,0,26,16,562.0,41,8,11,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+RET,not_mutated,890,68.06,353,537,631,78,17,538,352,680.5,879,175,262,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+ROS1,mutated,63,69.0,21,42,49,7,0,36,27,677.0,62,11,17,TF-Tumor Free; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+ROS1,not_mutated,869,67.935,350,519,614,72,17,528,341,670.0,858,172,256,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+SMARCA4,mutated,57,66.255,16,41,46,5,1,36,21,640.5,57,10,22,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+SMARCA4,not_mutated,875,68.16,355,520,617,74,16,528,347,675.5,863,173,251,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+SOX2,mutated,5,68.64,2,3,5,0,0,3,2,1171.0,5,1,1,TF-Tumor Free
+SOX2,not_mutated,927,67.995,369,558,658,79,17,561,366,671.0,915,182,272,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+STK11,mutated,69,64.55,28,41,47,10,1,37,32,605.0,68,17,29,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+STK11,not_mutated,863,68.36,343,520,616,69,16,527,336,677.0,852,166,244,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+TP53,mutated,626,67.57499999999999,216,410,435,62,11,364,262,670.0,620,123,174,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+TP53,not_mutated,306,68.64,155,151,228,17,6,200,106,690.0,300,60,99,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+TP63,mutated,26,64.795,12,14,19,2,0,15,11,923.0,26,4,5,TF-Tumor Free; WT-With Tumor; WT-With Tumor; TF-Tumor Free
+TP63,not_mutated,906,68.03,359,547,644,77,17,549,357,670.0,894,179,268,TF-Tumor Free; TF-Tumor Free; WT-With Tumor; WT-With Tumor; WT-With Tumor; TF-Tumor Free
