@@ -6,7 +6,7 @@ The interactive UI is **not** the PowerPoint file. It is a web app you open in a
 
 ## Easiest: GitHub Pages (no ports, no install)
 
-After the deploy workflow runs on branch `cursor/emma-research-slide-deck-5384`:
+After the deploy workflow runs on `main`:
 
 **https://aonkondey01.github.io/PEAT-Nucleate-BIoHack-2026/**
 
@@ -14,7 +14,7 @@ After the deploy workflow runs on branch `cursor/emma-research-slide-deck-5384`:
 
 1. GitHub repo → **Settings** → **Pages**
 2. **Build and deployment** → Source: **GitHub Actions**
-3. Push to `cursor/emma-research-slide-deck-5384` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
+3. Push to `main` (or run workflow **Deploy Haiku UI to GitHub Pages** manually under Actions)
 
 Wait ~2–3 minutes after the workflow completes, then open the URL above.
 
@@ -27,7 +27,7 @@ Requires [Node.js](https://nodejs.org) 18+ and Python 3.
 ```bash
 git clone https://github.com/aonkondey01/PEAT-Nucleate-BIoHack-2026.git
 cd PEAT-Nucleate-BIoHack-2026
-git checkout cursor/emma-research-slide-deck-5384
+git checkout main
 bash scripts/run_haiku_ui.sh
 ```
 

@@ -2,7 +2,10 @@ name: Deploy Haiku UI to GitHub Pages
 
 on:
   push:
-    branches: [cursor/emma-research-slide-deck-5384]
+    branches: [main]
+    paths:
+      - "ui/haiku-patient-explorer/**"
+      - ".github/workflows/deploy-haiku-ui.yml"
   workflow_dispatch:
 
 permissions:
