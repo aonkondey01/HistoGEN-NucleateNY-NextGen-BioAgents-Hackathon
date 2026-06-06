@@ -1,0 +1,257 @@
+:root {
+  --navy: #003366;
+  --teal: #008080;
+  --bg: #f4f6f9;
+  --panel: #ffffff;
+  --border: #d8dee9;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #cc5500;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: var(--navy);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+header p {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 360px;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  height: calc(100vh - 64px);
+  min-height: 640px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel-header {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.panel-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+select,
+button {
+  font: inherit;
+  font-size: 0.78rem;
+}
+
+select {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.45rem;
+  background: white;
+}
+
+#heatmap-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.center-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #eef2f7, #f8fafc);
+  color: var(--muted);
+  text-align: center;
+  padding: 1rem;
+}
+
+.center-placeholder strong {
+  display: block;
+  color: var(--navy);
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.right-stack {
+  display: grid;
+  grid-template-rows: 1.1fr 0.55fr 0.7fr 0.55fr;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+.right-stack .panel {
+  min-height: 0;
+}
+
+#embedding-plot {
+  width: 100%;
+  height: 100%;
+}
+
+.patient-card {
+  padding: 0.75rem 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.patient-card dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.25rem 0.5rem;
+}
+
+.patient-card dt {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.patient-card dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.signature-bars {
+  padding: 0.65rem 0.85rem;
+  overflow: auto;
+  height: 100%;
+}
+
+.sig-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 36px;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+}
+
+.sig-row .bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sig-row .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--navy));
+  border-radius: 4px;
+}
+
+.survival-placeholder {
+  padding: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.survival-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.survival-bar span {
+  display: block;
+  height: 100%;
+  background: var(--teal);
+}
+
+.legend {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.68rem;
+  z-index: 2;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.15rem 0;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+  }
+
+  .right-stack {
+    grid-template-rows: 360px auto auto auto;
+  }
+}
