@@ -110,10 +110,16 @@ def main() -> int:
 
     svs = args.svs
     if svs is None:
-        hits = sorted((DATA_DIR.parent / "tcga_lung" / "WSI").rglob(f"*{case_id}*.svs"))
-        svs = hits[0] if hits else None
+        import sys
+
+        demo_paths = DATA_DIR.parent / "demo"
+        if str(demo_paths) not in sys.path:
+            sys.path.insert(0, str(demo_paths))
+        from paths import find_wsi
+
+        svs = find_wsi(case_id)
     if svs is None or not svs.exists():
-        raise SystemExit("Need --svs or downloaded WSI")
+        raise SystemExit("Need --svs or downloaded WSI under demo/WSI/ or data/tcga_lung/WSI/")
 
     coords_phx, gene_values = _load_cells(cells_path)
     he_thumb = np.asarray(Image.open(thumb_path).convert("RGB"))

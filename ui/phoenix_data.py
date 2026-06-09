@@ -53,11 +53,12 @@ def load_gene_summary(case_id: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     with path.open(encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
+            mean_key = "mean" if "mean" in row else "mean_readout"
             rows.append({
                 "gene": row["gene"],
-                "mean": float(row["mean"]),
+                "mean": float(row[mean_key]),
                 "nonzeroFraction": float(row["nonzero_fraction"]),
-                "max": float(row["max"]),
+                "max": float(row.get("max") or row[mean_key]),
             })
     rows.sort(key=lambda item: item["mean"], reverse=True)
     return rows

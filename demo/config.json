@@ -9,6 +9,6 @@
     "gigatime_weights": "data/gigatime",
     "gigatime_outputs": "demo/gigatime/outputs",
     "haiku_outputs": "demo/haiku",
-    "ui_assets": "demo/ui"
+    "phoenix_bundles": "demo/data_package/per_patient"
   }
 }

@@ -21,9 +21,9 @@
 | WSI download | `scripts/demo/fetch_wsi.py` → `demo/WSI/` | `data/tcga_lung/download.py` → `data/tcga_lung/WSI/` |
 | PHOENIX atlas | `scripts/demo/fetch_phoenix.py` → `demo/phoenix/` | `data/phoenix/fetch.py` |
 | GigaTIME | `scripts/demo/run_gigatime.py` (GPU) | fetch weights only in `data/gigatime/` |
-| Haiku embeddings | `scripts/demo/run_haiku.py` → `demo/haiku/` | N/A (mock in UI) |
+| Haiku embeddings | `scripts/demo/run_haiku.py` → `demo/haiku/` | N/A (backend only) |
+| PHOENIX bundles | `scripts/demo/extract_phoenix_bundles.py` → `demo/data_package/` | `data/phoenix/extract_slide_readouts.py` |
 | Cohort figures | `demo/visual_report/` | — |
-| Per-patient bundles | `demo/data_package/per_patient/` | — |
 
 Path module: `demo/paths.py`. Config: `demo/config.json`.
 
@@ -88,14 +88,15 @@ python scripts/demo/run_gigatime.py           # GPU inference on demo WSIs
 
 ### UI
 
-- **Only UI:** HistoGEN Advisor dashboard — `ui/index.html` + `ui/protein_server.py`
+- **Only UI:** HistoGEN Advisor — `ui/index.html` + `ui/protein_server.py` ([`docs/UI.md`](docs/UI.md))
 - Run: `bash scripts/run_ui.sh` → port **8080**
-- Chat embeds **protein structures** (`/api/protein/structure`) and **cohort figures** (`/api/agent/cohort-figures`)
-- Demo data: `demo/` (20 patients, PHOENIX bundles, `demo_cache/gigatime_structures/`)
-- **Removed:** `ui/haiku-patient-explorer/` (Taylor/Emma Vite alternates)
+- Chat: protein structures + cohort figures; viewer: PHOENIX RNA (registered coords) + protein mode
+- PHOENIX: extract from AnnData + contour/flow registration (`data/phoenix/registration.py`, `scripts/demo/extract_phoenix_bundles.py`)
+- **Do not restore** Taylor Vite explorer, Emma spatial UI, or `demo/ui/` JSON
 
 ```bash
 bash scripts/run_ui.sh
+python scripts/demo/extract_phoenix_bundles.py   # after fetch_phoenix.py
 ```
 
 ## UI content generation (agent reference)
@@ -133,9 +134,11 @@ Set `?demo=0` on the dashboard URL to enable SVS drag-drop upload.
 | RNA | PHOENIX | enabled |
 | Protein | GigaTIME | enabled |
 
-### Regenerate demo UI assets (20 patients)
+### Regenerate PHOENIX demo bundles (20 patients)
 
 ```bash
+python scripts/demo/fetch_phoenix.py
+python scripts/demo/extract_phoenix_bundles.py
 python scripts/demo/build_ui_assets.py --skip-download
 ```
 
@@ -154,4 +157,4 @@ python scripts/demo/build_ui_assets.py --skip-download
 |--------|--------|
 | Scripts, manifests, metadata CSV/JSON | `demo/WSI/`, `data/**/WSI/`, `*.svs`, `*.zarr/` |
 | `demo/data_package/` small bundles | `demo/phoenix/*.h5ad`, GigaTIME `model.pth` |
-| UI HTML/CSS/JS, `demo/ui/*.json` | Large atlases, inference outputs |
+| UI HTML/CSS/JS, cohort figures | `demo/phoenix/*.h5ad`, GigaTIME `model.pth` |

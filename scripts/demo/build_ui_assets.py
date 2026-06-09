@@ -17,10 +17,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "demo"))
 from paths import (  # noqa: E402
     BUNDLE_ROOT,
+    DEMO_ROOT,
     MANIFEST,
     PATIENTS_JSON,
     SLIDES_META,
-    UI_DATA,
     WSI_DIR,
     atlas_path,
     find_wsi,
@@ -122,7 +122,6 @@ def process_patient(case_id: str, *, skip_registration: bool) -> dict:
     svs = find_wsi(case_id)
     if svs is None:
         status["steps"].append("missing_wsi")
-        _export_ui_spatial_from_phoenix(bundle, case_id, UI_DATA / f"spatial_heatmap_{case_id}.json")
         return status
 
     previews = bundle / "slide_previews"
@@ -145,18 +144,25 @@ def process_patient(case_id: str, *, skip_registration: bool) -> dict:
         _run([sys.executable, str(TCGA_LUNG / "slide.py"), "crop", str(svs), "--out", str(crop)])
         status["steps"].append("slide_png")
 
-    if not skip_registration and not (bundle / "phoenix_registration" / "phoenix_cells_registered.csv").exists():
-        _run([sys.executable, str(PHOENIX / "register_phoenix_to_he.py"), "--case", case_id, "--svs", str(svs)])
-        status["steps"].append("registration")
-
     reg_csv = bundle / "phoenix_registration" / "phoenix_cells_registered.csv"
-    ui_spatial = UI_DATA / f"spatial_heatmap_{case_id}.json"
     if reg_csv.exists():
-        _export_ui_spatial_from_registered(reg_csv, case_id, ui_spatial)
-        status["steps"].append("ui_spatial_registered")
-    else:
-        _export_ui_spatial_from_phoenix(bundle, case_id, ui_spatial)
-        status["steps"].append("ui_spatial_phoenix")
+        status["steps"].append("registration_present")
+    elif not skip_registration:
+        svs = find_wsi(case_id)
+        if svs is not None and (bundle / "phoenix_cells.csv").exists():
+            _run(
+                [
+                    sys.executable,
+                    str(PHOENIX / "register_phoenix_to_he.py"),
+                    "--case",
+                    case_id,
+                    "--svs",
+                    str(svs),
+                ]
+            )
+            status["steps"].append("registration")
+        else:
+            status["steps"].append("registration_skipped")
 
     return status
 
@@ -205,10 +211,10 @@ def main() -> int:
         except subprocess.CalledProcessError as err:
             results.append({"case_id": cid, "error": str(err)})
 
-    UI_DATA.mkdir(parents=True, exist_ok=True)
-    (UI_DATA / "representative_assets_summary.json").write_text(json.dumps(results, indent=2))
+    summary_path = DEMO_ROOT / "representative_assets_summary.json"
+    summary_path.write_text(json.dumps(results, indent=2))
 
-    print(f"\nWrote UI assets under {UI_DATA}")
+    print(f"\nWrote asset summary to {summary_path}")
     return 0
 
 

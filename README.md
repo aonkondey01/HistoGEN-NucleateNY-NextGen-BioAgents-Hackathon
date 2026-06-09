@@ -39,7 +39,7 @@ bash scripts/run_ui.sh
 # → http://localhost:8080
 ```
 
-One app: **HistoGen Advisor** chat (protein structures + cohort figure plots), PHOENIX RNA viewer, 20-patient cluster graph. Demo data in `demo/`.
+One app: **HistoGen Advisor** — chat (protein structures + cohort plots), PHOENIX RNA viewer (contour+flow registered coords), 20-patient cluster graph. See [`docs/UI.md`](docs/UI.md).
 
 Public tunnel if needed: `bash scripts/start_public_ui.sh`
 

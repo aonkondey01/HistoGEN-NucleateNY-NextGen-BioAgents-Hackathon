@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 
 import httpx
@@ -23,6 +24,7 @@ load_dotenv(UI_DIR / ".env")
 
 from cohort_figures import has_cohort_figures, list_figures, match_figure
 from patient_data import GENE_COLORS, get_patient, load_representative_patients, nearest_patients
+from phoenix_bootstrap import clear_phoenix_caches, ensure_phoenix_bundle
 from phoenix_data import bundle_manifest, get_expression, has_phoenix_bundle
 from protein_cache import (
     list_demo_genes,
@@ -219,14 +221,42 @@ async def patient_detail(case_id: str):
         "phoenix": has_phoenix_bundle(case_id),
     }
     if payload["phoenix"]:
-        payload["phoenixManifest"] = bundle_manifest(case_id)
+        try:
+            _resolve_phoenix_bundle(case_id)
+            clear_phoenix_caches()
+            payload["phoenixManifest"] = bundle_manifest(case_id)
+        except HTTPException:
+            payload["phoenix"] = False
     return payload
+
+
+def _resolve_phoenix_bundle(case_id: str) -> None:
+    """Ensure PHOENIX CSV + registered coords exist (extract from AnnData on demand)."""
+    if has_phoenix_bundle(case_id):
+        return
+    try:
+        if ensure_phoenix_bundle(case_id):
+            clear_phoenix_caches()
+    except subprocess.CalledProcessError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"PHOENIX extract/register failed for {case_id!r}: {exc}",
+        ) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    if not has_phoenix_bundle(case_id):
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"No PHOENIX bundle for {case_id!r}. "
+                "Run: python scripts/demo/fetch_phoenix.py && python scripts/demo/extract_phoenix_bundles.py"
+            ),
+        )
 
 
 @app.get("/api/phoenix/{case_id}")
 async def phoenix_bundle(case_id: str):
-    if not has_phoenix_bundle(case_id):
-        raise HTTPException(status_code=404, detail=f"No PHOENIX bundle for {case_id!r}")
+    _resolve_phoenix_bundle(case_id)
     return bundle_manifest(case_id)
 
 
@@ -235,8 +265,7 @@ async def phoenix_expression(
     case_id: str,
     gene: str = Query(..., min_length=1, max_length=32, pattern=r"^[A-Za-z0-9-]+$"),
 ):
-    if not has_phoenix_bundle(case_id):
-        raise HTTPException(status_code=404, detail=f"No PHOENIX bundle for {case_id!r}")
+    _resolve_phoenix_bundle(case_id)
     try:
         return get_expression(case_id, gene.upper())
     except KeyError as exc:
@@ -266,8 +295,7 @@ async def agent_cohort_figure_match(q: str = Query(..., min_length=2, max_length
 
 @app.get("/api/phoenix/{case_id}/heatmap")
 async def phoenix_heatmap(case_id: str):
-    if not has_phoenix_bundle(case_id):
-        raise HTTPException(status_code=404, detail=f"No PHOENIX bundle for {case_id!r}")
+    _resolve_phoenix_bundle(case_id)
     path = (
         DEMO_DIR
         / "data_package/per_patient"

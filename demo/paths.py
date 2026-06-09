@@ -19,7 +19,6 @@ PHOENIX_ATLAS = PHOENIX_DIR / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
 GIGATIME_DIR = DEMO_ROOT / "gigatime"
 GIGATIME_OUT = GIGATIME_DIR / "outputs"
 HAIKU_DIR = DEMO_ROOT / "haiku"
-UI_DATA = DEMO_ROOT / "ui"
 
 # Fallback when atlas was fetched to the general phoenix helper location.
 LEGACY_PHOENIX_ATLAS = REPO_ROOT / "data" / "phoenix" / "atlas" / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
