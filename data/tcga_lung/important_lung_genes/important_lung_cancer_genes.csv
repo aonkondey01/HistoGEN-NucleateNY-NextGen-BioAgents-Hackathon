@@ -1,0 +1,31 @@
+gene,disease_context,category,notes,has_rppa_target,rppa_targets
+ALK,LUAD,targetable_fusion_driver,"Usually detected as a fusion, not fully captured by MAF SNV/indel calls.",False,
+BRAF,LUAD,targetable_driver,BRAF V600E is clinically actionable.,True,BRAF; BRAF_pS445
+CDKN2A,LUSC,cell_cycle_tumor_suppressor,Cell-cycle tumor suppressor loss is common in LUSC.,True,P16INK4A
+CUL3,LUSC,oxidative_stress_pathway,NRF2/KEAP1/CUL3 pathway.,False,
+DDR2,LUSC,kinase,Less common LUSC kinase alteration.,False,
+EGFR,LUAD,targetable_driver,Activating EGFR mutations are clinically actionable in LUAD.,True,EGFR; EGFR_pY1068; EGFR_pY1173
+ERBB2,LUAD,targetable_driver,HER2/ERBB2 insertions and amplifications can be actionable.,True,HER2; HER2_pY1248
+FAT1,LUSC,tumor_suppressor,Common LUSC tumor suppressor alteration.,False,
+FGFR1,LUSC,copy_number_driver,"Potential therapeutic relevance, often amplified.",False,
+KEAP1,"LUAD,LUSC",oxidative_stress_pathway,NRF2/oxidative-stress pathway alteration.,False,
+KMT2C,LUSC,chromatin_modifier,Chromatin modifier alteration.,False,
+KMT2D,LUSC,chromatin_modifier,Chromatin modifier alteration.,False,
+KRAS,LUAD,targetable_driver,Common LUAD driver; KRAS G12C is clinically actionable.,False,
+MET,LUAD,targetable_driver,MET exon 14 skipping/amplification can be actionable; MAF may not fully capture exon skipping.,True,CMET; CMET_pY1235
+NF1,LUAD,ras_pathway,RAS pathway alteration.,False,
+NFE2L2,"LUAD,LUSC",oxidative_stress_pathway,NRF2 transcription factor; recurrent in LUSC.,True,NRF2
+NOTCH1,LUSC,squamous_differentiation,Squamous differentiation/tumor suppressor pathway.,True,NOTCH1; Notch1-cleaved
+NOTCH2,LUSC,squamous_differentiation,Squamous differentiation/tumor suppressor pathway.,False,
+NTRK1,LUAD,targetable_fusion_driver,Rare targetable fusion gene.,False,
+NTRK2,LUAD,targetable_fusion_driver,Rare targetable fusion gene.,False,
+NTRK3,LUAD,targetable_fusion_driver,Rare targetable fusion gene.,False,
+PIK3CA,"LUAD,LUSC",pi3k_pathway,PI3K pathway mutation/amplification.,True,PI3KP110ALPHA
+PTEN,LUSC,pi3k_pathway,PI3K pathway dysregulation through PTEN loss.,True,PTEN
+RET,LUAD,targetable_fusion_driver,Usually detected as a fusion.,True,RET_pY905
+ROS1,LUAD,targetable_fusion_driver,Usually detected as a fusion.,False,
+SMARCA4,LUAD,tumor_suppressor,Associated with aggressive biology in subsets of LUAD.,False,
+SOX2,LUSC,squamous_lineage,"Squamous lineage driver, often amplified.",True,Sox2
+STK11,LUAD,tumor_suppressor,Important LUAD co-mutation and immunotherapy-resistance context.,True,LKB1
+TP53,"LUAD,LUSC",tumor_suppressor,"Very common in lung cancer, especially LUSC.",True,P53
+TP63,LUSC,squamous_lineage,"Squamous lineage driver, often amplified.",True,P63

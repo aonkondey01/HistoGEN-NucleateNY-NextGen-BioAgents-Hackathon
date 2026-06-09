@@ -1,0 +1,81 @@
+{
+  "cases_per_project": {
+    "TCGA-LUAD": 585,
+    "TCGA-LUSC": 504
+  },
+  "cases_with_diagnostic_slides": 956,
+  "ethnicity": {
+    "Unknown": 12,
+    "hispanic or latino": 15,
+    "not hispanic or latino": 708,
+    "not reported": 291
+  },
+  "expanded_relationships": [
+    "project",
+    "demographic",
+    "diagnoses",
+    "diagnoses.treatments",
+    "exposures",
+    "family_histories",
+    "follow_ups",
+    "samples"
+  ],
+  "filters": {
+    "content": {
+      "field": "project.project_id",
+      "value": [
+        "TCGA-LUAD",
+        "TCGA-LUSC"
+      ]
+    },
+    "op": "in"
+  },
+  "gender": {
+    "female": 411,
+    "male": 615
+  },
+  "generated_unix": 1780692159,
+  "outputs": {
+    "patient_summary_tsv": "clinical_patient_summary.tcga_lung.tsv",
+    "raw_json": "clinical_metadata.tcga_lung.json",
+    "summary_json": "clinical_summary.tcga_lung.json"
+  },
+  "primary_diagnosis": {
+    "Acinar cell carcinoma": 24,
+    "Adenocarcinoma with mixed subtypes": 107,
+    "Adenocarcinoma, NOS": 318,
+    "Basaloid squamous cell carcinoma": 14,
+    "Bronchio-alveolar carcinoma, mucinous": 5,
+    "Bronchiolo-alveolar adenocarcinoma, NOS": 3,
+    "Bronchiolo-alveolar carcinoma, non-mucinous": 19,
+    "Clear cell adenocarcinoma, NOS": 2,
+    "Invasive micropapillary carcinoma": 3,
+    "Mucinous adenocarcinoma": 14,
+    "Papillary adenocarcinoma, NOS": 22,
+    "Papillary squamous cell carcinoma": 4,
+    "Signet ring cell carcinoma": 1,
+    "Solid carcinoma, NOS": 5,
+    "Squamous cell carcinoma, NOS": 468,
+    "Squamous cell carcinoma, keratinizing, NOS": 13,
+    "Squamous cell carcinoma, large cell, nonkeratinizing, NOS": 3,
+    "Squamous cell carcinoma, small cell, nonkeratinizing": 1
+  },
+  "projects": [
+    "TCGA-LUAD",
+    "TCGA-LUSC"
+  ],
+  "race": {
+    "Unknown": 6,
+    "american indian or alaska native": 1,
+    "asian": 17,
+    "black or african american": 84,
+    "not reported": 174,
+    "white": 744
+  },
+  "source": "https://api.gdc.cancer.gov/cases",
+  "total_cases": 1089,
+  "vital_status": {
+    "Alive": 618,
+    "Dead": 408
+  }
+}

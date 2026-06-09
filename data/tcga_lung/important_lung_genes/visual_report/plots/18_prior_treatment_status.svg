@@ -1,0 +1,12 @@
+<svg viewBox="0 0 840 186" role="img" aria-label="Prior treatment status">
+<text x="0" y="24" class="chart-title">Prior treatment status</text>
+<text x="0" y="71" class="axis-label">No prior treatment reported</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="758.0" y="71" class="value-label">643</text>
+<text x="0" y="105" class="axis-label">Any prior treatment reported</text>
+<rect x="210" y="88" width="262.0" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="480.0" y="105" class="value-label">312</text>
+<text x="0" y="139" class="axis-label">Not reported</text>
+<rect x="210" y="122" width="1.0" height="24" rx="4" fill="#3b82f6"></rect>
+<text x="219.0" y="139" class="value-label">1</text>
+</svg>

@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+
+# Generated slide PNG previews (copied into per_patient bundles when extracted)
+previews/
+
+# Downloaded whole-slide images (hundreds of GB) — never commit
+WSI/
+*.svs
+*.svs.part
+*.limit.txt
+
+# Downloaded molecular payloads can be several GB; commit manifests instead
+molecular_data/
+*.maf.gz
+*.maf.gz.part
+*.rna_seq.*.tsv
+*.rna_seq.*.tsv.part

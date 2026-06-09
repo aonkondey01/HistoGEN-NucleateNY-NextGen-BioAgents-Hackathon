@@ -1,0 +1,12 @@
+<svg viewBox="0 0 840 186" role="img" aria-label="Resistance proxies (progression, progressive disease, residual tumor)">
+<text x="0" y="24" class="chart-title">Resistance proxies (progression, progressive disease, residual tumor)</text>
+<text x="0" y="71" class="axis-label">Progression/recurrence reported</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#dc2626"></rect>
+<text x="758.0" y="71" class="value-label">283</text>
+<text x="0" y="105" class="axis-label">Disease response: with tumor</text>
+<rect x="210" y="88" width="345.4" height="24" rx="4" fill="#dc2626"></rect>
+<text x="563.4" y="105" class="value-label">181</text>
+<text x="0" y="139" class="axis-label">Treatment outcome: Progressive Disease</text>
+<rect x="210" y="122" width="118.3" height="24" rx="4" fill="#dc2626"></rect>
+<text x="336.3" y="139" class="value-label">62</text>
+</svg>

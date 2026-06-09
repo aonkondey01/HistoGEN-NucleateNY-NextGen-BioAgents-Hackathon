@@ -1,0 +1,9 @@
+demo/genomic_data/raw_files/methylation/
+demo/genomic_data/raw_files/gene_level_copy_number/
+demo/genomic_data/raw_files/copy_number_segment/
+demo/genomic_data/raw_files/mirna/
+demo/data_package/genome_wide_gene_expression.csv
+demo/data_package/per_patient/*/genome_wide_gene_expression.csv
+demo/genomic_data/parsed_tables/gene_level_copy_number.csv
+!demo/genomic_data/raw_files/maf/**/*.maf.gz
+__pycache__/

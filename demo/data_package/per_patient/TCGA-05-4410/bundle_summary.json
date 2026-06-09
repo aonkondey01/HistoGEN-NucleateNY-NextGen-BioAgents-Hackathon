@@ -1,0 +1,10 @@
+{
+  "case_id": "d28e465c-e553-4c53-8bb7-3d8199b9a8a5",
+  "case_submitter_id": "TCGA-05-4410",
+  "molecular_file_count": 2,
+  "mutation_rows": 1156,
+  "project_id": "TCGA-LUAD",
+  "rna_rows": 60660,
+  "rppa_rows": 487,
+  "slide_count": 1
+}

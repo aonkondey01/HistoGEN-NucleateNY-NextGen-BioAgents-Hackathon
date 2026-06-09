@@ -1,0 +1,9 @@
+<svg viewBox="0 0 840 152" role="img" aria-label="LUAD vs LUSC patient counts">
+<text x="0" y="24" class="chart-title">LUAD vs LUSC patient counts</text>
+<text x="0" y="71" class="axis-label">TCGA-LUAD</text>
+<rect x="210" y="54" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="71" class="value-label">478</text>
+<text x="0" y="105" class="axis-label">TCGA-LUSC</text>
+<rect x="210" y="88" width="540.0" height="24" rx="4" fill="#7c3aed"></rect>
+<text x="758.0" y="105" class="value-label">478</text>
+</svg>

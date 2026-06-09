@@ -1,0 +1,12 @@
+{
+  "case_id": "079ae0b3-b64b-4b8e-ab7d-225b8046568c",
+  "case_submitter_id": "TCGA-86-7954",
+  "molecular_file_count": 2,
+  "mutation_rows": 225,
+  "project_id": "TCGA-LUAD",
+  "rna_rows": 60660,
+  "rppa_rows": 487,
+  "slide_count": 1,
+  "phoenix_cells": 1280,
+  "phoenix_genes": 377
+}

@@ -1,0 +1,186 @@
+{
+  "age_at_diagnosis_days": 22800,
+  "age_at_diagnosis_years": 62.42,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N1",
+  "ajcc_pathologic_stage": "Stage IIB",
+  "ajcc_pathologic_t": "T2",
+  "alcohol_history": null,
+  "case_id": "fd9ee494-65fe-4de4-adff-7952a059b17f",
+  "case_submitter_id": "TCGA-60-2698",
+  "cigarettes_per_day": null,
+  "days_to_birth": -22800,
+  "days_to_death": 311,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 311,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": 181,
+  "days_to_treatment_start": 175,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 22800,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N1",
+      "ajcc_pathologic_stage": "Stage IIB",
+      "ajcc_pathologic_t": "T2",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 311.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Squamous cell carcinoma, NOS",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "days_to_treatment_start": 180,
+          "initial_disease_status": "Progressive Disease",
+          "therapeutic_agents": "Cisplatin",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_start": 180,
+          "initial_disease_status": "Progressive Disease",
+          "therapeutic_agents": "Plicamycin",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_start": 180,
+          "initial_disease_status": "Progressive Disease",
+          "therapeutic_agents": "Vincristine",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 181,
+          "days_to_treatment_start": 175,
+          "initial_disease_status": "Progressive Disease",
+          "therapeutic_agents": null,
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation, External Beam"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 22914,
+      "days_to_diagnosis": 114,
+      "primary_diagnosis": "Not Reported",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "initial_disease_status": "Not Reported",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "initial_disease_status": "Not Reported",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 2,
+  "disease_response": "WT-With Tumor",
+  "ethnicity": null,
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "tobacco_smoking_status": "Current Reformed Smoker for < or = 15 yrs"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 4,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 311,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 114,
+      "progression_or_recurrence": "Yes"
+    },
+    {
+      "days_to_follow_up": 311,
+      "disease_response": "WT-With Tumor"
+    }
+  ],
+  "initial_disease_status": "Progressive Disease",
+  "last_follow_up_days": 311,
+  "mutation_file_count": 2,
+  "pack_years_smoked": null,
+  "primary_diagnosis": "Squamous cell carcinoma, NOS",
+  "prior_malignancy": "no",
+  "prior_treatment": "No; Yes",
+  "progression_or_recurrence": "Yes",
+  "project_id": "TCGA-LUSC",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-60-2698-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 1,
+  "survival_time_days": 311,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Cisplatin; Plicamycin; Vincristine",
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Current Reformed Smoker for < or = 15 yrs",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "yes",
+  "treatment_outcomes": null,
+  "treatment_types": "Chemotherapy; Radiation, External Beam; Pharmaceutical Therapy, NOS; Radiation Therapy, NOS",
+  "treatments": [
+    {
+      "days_to_treatment_start": 180,
+      "initial_disease_status": "Progressive Disease",
+      "therapeutic_agents": "Cisplatin",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_start": 180,
+      "initial_disease_status": "Progressive Disease",
+      "therapeutic_agents": "Plicamycin",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_start": 180,
+      "initial_disease_status": "Progressive Disease",
+      "therapeutic_agents": "Vincristine",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 181,
+      "days_to_treatment_start": 175,
+      "initial_disease_status": "Progressive Disease",
+      "therapeutic_agents": null,
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation, External Beam"
+    },
+    {
+      "initial_disease_status": "Not Reported",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "initial_disease_status": "Not Reported",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Dead",
+  "year_of_birth": null,
+  "years_smoked": null
+}

@@ -1,0 +1,40 @@
+{
+  "case_id": "TCGA-70-6722",
+  "affine_thumb": [
+    [
+      0.0,
+      0.0,
+      751.0
+    ],
+    [
+      0.0,
+      0.0,
+      1455.0
+    ]
+  ],
+  "flow_crop_origin": [
+    9,
+    0
+  ],
+  "flow_shape": [
+    1487,
+    1307,
+    2
+  ],
+  "metrics": {
+    "tissue_overlap_affine": 1.0,
+    "tissue_overlap_warped": 1.0,
+    "icp_contour_error_px": 0.0,
+    "flow_mean_px": 0.06536439806222916,
+    "flow_max_px": 9.646953582763672
+  },
+  "coordinate_map": {
+    "magnification_scale": 2.0,
+    "swap_axes": true,
+    "offset_x": 0.0,
+    "offset_y": 0.0,
+    "flip_x": false,
+    "flip_y": false,
+    "notes": "PHOENIX obsm spatial is 20x pixels with axes swapped vs OpenSlide level-0: slide_x=phoenix_y*2, slide_y=phoenix_x*2"
+  }
+}

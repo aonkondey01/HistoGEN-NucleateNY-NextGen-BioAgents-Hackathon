@@ -1,0 +1,12 @@
+{
+  "case_id": "ff7099e1-8ff9-48e4-842d-46e98076e7e6",
+  "case_submitter_id": "TCGA-L3-A524",
+  "molecular_file_count": 2,
+  "mutation_rows": 369,
+  "project_id": "TCGA-LUSC",
+  "rna_rows": 60660,
+  "rppa_rows": 487,
+  "slide_count": 1,
+  "phoenix_cells": 1280,
+  "phoenix_genes": 377
+}

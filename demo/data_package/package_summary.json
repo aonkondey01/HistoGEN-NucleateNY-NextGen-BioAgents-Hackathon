@@ -1,0 +1,21 @@
+{
+  "clinical_records": 20,
+  "genome_wide_rna_rows": 1334520,
+  "important_gene_mutation_rows": 130,
+  "important_gene_rna_rows": 660,
+  "important_gene_rppa_rows": 280,
+  "molecular_file_records": 44,
+  "notes": [
+    "Clinical metadata includes demographics, staging, smoking, survival, and treatment fields extracted from GDC.",
+    "Genome-wide RNA expression uses GDC STAR - Counts augmented gene count files.",
+    "Proteomics uses TCGA RPPA protein expression tables (all peptide targets).",
+    "Somatic mutations use GDC open masked MAF files (SNVs/indels).",
+    "Important-gene tables are a focused subset of the 30 lung driver genes used elsewhere in this repo.",
+    "Diagnostic H&E slide metadata is included; raw SVS files are not downloaded here."
+  ],
+  "output_directory": "/workspace/data/tcga_lung/representative_patients/data_package",
+  "patient_count": 20,
+  "rppa_protein_rows": 6818,
+  "slide_records": 20,
+  "somatic_mutation_rows": 14892
+}

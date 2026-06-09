@@ -1,0 +1,15 @@
+# Large data files (downloaded, never committed)
+*.h5ad
+*.h5
+*.zarr/
+atlas/
+__pycache__/
+
+# PHOENIX inference weights — never commit
+weights/
+statistics/
+panels/
+*.pth
+*.pt
+*.npz
+*.npy

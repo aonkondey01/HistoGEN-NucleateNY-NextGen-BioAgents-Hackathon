@@ -1,0 +1,47 @@
+<svg viewBox="0 0 920 518" role="img" aria-label="Stage III/IV rate by mutation status (top genes)">
+<text x="0" y="24" class="chart-title">Stage III/IV rate by mutation status (top genes)</text>
+<rect x="120" y="36" width="16" height="10" fill="#3b82f6"></rect>
+<text x="142" y="45" class="legend">Mutated</text>
+<rect x="230" y="36" width="16" height="10" fill="#f97316"></rect>
+<text x="252" y="45" class="legend">Not mutated</text>
+<text x="0" y="78" class="axis-label">TP53</text>
+<rect x="120" y="58" width="531.4" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="74" width="530.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="659.4" y="78" class="value-label">19.6% stage III/IV vs 19.6% stage III/IV</text>
+<text x="0" y="118" class="axis-label">KMT2D</text>
+<rect x="120" y="98" width="352.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="114" width="564.4" height="12" rx="3" fill="#f97316"></rect>
+<text x="692.4" y="118" class="value-label">13.0% stage III/IV vs 20.9% stage III/IV</text>
+<text x="0" y="158" class="axis-label">KRAS</text>
+<rect x="120" y="138" width="579.6" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="154" width="522.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="707.6" y="158" class="value-label">21.4% stage III/IV vs 19.3% stage III/IV</text>
+<text x="0" y="198" class="axis-label">KEAP1</text>
+<rect x="120" y="178" width="696.1" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="194" width="502.9" height="12" rx="3" fill="#f97316"></rect>
+<text x="824.1" y="198" class="value-label">25.7% stage III/IV vs 18.6% stage III/IV</text>
+<text x="0" y="238" class="axis-label">FAT1</text>
+<rect x="120" y="218" width="443.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="234" width="543.6" height="12" rx="3" fill="#f97316"></rect>
+<text x="671.6" y="238" class="value-label">16.4% stage III/IV vs 20.1% stage III/IV</text>
+<text x="0" y="278" class="axis-label">NF1</text>
+<rect x="120" y="258" width="467.2" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="274" width="539.6" height="12" rx="3" fill="#f97316"></rect>
+<text x="667.6" y="278" class="value-label">17.3% stage III/IV vs 20.0% stage III/IV</text>
+<text x="0" y="318" class="axis-label">KMT2C</text>
+<rect x="120" y="298" width="477.3" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="314" width="537.7" height="12" rx="3" fill="#f97316"></rect>
+<text x="665.7" y="318" class="value-label">17.6% stage III/IV vs 19.9% stage III/IV</text>
+<text x="0" y="358" class="axis-label">CDKN2A</text>
+<rect x="120" y="338" width="460.4" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="354" width="539.0" height="12" rx="3" fill="#f97316"></rect>
+<text x="667.0" y="358" class="value-label">17.0% stage III/IV vs 19.9% stage III/IV</text>
+<text x="0" y="398" class="axis-label">PIK3CA</text>
+<rect x="120" y="378" width="692.7" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="394" width="515.5" height="12" rx="3" fill="#f97316"></rect>
+<text x="820.7" y="398" class="value-label">25.6% stage III/IV vs 19.1% stage III/IV</text>
+<text x="0" y="438" class="axis-label">NTRK3</text>
+<rect x="120" y="418" width="710.0" height="12" rx="3" fill="#3b82f6"></rect>
+<rect x="120" y="434" width="514.3" height="12" rx="3" fill="#f97316"></rect>
+<text x="838.0" y="438" class="value-label">26.2% stage III/IV vs 19.0% stage III/IV</text>
+</svg>

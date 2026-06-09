@@ -1,0 +1,252 @@
+{
+  "age_at_diagnosis_days": 15162,
+  "age_at_diagnosis_years": 41.51,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IIB",
+  "ajcc_pathologic_t": "T3",
+  "alcohol_history": null,
+  "case_id": "2a394996-809f-459f-a647-d209921ccbd2",
+  "case_submitter_id": "TCGA-73-A9RS",
+  "cigarettes_per_day": null,
+  "days_to_birth": -15162,
+  "days_to_death": 340,
+  "days_to_diagnosis": 0,
+  "days_to_last_follow_up": 340,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": 284,
+  "days_to_treatment_start": 53,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 15162,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IIB",
+      "ajcc_pathologic_t": "T3",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 340.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Mucinous adenocarcinoma",
+      "prior_malignancy": "no",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "days_to_treatment_end": 53,
+          "days_to_treatment_start": 53,
+          "therapeutic_agents": null,
+          "treatment_intent_type": null,
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Radiation, Internal"
+        },
+        {
+          "days_to_treatment_end": 242,
+          "days_to_treatment_start": 200,
+          "therapeutic_agents": "Pemetrexed",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 186,
+          "days_to_treatment_start": 130,
+          "therapeutic_agents": "Paclitaxel",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_start": 284,
+          "therapeutic_agents": "Gemcitabine",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Treatment Ongoing",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 186,
+          "days_to_treatment_start": 130,
+          "therapeutic_agents": "Carboplatin",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 284,
+          "days_to_treatment_start": 242,
+          "therapeutic_agents": "Docetaxel",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Chemotherapy"
+        },
+        {
+          "days_to_treatment_end": 186,
+          "days_to_treatment_start": 130,
+          "therapeutic_agents": "Bevacizumab",
+          "treatment_or_therapy": "yes",
+          "treatment_outcome": "Progressive Disease",
+          "treatment_type": "Immunotherapy (Including Vaccines)"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 15269,
+      "days_to_diagnosis": 107,
+      "primary_diagnosis": "Mucinous adenocarcinoma",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "initial_disease_status": "Recurrent Disease",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Surgery, NOS"
+        },
+        {
+          "initial_disease_status": "Recurrent Disease",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 2,
+  "disease_response": "WT-With Tumor",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "pack_years_smoked": 11,
+      "tobacco_smoking_onset_year": 1990,
+      "tobacco_smoking_status": "Current Smoker"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 5,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 340,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": 107,
+      "progression_or_recurrence": "Yes"
+    },
+    {
+      "days_to_follow_up": 305,
+      "disease_response": "WT-With Tumor"
+    },
+    {
+      "days_to_follow_up": null
+    },
+    {
+      "days_to_follow_up": 340,
+      "disease_response": "WT-With Tumor"
+    }
+  ],
+  "initial_disease_status": "Recurrent Disease",
+  "last_follow_up_days": 340,
+  "mutation_file_count": 1,
+  "pack_years_smoked": 11,
+  "primary_diagnosis": "Mucinous adenocarcinoma",
+  "prior_malignancy": "no",
+  "prior_treatment": "No; Yes",
+  "progression_or_recurrence": "Yes",
+  "project_id": "TCGA-LUAD",
+  "race": "black or african american",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-73-A9RS-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 1,
+  "survival_time_days": 340,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": "Pemetrexed; Paclitaxel; Gemcitabine; Carboplatin; Docetaxel; Bevacizumab",
+  "tobacco_smoking_onset_year": "1990",
+  "tobacco_smoking_status": "Current Smoker",
+  "treatment_intent_types": null,
+  "treatment_or_therapy": "yes; no",
+  "treatment_outcomes": "Progressive Disease; Treatment Ongoing",
+  "treatment_types": "Radiation, Internal; Chemotherapy; Immunotherapy (Including Vaccines); Radiation Therapy, NOS; Surgery, NOS; Pharmaceutical Therapy, NOS",
+  "treatments": [
+    {
+      "days_to_treatment_end": 53,
+      "days_to_treatment_start": 53,
+      "therapeutic_agents": null,
+      "treatment_intent_type": null,
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Radiation, Internal"
+    },
+    {
+      "days_to_treatment_end": 242,
+      "days_to_treatment_start": 200,
+      "therapeutic_agents": "Pemetrexed",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 186,
+      "days_to_treatment_start": 130,
+      "therapeutic_agents": "Paclitaxel",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_start": 284,
+      "therapeutic_agents": "Gemcitabine",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Treatment Ongoing",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 186,
+      "days_to_treatment_start": 130,
+      "therapeutic_agents": "Carboplatin",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 284,
+      "days_to_treatment_start": 242,
+      "therapeutic_agents": "Docetaxel",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Chemotherapy"
+    },
+    {
+      "days_to_treatment_end": 186,
+      "days_to_treatment_start": 130,
+      "therapeutic_agents": "Bevacizumab",
+      "treatment_or_therapy": "yes",
+      "treatment_outcome": "Progressive Disease",
+      "treatment_type": "Immunotherapy (Including Vaccines)"
+    },
+    {
+      "initial_disease_status": "Recurrent Disease",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Surgery, NOS"
+    },
+    {
+      "initial_disease_status": "Recurrent Disease",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Dead",
+  "year_of_birth": null,
+  "years_smoked": null
+}

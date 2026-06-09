@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HistoGen — Pathology Embedding & Analysis Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+  <script>
+    (function () {
+      const theme = localStorage.getItem('histogen-theme')
+        || localStorage.getItem('spatialmtb-theme')
+        || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root,
+    [data-theme="dark"] {
+      --bg:              #0d0f14;
+      --surface:         #13161e;
+      --border:          #232733;
+      --bg-deep:         #0d0f14;
+      --bg-viewer:       #0a0c12;
+      --bg-input:        #0d0f14;
+      --bg-card-header:  #0d0f14;
+      --bg-row:          #0d0f14;
+      --shadow:          rgba(0, 0, 0, .45);
+      --shadow-sm:       rgba(0, 0, 0, .4);
+      --row-border:      rgba(35, 39, 51, .6);
+      --badge-ready-bg:  #1a2a1a;
+      --badge-ready-border:#2a4a2a;
+      --avatar-agent:    #1e2d4a;
+      --avatar-user:     #2a1e3a;
+      --bubble-agent:    #1a1f2e;
+      --bubble-user:     #1e1530;
+      --bubble-user-border: #332050;
+      --chip-bg:         #1a1f2e;
+      --chip-hover:      #1e2d4a;
+      --tag-hi-bg:       #1a2a1a;
+      --tag-hi-border:   #3a4a2a;
+      --tag-med-bg:      #2a2010;
+      --tag-med-border:  #4a3a1a;
+      --cit-badge-bg:    #1e2d4a;
+      --cit-badge-border:#2a4070;
+      --legend-bg:       rgba(13, 15, 20, .9);
+      --thumb-bg:        #1a1520;
+      --colorbar-low:    #0d0f14;
+      --sig-low:         #1a2030;
+      --accent:          #4f8ef7;
+      --accent2:         #7c5cbf;
+      --green:           #3ecf8e;
+      --yellow:          #f5c542;
+      --red:             #e05c5c;
+      --text:            #e2e6f0;
+      --muted:           #6b7280;
+      --text-on-accent:  #fff;
+      --deceased:        #c9a0a0;
+      --cold:            #8aa4c8;
+      --select-ring:     rgba(79, 142, 247, .08);
+      --scatter-grid:    rgba(35, 39, 51, .55);
+      --scatter-dot-ring:rgba(255, 255, 255, .92);
+      --radius:          8px;
+      --font:            'Open Sans', system-ui, sans-serif;
+    }
+    [data-theme="light"] {
+      --bg:              #f4f6fa;
+      --surface:         #ffffff;
+      --border:          #dfe3eb;
+      --bg-deep:         #eef1f6;
+      --bg-viewer:       #e8ecf2;
+      --bg-input:        #ffffff;
+      --bg-card-header:  #f0f3f8;
+      --bg-row:          #f8f9fc;
+      --shadow:          rgba(15, 23, 42, .12);
+      --shadow-sm:       rgba(15, 23, 42, .1);
+      --row-border:      rgba(203, 213, 225, .85);
+      --badge-ready-bg:  #e8f7ef;
+      --badge-ready-border:#b8e6cc;
+      --avatar-agent:    #dbeafe;
+      --avatar-user:     #ede9fe;
+      --bubble-agent:    #f1f5f9;
+      --bubble-user:     #f5f3ff;
+      --bubble-user-border: #ddd6fe;
+      --chip-bg:         #f1f5f9;
+      --chip-hover:      #e0e7ff;
+      --tag-hi-bg:       #e8f7ef;
+      --tag-hi-border:   #b8e6cc;
+      --tag-med-bg:      #fef9e7;
+      --tag-med-border:  #fde68a;
+      --cit-badge-bg:    #dbeafe;
+      --cit-badge-border:#93c5fd;
+      --legend-bg:       rgba(255, 255, 255, .96);
+      --thumb-bg:        #fce7f3;
+      --colorbar-low:    #eef1f6;
+      --sig-low:         #e2e8f0;
+      --text:            #1e293b;
+      --muted:           #64748b;
+      --deceased:        #b45309;
+      --cold:            #475569;
+      --select-ring:     rgba(79, 142, 247, .15);
+      --scatter-grid:    rgba(203, 213, 225, .85);
+      --scatter-dot-ring:rgba(15, 23, 42, .22);
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; transition: background .2s ease, color .2s ease; }
+
+    /* ── Layout ── */
+    #app {
+      display: grid;
+      grid-template-columns: 300px 1fr 360px;
+      grid-template-rows: 56px 1fr;
+      height: 100vh;
+      gap: 0;
+    }
+
+    /* ── Top bar ── */
+    #topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: visible;
+      z-index: 100;
+    }
+    #topbar .logo { font-size: 15px; font-weight: 700; letter-spacing: .5px; color: var(--accent); }
+    /* patient identity + hover card */
+    #patient-identity {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    #patient-identity .patient-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #patient-identity .patient-picker-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    #patient-select {
+      min-width: 168px;
+      max-width: 220px;
+      padding: 5px 28px 5px 10px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .2px;
+      color: var(--text);
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236b7280' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    #patient-select:hover { border-color: var(--accent); }
+    #patient-select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--select-ring);
+    }
+    #patient-identity .patient-subline {
+      font-size: 10px;
+      color: var(--muted);
+      padding-left: 0;
+    }
+    #patient-identity .patient-subline em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    #patient-hover-card {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      z-index: 200;
+      width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px var(--shadow), 0 0 0 1px var(--select-ring);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity .15s ease, transform .15s ease, visibility .15s;
+      pointer-events: none;
+    }
+    #patient-identity.open #patient-hover-card {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #patient-hover-card .phc-header {
+      padding: 10px 12px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    #patient-hover-card .phc-body {
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 0;
+    }
+    #patient-hover-card .phc-fields {
+      padding: 8px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    #patient-hover-card .phc-row {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--row-border);
+      align-items: baseline;
+    }
+    #patient-hover-card .phc-row:last-child { border-bottom: none; }
+    #patient-hover-card .phc-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    #patient-hover-card .phc-value {
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+    #patient-hover-card .phc-thumb-wrap {
+      padding: 10px 10px 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      border-left: 1px solid var(--border);
+    }
+    #patient-hover-card .phc-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--thumb-bg);
+      flex-shrink: 0;
+    }
+    #patient-hover-card .phc-thumb canvas { display: block; width: 80px; height: 80px; }
+    #patient-hover-card .phc-thumb-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+    }
+    #patient-hover-card .phc-footer {
+      padding: 6px 12px 8px;
+      border-top: 1px solid var(--border);
+      font-size: 9px;
+      color: var(--muted);
+      background: var(--bg-deep);
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+    #topbar .spacer { flex: 1; }
+    #topbar .badge {
+      font-size: 11px; padding: 3px 9px; border-radius: 99px;
+      background: var(--badge-ready-bg); color: var(--green); border: 1px solid var(--badge-ready-border);
+    }
+
+    /* ── Theme switcher ── */
+    .theme-switcher {
+      display: flex; align-items: center;
+      background: var(--bg-deep); border: 1px solid var(--border);
+      border-radius: 99px; padding: 2px; gap: 2px;
+    }
+    .theme-btn {
+      font-family: var(--font); font-size: 10px; font-weight: 600;
+      letter-spacing: .3px; padding: 4px 10px; border-radius: 99px;
+      border: none; cursor: pointer; background: transparent;
+      color: var(--muted); transition: background .15s, color .15s;
+    }
+    .theme-btn:hover { color: var(--text); }
+    .theme-btn.active {
+      background: var(--surface); color: var(--text);
+      box-shadow: 0 1px 3px var(--shadow-sm);
+    }
+
+    /* ── Panel shared ── */
+    .panel {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .panel:last-child { border-right: none; }
+    .panel-header {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ══ PANEL 1 — Agent Chat ══ */
+    #panel-agent { grid-column: 1; }
+    #chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg { display: flex; gap: 8px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+    }
+    .msg.agent .msg-avatar { background: var(--avatar-agent); color: var(--accent); }
+    .msg.user  .msg-avatar { background: var(--avatar-user); color: var(--accent2); }
+    .msg-bubble {
+      max-width: 220px; padding: 8px 11px; border-radius: var(--radius); line-height: 1.5;
+    }
+    .msg.agent .msg-bubble.structure-card {
+      max-width: 268px; padding: 0; overflow: hidden;
+    }
+    .structure-card-inner { padding: 10px 11px; }
+    .structure-card-inner h4 {
+      font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px;
+    }
+    .structure-card-inner .sc-meta {
+      font-size: 10px; color: var(--muted); line-height: 1.45; margin-bottom: 8px;
+    }
+    .structure-viewer {
+      width: 100%; height: 180px; background: var(--bg-viewer);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .structure-features {
+      margin-top: 8px; display: flex; flex-direction: column; gap: 3px;
+    }
+    .structure-features .sf-row {
+      font-size: 10px; color: var(--text); line-height: 1.35;
+    }
+    .structure-features .sf-row span { color: var(--muted); }
+    .structure-source {
+      margin-top: 8px; font-size: 9px; color: var(--muted);
+    }
+    .structure-source a { color: var(--accent); text-decoration: none; }
+    .structure-source a:hover { text-decoration: underline; }
+    .msg.agent .msg-bubble.figure-card {
+      max-width: 280px; padding: 0; overflow: hidden;
+    }
+    .figure-card-inner { padding: 10px 11px; }
+    .figure-card-inner h4 {
+      font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px;
+    }
+    .figure-card-inner .fc-meta {
+      font-size: 10px; color: var(--muted); line-height: 1.45; margin-bottom: 8px;
+    }
+    .figure-card img {
+      display: block; width: 100%; height: auto;
+      border-top: 1px solid var(--border); background: #fff;
+    }
+    .figure-catalog {
+      display: flex; flex-direction: column; gap: 8px; margin-top: 8px;
+    }
+    .figure-catalog-item {
+      display: flex; gap: 8px; align-items: center;
+      padding: 6px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg-deep); cursor: pointer;
+    }
+    .figure-catalog-item:hover { border-color: var(--accent); }
+    .figure-catalog-item img {
+      width: 56px; height: 42px; object-fit: cover; border-radius: 4px; background: #fff;
+      flex-shrink: 0;
+    }
+    .figure-catalog-item span {
+      font-size: 10px; color: var(--text); line-height: 1.35;
+    }
+    .msg-loading .msg-bubble {
+      color: var(--muted); font-style: italic;
+    }
+    .msg.agent .msg-bubble { background: var(--bubble-agent); border: 1px solid var(--border); }
+    .msg.user  .msg-bubble { background: var(--bubble-user); border: 1px solid var(--bubble-user-border); }
+    .msg-time { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* suggestion chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px 0; flex-shrink: 0; }
+    .chip {
+      font-size: 11px; padding: 4px 9px; border-radius: 99px; cursor: pointer;
+      background: var(--chip-bg); border: 1px solid var(--border); color: var(--accent);
+      transition: background .15s;
+    }
+    .chip:hover { background: var(--chip-hover); }
+
+    #chat-input-row {
+      display: flex; gap: 8px; padding: 12px 14px; flex-shrink: 0;
+      border-top: 1px solid var(--border);
+    }
+    #chat-input {
+      flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 7px 10px; font-size: 13px; outline: none; resize: none; height: 36px;
+    }
+    #chat-input:focus { border-color: var(--accent); }
+    #chat-send {
+      background: var(--accent); border: none; border-radius: var(--radius);
+      color: var(--text-on-accent); padding: 0 13px; cursor: pointer; font-weight: 600; font-size: 13px;
+      transition: opacity .15s;
+    }
+    #chat-send:hover { opacity: .85; }
+
+    /* ══ PANEL 2 — HE Image Viewer ══ */
+    #panel-viewer {
+      grid-column: 2;
+      border-right: 1px solid var(--border);
+      background: var(--bg-viewer);
+    }
+    #viewer-toolbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+      background: var(--surface);
+    }
+    .modality-btn {
+      font-size: 12px; padding: 5px 12px; border-radius: var(--radius); cursor: pointer;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      transition: all .15s;
+    }
+    .modality-btn.active {
+      background: var(--accent); border-color: var(--accent); color: var(--text-on-accent); font-weight: 600;
+    }
+    .modality-btn:not(.active):hover { border-color: var(--accent); color: var(--accent); }
+
+    .viewer-sep { width: 1px; height: 20px; background: var(--border); }
+
+    #gene-select {
+      background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 5px 10px; font-size: 12px; cursor: pointer; outline: none;
+    }
+    #gene-select:focus { border-color: var(--accent); }
+
+    .viewer-spacer { flex: 1; }
+    .zoom-btn {
+      width: 28px; height: 28px; border-radius: var(--radius); border: 1px solid var(--border);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .zoom-btn:hover { background: var(--border); }
+
+    #he-canvas-wrap {
+      flex: 1; position: relative; overflow: hidden;
+      background: var(--bg-viewer);
+    }
+    #viewer-stage {
+      position: absolute; inset: 0;
+      transform-origin: center center;
+    }
+    #he-image {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: contain;
+      display: none;
+      z-index: 1;
+    }
+    /* placeholder grid when no image loaded */
+    #he-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px; color: var(--muted);
+    }
+    #he-image.rna-bg {
+      object-fit: cover;
+      opacity: 0.72;
+      filter: saturate(0.85);
+    }
+    #rna-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: none; pointer-events: none;
+      z-index: 2;
+    }
+    #rna-meta {
+      position: absolute; left: 10px; bottom: 10px; z-index: 2;
+      font-size: 10px; color: var(--text); line-height: 1.4;
+      background: rgba(10, 12, 18, 0.72); border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 8px; display: none;
+      backdrop-filter: blur(4px);
+    }
+    #he-placeholder svg { opacity: .3; }
+    #he-placeholder p { font-size: 12px; }
+
+    /* color scale bar */
+    #colorbar {
+      padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      border-top: 1px solid var(--border); background: var(--surface);
+    }
+    #colorbar .cb-label { font-size: 11px; color: var(--muted); }
+    #colorbar .cb-gradient {
+      flex: 1; height: 8px; border-radius: 4px;
+      background: linear-gradient(to right, var(--colorbar-low), #4f8ef7, #e05c5c);
+    }
+    #colorbar .cb-vals { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* ══ PANEL 3 — Patient Cluster + Clinical ══ */
+    #panel-clinical { grid-column: 3; border-right: none; }
+
+    /* cluster confidence card */
+    .cluster-card {
+      margin: 14px; border-radius: var(--radius); border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .cluster-card-header {
+      padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: .6px;
+      text-transform: uppercase; color: var(--muted);
+      background: var(--bg-deep); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .dot.yellow { background: var(--yellow); }
+    .dot.red { background: var(--red); }
+
+    .cluster-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .cluster-id {
+      font-size: 22px; font-weight: 700; color: var(--text);
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .cluster-id small { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+    .confidence-row { display: flex; align-items: center; gap: 8px; }
+    .confidence-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .confidence-bar { height: 100%; border-radius: 3px; background: var(--green); }
+    .confidence-pct { font-size: 12px; font-weight: 700; color: var(--green); min-width: 36px; text-align: right; }
+
+    .cluster-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+    .tag.hi { border-color: var(--tag-hi-border); color: var(--green); background: var(--tag-hi-bg); }
+    .tag.med { border-color: var(--tag-med-border); color: var(--yellow); background: var(--tag-med-bg); }
+
+    /* nearest-neighbor patients */
+    .section-title {
+      font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
+      color: var(--muted); padding: 6px 14px 4px;
+    }
+    /* scrollable body in right panel */
+    #panel-clinical .panel-body {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    /* ── Haiku badge ── */
+    .haiku-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; color: var(--muted); padding: 0 14px 6px;
+    }
+    .haiku-badge svg { opacity: .5; }
+
+    /* ── Embedding cluster graph ── */
+    #cluster-graph-section {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .scatter-toolbar {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .scatter-toolbar label {
+      font-size: 10px; font-weight: 600; letter-spacing: .4px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .scatter-toolbar select {
+      flex: 1; min-width: 120px;
+      background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); padding: 4px 8px; font-size: 11px; cursor: pointer; outline: none;
+    }
+    .scatter-toolbar select:focus { border-color: var(--accent); }
+    #cluster-graph-wrap {
+      position: relative; height: 280px;
+      background: var(--bg-viewer);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03);
+    }
+    #scatter-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+    #scatter-legend-panel {
+      position: absolute; top: 8px; left: 8px; z-index: 5;
+      background: var(--legend-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px var(--shadow-sm);
+      overflow: hidden;
+    }
+    #scatter-legend-panel.is-collapsed { max-width: max-content; }
+    #scatter-legend-panel.is-expanded { width: 148px; max-height: min(220px, calc(100% - 16px)); }
+    #scatter-legend-toggle {
+      display: flex; align-items: center; gap: 5px;
+      border: none; background: transparent; cursor: pointer;
+      padding: 5px 8px; color: inherit; font-family: inherit;
+      white-space: nowrap;
+    }
+    #scatter-legend-toggle:hover { background: var(--bg-row); }
+    #scatter-legend-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+    .legend-toggle-title {
+      font-size: 9px; font-weight: 700; letter-spacing: .45px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .legend-chevron {
+      font-size: 10px; color: var(--muted); transition: transform .15s ease;
+    }
+    #scatter-legend-panel.is-expanded .legend-chevron { transform: rotate(90deg); }
+    #scatter-legend-body {
+      overflow-y: auto;
+      padding: 0 8px 8px;
+      border-top: 1px solid var(--row-border);
+    }
+    #scatter-legend-panel.is-collapsed #scatter-legend-body { display: none; }
+    #scatter-legend-body .leg-items { display: flex; flex-direction: column; gap: 5px; padding-top: 6px; }
+    #scatter-legend-body .leg-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10px; color: var(--text); line-height: 1.35;
+    }
+    #scatter-legend-body .leg-swatch {
+      width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+    }
+    #scatter-legend-body .leg-label { flex: 1; }
+    #scatter-legend-body .leg-gradient {
+      height: 8px; border-radius: 4px; margin: 6px 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+    }
+    #scatter-legend-body .leg-gradient-labels {
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: var(--muted); margin-bottom: 4px;
+    }
+    #scatter-tooltip {
+      position: absolute; z-index: 10; pointer-events: none;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 8px; font-size: 10px; line-height: 1.45;
+      box-shadow: 0 8px 24px var(--shadow-sm); max-width: 190px;
+    }
+    #scatter-tooltip .tt-id { font-weight: 600; color: var(--accent); }
+    .scatter-meta { font-size: 9px; color: var(--muted); margin-top: 6px; }
+
+    /* ── Treatment panel (below scatter) ── */
+    #treatment-panel {
+      margin: 12px 14px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-deep);
+      overflow: hidden;
+    }
+    .tp-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .tp-header .tp-id {
+      font-size: 12px; font-weight: 700; color: var(--accent);
+    }
+    .tp-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .tp-row {
+      display: grid; grid-template-columns: 72px 1fr; gap: 8px; align-items: start;
+    }
+    .tp-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .35px; }
+    .tp-value { font-size: 11px; color: var(--text); line-height: 1.45; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Top Bar ── -->
+  <header id="topbar">
+    <div class="logo">HistoGen</div>
+
+    <!-- Patient picker + hover card (5 fields + H&E thumbnail) -->
+    <div id="patient-identity">
+      <div class="patient-picker-row">
+        <label class="patient-picker-label" for="patient-select">Patient</label>
+        <select id="patient-select" aria-label="Select patient profile">
+          <option value="">Loading patients…</option>
+        </select>
+      </div>
+      <div class="patient-subline"><em id="patient-subtype-inline">—</em> · hover for case details</div>
+
+      <div id="patient-hover-card" role="tooltip" aria-hidden="true">
+        <div class="phc-header">Patient Case Summary</div>
+        <div class="phc-body">
+          <div class="phc-fields">
+            <div class="phc-row">
+              <span class="phc-label">TCGA case ID</span>
+              <span class="phc-value" id="phc-case-id">—</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Cancer subtype</span>
+              <span class="phc-value" id="phc-subtype">—</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Driver mutation</span>
+              <span class="phc-value" id="phc-mutation">EGFR exon 19 del</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Age</span>
+              <span class="phc-value" id="phc-age">62 years</span>
+            </div>
+            <div class="phc-row">
+              <span class="phc-label">Sex</span>
+              <span class="phc-value" id="phc-sex">Female</span>
+            </div>
+          </div>
+          <div class="phc-thumb-wrap">
+            <div class="phc-thumb" title="Precomputed H&E thumbnail">
+              <canvas id="phc-he-thumb" width="80" height="80"></canvas>
+            </div>
+            <span class="phc-thumb-label">H&amp;E thumbnail</span>
+          </div>
+        </div>
+        <div class="phc-footer">Click patient card for full record · max 5 fields on hover</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div id="theme-switcher" class="theme-switcher" role="group" aria-label="Color theme">
+      <button type="button" class="theme-btn active" data-theme="dark">Dark</button>
+      <button type="button" class="theme-btn" data-theme="light">Bright</button>
+    </div>
+    <div class="badge">● Analysis Ready</div>
+  </header>
+
+  <!-- ════════════════════════════════════
+       PANEL 1 — Agent Chat
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-agent">
+    <div class="panel-header">HistoGen Advisor</div>
+
+    <div id="chat-messages">
+      <div class="msg agent">
+        <div class="msg-avatar">HG</div>
+        <div>
+          <div class="msg-bubble">
+            Hi, I'm the <strong>HistoGen Advisor</strong>. I can explain spatial biology, interpret cluster assignments, pull protein structures, and recall the <strong>20-patient cohort visual report</strong> figures for this demo.
+          </div>
+          <div class="msg-time">Now</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chips" id="chat-chips">
+      <button type="button" class="chip" onclick="askAdvisor('show driver mutation frequency')">Driver mutations</button>
+      <button type="button" class="chip" onclick="askAdvisor('show vital status')">Vital status</button>
+      <button type="button" class="chip" onclick="askAdvisor('show treatment types')">Treatments</button>
+      <button type="button" class="chip" onclick="askAdvisor('what cohort figures do you know')">All figures</button>
+      <button type="button" class="chip" onclick="askAdvisor('show me the structure of CD8A')">CD8A structure</button>
+    </div>
+
+    <div id="chat-input-row">
+      <textarea id="chat-input" placeholder="Ask HistoGen Advisor…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+      <button id="chat-send" onclick="sendMessage()">↑</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       PANEL 2 — HE / Spatial Image Viewer
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-viewer">
+    <div id="viewer-toolbar">
+      <!-- Modality buttons -->
+      <button class="modality-btn active" onclick="setModality(this,'HE')">H&E</button>
+      <button class="modality-btn" onclick="setModality(this,'RNA')">RNA</button>
+      <button class="modality-btn" onclick="setModality(this,'Protein')">Protein</button>
+
+      <div class="viewer-sep"></div>
+
+      <!-- Gene/protein dropdown — enabled when RNA or Protein active -->
+      <select id="gene-select" title="Select gene or protein to visualize">
+        <option value="" disabled selected>— pick gene / protein —</option>
+        <optgroup label="Top Genes">
+          <option value="EGFR">EGFR</option>
+          <option value="TP53">TP53</option>
+          <option value="KRAS">KRAS</option>
+          <option value="CD8A">CD8A</option>
+          <option value="ACTA2">ACTA2</option>
+        </optgroup>
+      </select>
+
+      <div class="viewer-spacer"></div>
+
+      <!-- Zoom controls -->
+      <button class="zoom-btn" onclick="zoom(-1)" title="Zoom out">−</button>
+      <button class="zoom-btn" onclick="zoom(1)" title="Zoom in">+</button>
+      <button class="zoom-btn" style="font-size:11px;width:auto;padding:0 8px;" onclick="resetZoom()">Reset</button>
+    </div>
+
+    <div id="he-canvas-wrap">
+      <div id="viewer-stage">
+        <img id="he-image" alt="H&amp;E slide preview" />
+        <canvas id="rna-canvas"></canvas>
+      </div>
+      <div id="rna-meta"></div>
+      <div id="he-placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="4" y="4" width="56" height="56" rx="6" stroke="#6b7280" stroke-width="2"/>
+          <circle cx="22" cy="22" r="8" stroke="#6b7280" stroke-width="2"/>
+          <path d="M36 44 L50 28 L58 44" stroke="#6b7280" stroke-width="2"/>
+        </svg>
+        <p id="placeholder-label">Load a whole-slide image or select a tile from <code>data/</code></p>
+        <p style="font-size:10px;margin-top:4px;">Drag & drop .svs / .tiff / .png</p>
+      </div>
+    </div>
+
+    <div id="colorbar" style="display:none;">
+      <span class="cb-label" id="colorbar-gene">EGFR</span>
+      <div style="flex:1;">
+        <div class="cb-gradient"></div>
+        <div class="cb-vals"><span>Low</span><span>High</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       PANEL 3 — Patient Cluster & Clinical
+  ════════════════════════════════════ -->
+  <div class="panel" id="panel-clinical">
+    <div class="panel-header">Patient Cluster &amp; Clinical Insight</div>
+
+    <div class="panel-body">
+
+      <!-- Cluster embedding graph -->
+      <div id="cluster-graph-section">
+        <div class="section-title" style="padding:0 0 6px;">Representative Patients · TCGA Lung</div>
+        <div class="scatter-toolbar">
+          <label for="colour-by-select">Colour by</label>
+          <select id="colour-by-select">
+            <option value="tmeArchetype" selected>TME archetype</option>
+            <option value="immuneStatus">Immune status</option>
+            <option value="driverMutation">Driver mutation</option>
+            <option value="treatmentReceived">Treatment received</option>
+            <option value="signature">HistoTME signature</option>
+            <option value="osStatus">Overall survival</option>
+          </select>
+          <select id="signature-select" style="display:none;" title="HistoTME signature">
+            <option value="Treg">Treg score</option>
+            <option value="Effector_cells">Effector cells</option>
+          </select>
+        </div>
+        <div id="cluster-graph-wrap">
+          <canvas id="scatter-canvas"></canvas>
+          <div id="scatter-legend-panel" class="is-collapsed" aria-expanded="false">
+            <button type="button" id="scatter-legend-toggle" aria-controls="scatter-legend-body" aria-expanded="false">
+              <span class="legend-toggle-title" id="scatter-legend-title">Legend</span>
+              <span class="legend-chevron">›</span>
+            </button>
+            <div id="scatter-legend-body"></div>
+          </div>
+          <div id="scatter-tooltip" style="display:none;"></div>
+        </div>
+        <div class="scatter-meta" id="scatter-meta">Loading representative patients…</div>
+      </div>
+
+      <div id="treatment-panel">
+        <div class="tp-header">
+          <span class="tp-id" id="tp-case-id">—</span>
+        </div>
+        <div class="tp-body">
+          <div class="tp-row">
+            <span class="tp-label">Treatment</span>
+            <span class="tp-value" id="tp-treatment">—</span>
+          </div>
+          <div class="tp-row">
+            <span class="tp-label">Agents</span>
+            <span class="tp-value" id="tp-agents">—</span>
+          </div>
+          <div class="tp-row">
+            <span class="tp-label">Outcome</span>
+            <span class="tp-value" id="tp-outcome-detail">—</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .panel-body -->
+  </div>
+
+</div><!-- end #app -->
+
+<script>
+  // ── Patient data (representative TCGA lung cohort) ────────────────
+  let patientSummary = {};
+  let cohortPatients = [];
+  let selectedPatient = null;
+  let scatterLayout = { pad: 30, minX: 0, maxX: 1, minY: 0, maxY: 1, w: 0, h: 0 };
+  let hoveredPatient = null;
+  let driverColorMap = {};
+
+  function syncPatientSelect(caseId) {
+    const select = document.getElementById('patient-select');
+    if (!select || !caseId || select.value === caseId) return;
+    select.value = caseId;
+  }
+
+  function populatePatientSelect() {
+    const select = document.getElementById('patient-select');
+    if (!select) return;
+    select.innerHTML = cohortPatients.map(p => {
+      const label = `${p.caseId} · ${p.subtype || '—'}`;
+      return `<option value="${p.caseId}">${label}</option>`;
+    }).join('');
+    if (selectedPatient) select.value = selectedPatient.caseId;
+  }
+
+  function applyPatientSummary() {
+    if (!patientSummary.caseId) return;
+    syncPatientSelect(patientSummary.caseId);
+    document.getElementById('patient-subtype-inline').textContent = patientSummary.subtype || '—';
+    document.getElementById('phc-case-id').textContent = patientSummary.caseId;
+    document.getElementById('phc-subtype').textContent = patientSummary.subtype || '—';
+    document.getElementById('phc-mutation').textContent = patientSummary.driverMutation || '—';
+    document.getElementById('phc-age').textContent = patientSummary.age != null
+      ? `${patientSummary.age} years` : '—';
+    document.getElementById('phc-sex').textContent = patientSummary.sex || '—';
+  }
+
+  function selectPatient(p) {
+    if (!p) return;
+    selectedPatient = p;
+    patientSummary = { ...p.summary };
+    applyPatientSummary();
+    updateTreatmentPanel(p);
+    phoenixManifest = null;
+    phoenixCaseId = null;
+    rnaExpression = null;
+    loadHePreview(p.caseId);
+    if (viewerModality === 'RNA') ensurePhoenixLoaded();
+    else updateViewerLayers();
+    renderScatterPlot();
+  }
+
+  function updateTreatmentPanel(p) {
+    if (!p) return;
+    document.getElementById('tp-case-id').textContent = p.caseId;
+    document.getElementById('tp-treatment').textContent = p.treatmentReceived || 'Not documented';
+    document.getElementById('tp-agents').textContent = p.treatmentAgents || 'Not documented';
+    document.getElementById('tp-outcome-detail').textContent = p.outcomeSummary || 'Not documented';
+  }
+
+  async function loadRepresentativeCohort() {
+    const resp = await fetch('/api/patients/cohort');
+    const payload = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      throw new Error(typeof payload.detail === 'string'
+        ? payload.detail
+        : `Failed to load patient cohort (${resp.status})`);
+    }
+    cohortPatients = payload.patients || [];
+    driverColorMap = {};
+    cohortPatients.forEach(p => Object.assign(driverColorMap, p.geneColors || {}));
+    selectedPatient = cohortPatients.find(p => p.caseId === 'TCGA-56-5898')
+      || cohortPatients.find(p => p.caseId === payload.defaultCaseId)
+      || cohortPatients[0];
+    if (!selectedPatient) throw new Error('Representative patient cohort is empty');
+    populatePatientSelect();
+    patientSummary = { ...selectedPatient.summary };
+    document.getElementById('scatter-meta').textContent =
+      `${cohortPatients.length} patients · 4 embedding clusters · click a dot to inspect`;
+    applyPatientSummary();
+    updateTreatmentPanel(selectedPatient);
+    loadHePreview(selectedPatient.caseId);
+    renderScatterPlot();
+  }
+
+  (function initThemeSwitcher() {
+    const root = document.documentElement;
+    const buttons = document.querySelectorAll('.theme-btn');
+
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('histogen-theme', theme);
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
+      window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+    }
+
+    setTheme(localStorage.getItem('histogen-theme')
+      || localStorage.getItem('spatialmtb-theme')
+      || 'dark');
+    buttons.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme)));
+  })();
+
+  (function initPatientSelect() {
+    const select = document.getElementById('patient-select');
+    const identity = document.getElementById('patient-identity');
+    select.addEventListener('change', () => {
+      const match = cohortPatients.find(p => p.caseId === select.value);
+      if (match) selectPatient(match);
+    });
+    select.addEventListener('mousedown', () => identity.classList.remove('open'));
+  })();
+
+  (function initPatientHoverCard() {
+    const identity = document.getElementById('patient-identity');
+    const card = document.getElementById('patient-hover-card');
+    let showTimer = null;
+    let hideTimer = null;
+    const DELAY_MS = 150;
+
+    function openCard() {
+      clearTimeout(hideTimer);
+      identity.classList.add('open');
+      card.setAttribute('aria-hidden', 'false');
+    }
+    function closeCard() {
+      clearTimeout(showTimer);
+      identity.classList.remove('open');
+      card.setAttribute('aria-hidden', 'true');
+    }
+    function scheduleOpen() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(openCard, DELAY_MS);
+    }
+    function scheduleClose() {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(closeCard, 120);
+    }
+
+    identity.addEventListener('mouseenter', scheduleOpen);
+    identity.addEventListener('mouseleave', scheduleClose);
+    card.addEventListener('mouseenter', () => { clearTimeout(hideTimer); });
+    card.addEventListener('mouseleave', scheduleClose);
+
+  })();
+
+  // ── Chat ──────────────────────────────────────────────────────────
+  const AGENT_NAME = 'HistoGen Advisor';
+  const AGENT_AVATAR = 'HG';
+
+  const PROTEIN_STRUCTURE_PATTERNS = [
+    /show\s+(?:me\s+)?(?:the\s+)?structure\s+(?:of\s+)?([A-Z0-9-]+)/i,
+    /structure\s+(?:of\s+)?([A-Z0-9-]+)/i,
+    /(?:3d|3D)\s+structure\s+(?:of\s+)?([A-Z0-9-]+)/i,
+  ];
+
+  const agentReplies = [
+    "Based on the spatial embedding, this patient's TME shows a high degree of immune infiltration co-localised with EGFR-amplified regions — a pattern strongly predictive of response to combined EGFR-TKI + immunotherapy.",
+    "Cluster 4 patients in our TCGA cohort had a median OS of 22.4 months on EGFR-TKI monotherapy vs 31.7 months with combination therapy. This patient's profile aligns with the responder sub-group.",
+    "The PD-L1 expression you see overlaid on the H&E corresponds to regions with high CD8+ T-cell density — this is the immune-inflamed phenotype, which generally predicts better checkpoint inhibitor response.",
+    "I'd flag the stromal FOXP3+ Tregs at the invasion margin — they may blunt the immune response. Consider checking the TIGIT co-inhibitory axis.",
+  ];
+  let replyIdx = 0;
+
+  function parseProteinStructureRequest(text) {
+    const t = text.trim();
+    for (const re of PROTEIN_STRUCTURE_PATTERNS) {
+      const m = t.match(re);
+      if (m) return m[1].toUpperCase();
+    }
+    return null;
+  }
+
+  function appendMsg(text, role, extraClass) {
+    const wrap = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}${extraClass ? ' ' + extraClass : ''}`;
+    const avatar = role === 'agent' ? AGENT_AVATAR : 'Dr';
+    div.innerHTML = `
+      <div class="msg-avatar">${avatar}</div>
+      <div>
+        <div class="msg-bubble">${text}</div>
+        <div class="msg-time">Now</div>
+      </div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+    return div;
+  }
+
+  function appendLoadingMsg(label) {
+    return appendMsg(label || 'Fetching structure from ESM Atlas…', 'agent', 'msg-loading');
+  }
+
+  function mountStructureViewer(container, pdb) {
+    if (typeof $3Dmol === 'undefined') {
+      container.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">3D viewer unavailable — PDB loaded.</p>';
+      return;
+    }
+    const bgHex = (cssVar('--bg-viewer') || '#0a0c12').replace('#', '0x');
+    const viewer = $3Dmol.createViewer(container, { backgroundColor: bgHex });
+    viewer.addModel(pdb, 'pdb');
+    viewer.setStyle({}, { cartoon: { colorscheme: 'spectrum' } });
+    viewer.zoomTo();
+    viewer.render();
+    viewer.spin(true);
+  }
+
+  function appendStructureMsg(data) {
+    const wrap = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = 'msg agent';
+    const viewerId = `structure-viewer-${Date.now()}`;
+    const ptm = data.ptm != null ? data.ptm.toFixed(2) : '—';
+    const plddt = data.mean_plddt != null ? Math.round(data.mean_plddt) : '—';
+    const features = (data.sae_features || []).slice(0, 4).map(f =>
+      `<div class="sf-row"><span>•</span> ${f.label || 'SAE feature'}</div>`
+    ).join('');
+
+    const channel = data.gigatime_channel ? ` · GigaTIME ${data.gigatime_channel}` : '';
+    const cacheNote = data.cached ? ' · demo cache' : '';
+    div.innerHTML = `
+      <div class="msg-avatar">${AGENT_AVATAR}</div>
+      <div>
+        <div class="msg-bubble structure-card">
+          <div class="structure-card-inner">
+            <h4>${data.gene} · ${data.protein_name || 'Protein'}${channel}</h4>
+            <div class="sc-meta">
+              ${data.accession} · ${data.sequence_length} aa · pTM ${ptm} · mean pLDDT ${plddt}
+              ${data.folded_on_demand ? '<br>Folded on demand via ESMFold2' : ''}
+            </div>
+            <div class="structure-features">${features || '<div class="sf-row">Top SAE features loaded from Atlas</div>'}</div>
+            <div class="structure-source">
+              ${data.source}${cacheNote} · <a href="${data.atlas_url}" target="_blank" rel="noopener">Open in Biohub Atlas ↗</a>
+            </div>
+          </div>
+          <div class="structure-viewer" id="${viewerId}"></div>
+        </div>
+        <div class="msg-time">Now</div>
+      </div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+
+    if (data.pdb) {
+      requestAnimationFrame(() => mountStructureViewer(document.getElementById(viewerId), data.pdb));
+    }
+  }
+
+  async function fetchProteinStructure(gene) {
+    const resp = await fetch(`/api/protein/structure?gene=${encodeURIComponent(gene)}`);
+    const payload = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      const detail = payload.detail;
+      const msg = typeof detail === 'string' ? detail : JSON.stringify(detail);
+      throw new Error(msg || `Structure lookup failed (${resp.status})`);
+    }
+    return payload;
+  }
+
+  let cohortKnowledge = null;
+
+  function askAdvisor(text) {
+    appendMsg(text, 'user');
+    routeUserMessage(text);
+  }
+
+  function appendFigureMsg(figure) {
+    const wrap = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = 'msg agent';
+    div.innerHTML = `
+      <div class="msg-avatar">${AGENT_AVATAR}</div>
+      <div>
+        <div class="msg-bubble figure-card">
+          <div class="figure-card-inner">
+            <h4>${figure.title}</h4>
+            <div class="fc-meta">${figure.summary}</div>
+          </div>
+          <img src="${figure.pngUrl}" alt="${figure.title}" loading="lazy" />
+          <div class="figure-card-inner structure-source">
+            Representative 20-patient TCGA lung cohort · ${figure.source}
+          </div>
+        </div>
+        <div class="msg-time">Now</div>
+      </div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function appendFigureCatalogMsg(payload) {
+    const wrap = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = 'msg agent';
+    const items = (payload.figures || []).map(fig => `
+      <button type="button" class="figure-catalog-item" onclick="askAdvisor('show ${fig.title.toLowerCase()}')">
+        <img src="${fig.pngUrl}" alt="" loading="lazy" />
+        <span>${fig.title}</span>
+      </button>
+    `).join('');
+    div.innerHTML = `
+      <div class="msg-avatar">${AGENT_AVATAR}</div>
+      <div>
+        <div class="msg-bubble figure-card">
+          <div class="figure-card-inner">
+            <h4>Cohort visual report · ${payload.figures?.length || 0} figures</h4>
+            <div class="fc-meta">
+              Memorized figures from the representative TCGA lung patient summary.
+              Ask by topic — e.g. “show driver mutation frequency” or “show vital status”.
+            </div>
+            <div class="figure-catalog">${items}</div>
+          </div>
+        </div>
+        <div class="msg-time">Now</div>
+      </div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  async function fetchCohortFigureMatch(query) {
+    const resp = await fetch(`/api/agent/cohort-figures/match?q=${encodeURIComponent(query)}`);
+    const payload = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      return null;
+    }
+    return payload;
+  }
+
+  async function handleCohortFigureSkill(query) {
+    const loading = appendLoadingMsg('Recalling memorized cohort figure…');
+    try {
+      const payload = await fetchCohortFigureMatch(query);
+      loading.remove();
+      if (!payload) return false;
+      if (payload.matchType === 'catalog') {
+        appendFigureCatalogMsg(payload);
+      } else {
+        appendFigureMsg(payload.figure);
+      }
+      return true;
+    } catch {
+      loading.remove();
+      return false;
+    }
+  }
+
+  async function preloadCohortKnowledge() {
+    try {
+      const resp = await fetch('/api/agent/cohort-figures');
+      if (resp.ok) cohortKnowledge = await resp.json();
+    } catch {
+      cohortKnowledge = null;
+    }
+  }
+
+  async function handleProteinStructureSkill(gene) {
+    const loading = appendLoadingMsg(`Resolving ${gene} and pulling ESM Atlas structure…`);
+    try {
+      const data = await fetchProteinStructure(gene);
+      loading.remove();
+      appendStructureMsg(data);
+    } catch (err) {
+      loading.remove();
+      appendMsg(
+        `Could not load structure for <strong>${gene}</strong>: ${err.message}. ` +
+        'Run <code>python protein_server.py</code> from the <code>ui/</code> folder.',
+        'agent'
+      );
+    }
+  }
+
+  async function routeUserMessage(text) {
+    const gene = parseProteinStructureRequest(text);
+    if (gene) {
+      await handleProteinStructureSkill(gene);
+      return;
+    }
+    const cohortHandled = await handleCohortFigureSkill(text);
+    if (cohortHandled) return;
+    setTimeout(() => {
+      appendMsg(agentReplies[replyIdx % agentReplies.length], 'agent');
+      replyIdx++;
+    }, 700);
+  }
+
+  function sendMessage() {
+    const inp = document.getElementById('chat-input');
+    const text = inp.value.trim();
+    if (!text) return;
+    appendMsg(text, 'user');
+    inp.value = '';
+    routeUserMessage(text);
+  }
+
+  // ── Viewer DOM (shared by H&E + RNA) ─────────────────────────────
+  const heWrap = document.getElementById('he-canvas-wrap');
+  const viewerStage = document.getElementById('viewer-stage');
+  const heImage = document.getElementById('he-image');
+  const hePlaceholder = document.getElementById('he-placeholder');
+  const rnaCanvas = document.getElementById('rna-canvas');
+  const rnaMeta = document.getElementById('rna-meta');
+  const geneSelect = document.getElementById('gene-select');
+  let hePreviewCaseId = null;
+  let heHasImage = false;
+  let viewerScale = 1;
+
+  function rnaImageSize(data) {
+    const ts = phoenixManifest?.thumbnailSize;
+    if (ts?.width && ts?.height) return { w: ts.width, h: ts.height };
+    const b = data?.bounds || phoenixManifest?.bounds;
+    if (b) return { w: b.xMax - b.xMin, h: b.yMax - b.yMin };
+    if (heImage?.naturalWidth && heImage?.naturalHeight) {
+      return { w: heImage.naturalWidth, h: heImage.naturalHeight };
+    }
+    return { w: 1536, h: 1334 };
+  }
+
+  function imageFitRect(containerW, containerH, imageW, imageH, objectFit) {
+    const scale = objectFit === 'cover'
+      ? Math.max(containerW / imageW, containerH / imageH)
+      : Math.min(containerW / imageW, containerH / imageH);
+    const displayW = imageW * scale;
+    const displayH = imageH * scale;
+    return {
+      scale,
+      offsetX: (containerW - displayW) / 2,
+      offsetY: (containerH - displayH) / 2,
+      displayW,
+      displayH,
+      imageW,
+      imageH,
+      objectFit,
+    };
+  }
+
+  function rnaLayout(data) {
+    const w = heWrap.clientWidth;
+    const h = heWrap.clientHeight;
+    const { w: imgW, h: imgH } = rnaImageSize(data);
+    const objectFit = (heImage.style.objectFit || 'cover').trim() || 'cover';
+    return { w, h, ...imageFitRect(w, h, imgW, imgH, objectFit) };
+  }
+
+  function applyViewerTransform() {
+    if (!viewerStage) return;
+    // Zoom only — never mirror/rotate the base H&E image.
+    viewerStage.style.transform = viewerScale !== 1 ? `scale(${viewerScale})` : 'none';
+  }
+
+  function mapRnaToCanvas(x, y, layout) {
+    return {
+      px: layout.offsetX + x * layout.scale,
+      py: layout.offsetY + y * layout.scale,
+    };
+  }
+
+  function formatCoordSourceLabel(source) {
+    if (source === 'registered') return 'registered thumbnail coords';
+    if (source === 'phoenix_raw') return 'PHOENIX affine map';
+    return source || 'thumbnail coords';
+  }
+
+  // ── Modality toggle + PHOENIX RNA overlay ─────────────────────────
+  let viewerModality = 'HE';
+  let phoenixManifest = null;
+  let phoenixCaseId = null;
+  let rnaExpression = null;
+
+  function populatePhoenixGeneSelect(manifest) {
+    const top = (manifest.topGenes || []).map(row => row.gene);
+    const all = manifest.genes || [];
+    const immune = ['CD8A', 'CD3E', 'FOXP3', 'CD274', 'TIGIT', 'IFNG', 'GZMB', 'PDCD1'];
+    const stroma = ['ACTA2', 'COL1A1', 'FAP', 'TAGLN', 'VIM', 'PDGFRB'];
+    const picked = new Set();
+    const groups = [
+      ['Top expressed', top.slice(0, 12)],
+      ['Immune markers', immune.filter(g => all.includes(g))],
+      ['Stromal / TME', stroma.filter(g => all.includes(g))],
+      [`PHOENIX panel (${all.length} genes)`, all],
+    ];
+    geneSelect.innerHTML = '<option value="" disabled>— pick gene —</option>';
+    groups.forEach(([label, genes]) => {
+      if (!genes.length) return;
+      const og = document.createElement('optgroup');
+      og.label = label;
+      genes.forEach(gene => {
+        if (picked.has(gene)) return;
+        picked.add(gene);
+        const opt = document.createElement('option');
+        opt.value = gene;
+        opt.textContent = gene;
+        og.appendChild(opt);
+      });
+      if (og.children.length) geneSelect.appendChild(og);
+    });
+    const preferred = top.find(g => g === 'CD8A') || top[0] || all[0];
+    if (preferred) geneSelect.value = preferred;
+    updateColorbarGene();
+  }
+
+  function exprColor(value, min, max) {
+    if (max <= min) return 'rgba(79,142,247,0.9)';
+    const t = Math.max(0, Math.min(1, (value - min) / (max - min)));
+    const r = Math.round(13 + t * (224 - 13));
+    const g = Math.round(15 + t * (92 - 15));
+    const b = Math.round(20 + (1 - Math.abs(t - 0.45) * 2) * (247 - 20));
+    return `rgba(${r},${g},${b},0.92)`;
+  }
+
+  function renderRnaExpression(data) {
+    if (!data || !rnaCanvas || !heWrap) return;
+    const layout = rnaLayout(data);
+    if (layout.w < 10 || layout.h < 10) return;
+    rnaCanvas.width = layout.w;
+    rnaCanvas.height = layout.h;
+    const ctx = rnaCanvas.getContext('2d');
+    ctx.clearRect(0, 0, layout.w, layout.h);
+    const radius = Math.max(2.2, Math.min(5.5, layout.scale * 0.015));
+    for (let i = 0; i < data.nCells; i++) {
+      const { px, py } = mapRnaToCanvas(data.x[i], data.y[i], layout);
+      ctx.fillStyle = exprColor(data.value[i], data.min, data.max);
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    document.getElementById('colorbar-gene').textContent = data.gene;
+    const cbVals = document.querySelector('#colorbar .cb-vals');
+    if (cbVals) {
+      cbVals.innerHTML = `<span>${data.min.toFixed(2)}</span><span>${data.max.toFixed(2)}</span>`;
+    }
+    applyViewerTransform();
+  }
+
+  async function fetchRnaExpression(caseId, gene) {
+    const resp = await fetch(
+      `/api/phoenix/${encodeURIComponent(caseId)}/expression?gene=${encodeURIComponent(gene)}`
+    );
+    const payload = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      throw new Error(typeof payload.detail === 'string' ? payload.detail : 'Expression load failed');
+    }
+    return payload;
+  }
+
+  async function renderSelectedGene() {
+    if (viewerModality !== 'RNA' || !phoenixManifest || !phoenixCaseId) return;
+    const gene = geneSelect.value;
+    if (!gene) return;
+    try {
+      rnaExpression = await fetchRnaExpression(phoenixCaseId, gene);
+      renderRnaExpression(rnaExpression);
+    } catch (err) {
+      rnaMeta.textContent = err.message;
+    }
+  }
+
+  async function loadPhoenixBundle(caseId) {
+    const resp = await fetch(`/api/phoenix/${encodeURIComponent(caseId)}`);
+    if (!resp.ok) {
+      phoenixManifest = null;
+      phoenixCaseId = null;
+      return null;
+    }
+    phoenixManifest = await resp.json();
+    phoenixCaseId = caseId;
+    populatePhoenixGeneSelect(phoenixManifest);
+    rnaMeta.textContent =
+      `${phoenixManifest.nCells.toLocaleString()} inferred cells · ${phoenixManifest.nGenes} genes · ${phoenixManifest.study || 'PHOENIX'} · ${formatCoordSourceLabel(phoenixManifest.coordinateSource)}`;
+    return phoenixManifest;
+  }
+
+  function updateViewerLayers() {
+    const colorbar = document.getElementById('colorbar');
+    const isHe = viewerModality === 'HE';
+    const isRna = viewerModality === 'RNA';
+    const hasPhoenix = isRna && phoenixManifest && phoenixCaseId === (selectedPatient?.caseId);
+
+    colorbar.style.display = isHe ? 'none' : 'flex';
+    geneSelect.disabled = isHe;
+    geneSelect.style.opacity = isHe ? '.4' : '1';
+
+    heImage.classList.toggle('rna-bg', isRna && hasPhoenix);
+    rnaCanvas.style.display = isRna && hasPhoenix ? 'block' : 'none';
+    rnaMeta.style.display = isRna && hasPhoenix ? 'block' : 'none';
+
+    if (isHe) {
+      heImage.style.objectFit = 'contain';
+      if (heHasImage) {
+        heImage.style.display = 'block';
+        hePlaceholder.style.display = 'none';
+      }
+    } else if (isRna) {
+      heImage.style.objectFit = 'cover';
+      if (hasPhoenix && (phoenixManifest.assets?.thumbnail || phoenixManifest.assets?.tissueCrop)) {
+        heImage.src = phoenixManifest.assets.thumbnail || phoenixManifest.assets.tissueCrop;
+        heImage.style.display = 'block';
+        hePlaceholder.style.display = 'none';
+        heHasImage = true;
+      } else if (selectedPatient) {
+        loadHePreview(selectedPatient.caseId);
+      }
+      if (hasPhoenix) renderSelectedGene();
+    } else {
+      if (selectedPatient) loadHePreview(selectedPatient.caseId);
+    }
+    applyViewerTransform();
+  }
+
+  async function ensurePhoenixLoaded() {
+    const caseId = selectedPatient?.caseId;
+    if (!caseId) return;
+    if (phoenixCaseId !== caseId || !phoenixManifest) {
+      await loadPhoenixBundle(caseId);
+    }
+    updateViewerLayers();
+  }
+
+  function setModality(btn, mode) {
+    document.querySelectorAll('.modality-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    viewerModality = mode;
+    const placeholder = document.getElementById('placeholder-label');
+    if (mode === 'HE') {
+      placeholder.textContent = 'Load a whole-slide image or select a tile from data/';
+      updateViewerLayers();
+    } else if (mode === 'RNA') {
+      placeholder.textContent = 'Loading PHOENIX spatial readouts…';
+      ensurePhoenixLoaded().catch(err => {
+        placeholder.textContent = `No PHOENIX RNA bundle: ${err.message}`;
+        hePlaceholder.style.display = 'flex';
+      });
+    } else {
+      placeholder.textContent = 'Select protein to overlay using the dropdown above';
+      updateViewerLayers();
+    }
+  }
+
+  geneSelect.addEventListener('change', () => {
+    updateColorbarGene();
+    if (viewerModality === 'RNA') renderSelectedGene();
+  });
+  function updateColorbarGene() {
+    const v = geneSelect.value;
+    if (v) document.getElementById('colorbar-gene').textContent = v;
+  }
+
+  geneSelect.disabled = true;
+  geneSelect.style.opacity = '.4';
+
+  // ── H&E preview loader ────────────────────────────────────────────
+  function hePreviewUrl(caseId) {
+    return `/demo/data_package/per_patient/${encodeURIComponent(caseId)}/slide_previews/${encodeURIComponent(caseId)}.thumbnail.png`;
+  }
+
+  function hePreviewFallbackUrl(caseId) {
+    return `/demo/data_package/per_patient/${encodeURIComponent(caseId)}/slide_previews/${encodeURIComponent(caseId)}.tissue_crop.png`;
+  }
+
+  function showHeImage(src) {
+    heImage.src = src;
+    heImage.style.display = 'block';
+    hePlaceholder.style.display = 'none';
+    heHasImage = true;
+    applyViewerTransform();
+  }
+
+  function hideHeImage(message) {
+    heImage.removeAttribute('src');
+    heImage.style.display = 'none';
+    hePlaceholder.style.display = 'flex';
+    heHasImage = false;
+    if (message) document.getElementById('placeholder-label').textContent = message;
+    applyViewerTransform();
+  }
+
+  function loadHeThumb(caseId) {
+    const thumb = document.getElementById('phc-he-thumb');
+    if (!thumb || !caseId) return;
+    const img = new Image();
+    img.onload = () => {
+      const ctx = thumb.getContext('2d');
+      ctx.clearRect(0, 0, thumb.width, thumb.height);
+      const ratio = Math.max(thumb.width / img.width, thumb.height / img.height);
+      const w = img.width * ratio;
+      const h = img.height * ratio;
+      ctx.drawImage(img, (thumb.width - w) / 2, (thumb.height - h) / 2, w, h);
+    };
+    img.onerror = () => {
+      const ctx = thumb.getContext('2d');
+      ctx.fillStyle = '#2a2d36';
+      ctx.fillRect(0, 0, thumb.width, thumb.height);
+    };
+    img.src = hePreviewUrl(caseId);
+  }
+
+  function loadHePreview(caseId) {
+    if (!caseId) return;
+    hePreviewCaseId = caseId;
+    loadHeThumb(caseId);
+    const probe = new Image();
+    probe.onload = () => {
+      if (hePreviewCaseId !== caseId) return;
+      showHeImage(hePreviewUrl(caseId));
+    };
+    probe.onerror = () => {
+      if (hePreviewCaseId !== caseId) return;
+      const fallback = new Image();
+      fallback.onload = () => {
+        if (hePreviewCaseId !== caseId) return;
+        showHeImage(hePreviewFallbackUrl(caseId));
+      };
+      fallback.onerror = () => {
+        if (hePreviewCaseId !== caseId) return;
+        hideHeImage(`No H&E preview for ${caseId}`);
+      };
+      fallback.src = hePreviewFallbackUrl(caseId);
+    };
+    probe.src = `${hePreviewUrl(caseId)}?t=${Date.now()}`;
+  }
+
+  // ── Zoom ──────────────────────────────────────────────────────────
+  function zoom(dir) {
+    viewerScale = Math.max(0.5, Math.min(4, viewerScale + dir * 0.25));
+    applyViewerTransform();
+  }
+  function resetZoom() {
+    viewerScale = 1;
+    applyViewerTransform();
+  }
+
+  heImage.addEventListener('load', () => {
+    if (viewerModality === 'RNA' && rnaExpression) renderRnaExpression(rnaExpression);
+  });
+
+  window.addEventListener('resize', () => {
+    if (viewerModality === 'RNA' && rnaExpression) renderRnaExpression(rnaExpression);
+    else applyViewerTransform();
+  });
+
+  loadHePreview('TCGA-56-5898');
+
+  // ── Drag-drop placeholder ─────────────────────────────────────────
+  heWrap.addEventListener('dragover', e => { e.preventDefault(); heWrap.style.outline = '2px dashed #4f8ef7'; });
+  heWrap.addEventListener('dragleave', () => { heWrap.style.outline = ''; });
+  heWrap.addEventListener('drop', e => {
+    e.preventDefault(); heWrap.style.outline = '';
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    if (file.type.startsWith('image/')) {
+      hePreviewCaseId = null;
+      showHeImage(URL.createObjectURL(file));
+    } else {
+      hePlaceholder.querySelector('p').textContent = `Loaded: ${file.name} — render pipeline needed for WSI format`;
+    }
+  });
+
+  // ── Cluster embedding graph ───────────────────────────────────────
+  const TME_ARCHETYPES = ['Immune Desert', 'Immune Inflamed', 'Myeloid/Treg-rich', 'Stroma-high'];
+  const TME_COLORS = {
+    'Immune Desert': '#6b7280',
+    'Immune Inflamed': '#3ecf8e',
+    'Myeloid/Treg-rich': '#7c5cbf',
+    'Stroma-high': '#f5c542',
+  };
+  const IMMUNE_STATUSES = ['Immune Hot', 'Immune Cold', 'Immune Excluded'];
+  const IMMUNE_COLORS = {
+    'Immune Hot': '#3ecf8e',
+    'Immune Cold': '#6b7280',
+    'Immune Excluded': '#7c5cbf',
+  };
+  const OS_COLORS = { alive: '#3ecf8e', deceased: '#e05c5c' };
+  const TREATMENT_COLORS = {
+    platinum_multi: '#4f8ef7',
+    platinum: '#3b82f6',
+    taxane: '#7c5cbf',
+    tki: '#3ecf8e',
+    advanced_systemic: '#f5c542',
+    multi_agent: '#e05c5c',
+    single_agent: '#a78bfa',
+    chemo_unspecified: '#64748b',
+    rt_unspecified: '#94a3b8',
+    unspecified: '#6b7280',
+    unknown: '#475569',
+  };
+
+  function treatmentColor(patient) {
+    return TREATMENT_COLORS[patient.treatmentKey] || '#6b7280';
+  }
+
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function lerpColor(c1, c2, t) {
+    const p = (hex) => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+    const a = p(c1), b = p(c2);
+    const m = a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    return `rgb(${m[0]},${m[1]},${m[2]})`;
+  }
+
+  function driverColor(driver) {
+    if (driverColorMap[driver]) return driverColorMap[driver];
+    const base = driver.replace(' G12C', '');
+    if (driverColorMap[base]) return driverColorMap[base];
+    return '#6b7280';
+  }
+
+  function getPatientColor(p, colourBy, sigKey) {
+    if (colourBy === 'tmeArchetype') return TME_COLORS[p.tmeArchetype] || '#6b7280';
+    if (colourBy === 'immuneStatus') return IMMUNE_COLORS[p.immuneStatus] || '#6b7280';
+    if (colourBy === 'driverMutation') return driverColor(p.driverMutation);
+    if (colourBy === 'osStatus') return OS_COLORS[p.osStatus] || '#6b7280';
+    if (colourBy === 'treatmentReceived') return treatmentColor(p);
+    if (colourBy === 'signature') {
+      const v = p.signatures?.[sigKey] ?? 0;
+      return lerpColor(cssVar('--sig-low') || '#1a2030', '#e05c5c', v);
+    }
+    return '#6b7280';
+  }
+
+  function legendLabel(colourBy) {
+    const labels = {
+      tmeArchetype: 'TME archetype',
+      immuneStatus: 'Immune status',
+      driverMutation: 'Driver mutation',
+      treatmentReceived: 'Treatment received',
+      osStatus: 'Overall survival',
+      signature: 'HistoTME signature',
+    };
+    return labels[colourBy] || 'Legend';
+  }
+
+  function getLegendEntries(colourBy, sigKey) {
+    if (colourBy === 'signature') {
+      const low = cssVar('--sig-low') || '#1a2030';
+      return [{ color: low, label: 'Low' }, { color: '#e05c5c', label: 'High' }];
+    }
+    if (colourBy === 'driverMutation') {
+      return [...new Set(cohortPatients.map(p => p.driverMutation))].sort()
+        .map(d => ({ color: driverColor(d), label: d }));
+    }
+    if (colourBy === 'treatmentReceived') {
+      const seen = new Set();
+      const entries = [];
+      cohortPatients.forEach(p => {
+        const key = p.treatmentKey || 'unknown';
+        if (seen.has(key)) return;
+        seen.add(key);
+        entries.push({
+          color: treatmentColor(p),
+          label: p.treatmentReceived || 'Not documented',
+        });
+      });
+      return entries;
+    }
+    if (colourBy === 'osStatus') {
+      return ['alive', 'deceased'].map(k => ({
+        color: OS_COLORS[k],
+        label: k.charAt(0).toUpperCase() + k.slice(1),
+      }));
+    }
+    const maps = {
+      tmeArchetype: [TME_ARCHETYPES, TME_COLORS],
+      immuneStatus: [IMMUNE_STATUSES, IMMUNE_COLORS],
+    };
+    const [keys, colors] = maps[colourBy] || [[], {}];
+    return keys.map(k => ({ color: colors[k] || '#6b7280', label: k }));
+  }
+
+  function updateScatterLegend(colourBy, sigKey) {
+    const entries = getLegendEntries(colourBy, sigKey);
+    document.getElementById('scatter-legend-title').textContent = 'Legend';
+
+    const body = document.getElementById('scatter-legend-body');
+    if (colourBy === 'signature') {
+      const low = cssVar('--sig-low') || '#1a2030';
+      body.innerHTML = `
+        <div class="leg-gradient" style="background:linear-gradient(to right,${low},#e05c5c)"></div>
+        <div class="leg-gradient-labels"><span>Low</span><span>High</span></div>
+        <div class="leg-row"><span class="leg-label">${legendLabel(colourBy)} · ${sigKey.replace('_', ' ')}</span></div>`;
+      return;
+    }
+    body.innerHTML = `<div class="leg-items"><div class="leg-row" style="margin-bottom:2px;"><span class="leg-label" style="color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.4px;">${legendLabel(colourBy)}</span></div>${entries.map(entry =>
+      `<div class="leg-row"><span class="leg-swatch" style="background:${entry.color}"></span><span class="leg-label">${entry.label}</span></div>`
+    ).join('')}</div>`;
+  }
+
+  function setLegendExpanded(expanded) {
+    const panel = document.getElementById('scatter-legend-panel');
+    const toggle = document.getElementById('scatter-legend-toggle');
+    panel.classList.toggle('is-expanded', expanded);
+    panel.classList.toggle('is-collapsed', !expanded);
+    panel.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  }
+
+  function drawScatterBackground(ctx, w, h) {
+    ctx.fillStyle = cssVar('--bg-viewer') || '#0a0c12';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.save();
+    ctx.strokeStyle = cssVar('--scatter-grid') || 'rgba(35, 39, 51, .55)';
+    ctx.lineWidth = 1;
+    const step = 40;
+    for (let x = step; x < w; x += step) {
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, 0);
+      ctx.lineTo(x + 0.5, h);
+      ctx.stroke();
+    }
+    for (let y = step; y < h; y += step) {
+      ctx.beginPath();
+      ctx.moveTo(0, y + 0.5);
+      ctx.lineTo(w, y + 0.5);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawScatterDot(ctx, cx, cy, radius, fill, state) {
+    const ring = cssVar('--scatter-dot-ring') || '#ffffff';
+    const accent = cssVar('--accent') || '#4f8ef7';
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0, 0, 0, .28)';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+
+    ctx.strokeStyle = ring;
+    ctx.lineWidth = state === 'selected' ? 2.5 : state === 'hovered' ? 2 : 1.75;
+    ctx.stroke();
+
+    if (state === 'selected') {
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+    } else if (state === 'hovered') {
+      ctx.strokeStyle = cssVar('--text') || '#e2e6f0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function computeScatterLayout(canvas) {
+    const xs = cohortPatients.map(p => p.x);
+    const ys = cohortPatients.map(p => p.y);
+    scatterLayout.minX = Math.min(...xs);
+    scatterLayout.maxX = Math.max(...xs);
+    scatterLayout.minY = Math.min(...ys);
+    scatterLayout.maxY = Math.max(...ys);
+    scatterLayout.w = canvas.width;
+    scatterLayout.h = canvas.height;
+  }
+
+  function dataToCanvas(x, y) {
+    const { pad, minX, maxX, minY, maxY, w, h } = scatterLayout;
+    const rx = maxX - minX || 1;
+    const ry = maxY - minY || 1;
+    return {
+      cx: pad + ((x - minX) / rx) * (w - pad * 2),
+      cy: h - pad - ((y - minY) / ry) * (h - pad * 2),
+    };
+  }
+
+  function renderScatterPlot() {
+    const canvas = document.getElementById('scatter-canvas');
+    const wrap = document.getElementById('cluster-graph-wrap');
+    canvas.width = wrap.clientWidth;
+    canvas.height = wrap.clientHeight;
+    computeScatterLayout(canvas);
+
+    const colourBy = document.getElementById('colour-by-select').value;
+    const sigKey = document.getElementById('signature-select').value;
+    const ctx = canvas.getContext('2d');
+    drawScatterBackground(ctx, canvas.width, canvas.height);
+
+    const selectedId = selectedPatient?.caseId;
+    const sortedPatients = [...cohortPatients].sort((a, b) => {
+      const rank = (p) => (
+        p.caseId === selectedId ? 2
+          : hoveredPatient && p.caseId === hoveredPatient.caseId ? 1
+            : 0
+      );
+      return rank(a) - rank(b);
+    });
+
+    sortedPatients.forEach(p => {
+      const { cx, cy } = dataToCanvas(p.x, p.y);
+      p._cx = cx; p._cy = cy;
+      const isSelected = p.caseId === selectedId;
+      const isHovered = hoveredPatient && hoveredPatient.caseId === p.caseId;
+      const r = isSelected ? 8 : isHovered ? 7 : 5.5;
+      const state = isSelected ? 'selected' : isHovered ? 'hovered' : 'default';
+      drawScatterDot(ctx, cx, cy, r, getPatientColor(p, colourBy, sigKey), state);
+    });
+
+    updateScatterLegend(colourBy, sigKey);
+  }
+
+  function findPatientAt(mx, my) {
+    let best = null;
+    let bestD = 18;
+    cohortPatients.forEach(p => {
+      const d = Math.hypot(p._cx - mx, p._cy - my);
+      if (d < bestD) { bestD = d; best = p; }
+    });
+    return best;
+  }
+
+  function showScatterTooltip(p, mx, my) {
+    const tip = document.getElementById('scatter-tooltip');
+    if (!p) { tip.style.display = 'none'; return; }
+    tip.style.display = 'block';
+    tip.innerHTML = `<div class="tt-id">${p.caseId}</div>
+      ${p.immuneStatus} · ${p.tmeArchetype}<br>
+      ${p.pathogenicMutations}<br>
+      Treatment: ${p.treatmentReceived || 'Not documented'}${p.treatmentAgents && p.treatmentAgents !== 'Not documented' ? ` · ${p.treatmentAgents}` : ''}<br>
+      OS: ${p.osMonths} mo (${p.osStatus})`;
+    const wrap = document.getElementById('cluster-graph-wrap');
+    const rect = wrap.getBoundingClientRect();
+    let left = mx + 12, top = my - 8;
+    if (left + 190 > wrap.clientWidth) left = mx - 200;
+    if (top + 96 > wrap.clientHeight) top = my - 100;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+
+  (function initClusterGraph() {
+    const canvas = document.getElementById('scatter-canvas');
+    const colourSelect = document.getElementById('colour-by-select');
+    const sigSelect = document.getElementById('signature-select');
+    const legendToggle = document.getElementById('scatter-legend-toggle');
+
+    legendToggle.addEventListener('click', () => {
+      const panel = document.getElementById('scatter-legend-panel');
+      setLegendExpanded(!panel.classList.contains('is-expanded'));
+    });
+
+    colourSelect.addEventListener('change', () => {
+      sigSelect.style.display = colourSelect.value === 'signature' ? 'block' : 'none';
+      renderScatterPlot();
+    });
+    sigSelect.addEventListener('change', renderScatterPlot);
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const p = findPatientAt(mx, my);
+      if (p !== hoveredPatient) {
+        hoveredPatient = p;
+        renderScatterPlot();
+      }
+      showScatterTooltip(p, mx, my);
+    });
+    canvas.addEventListener('mouseleave', () => {
+      hoveredPatient = null;
+      document.getElementById('scatter-tooltip').style.display = 'none';
+      renderScatterPlot();
+    });
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const p = findPatientAt(e.clientX - rect.left, e.clientY - rect.top);
+      if (!p) return;
+      selectPatient(p);
+    });
+
+    loadRepresentativeCohort().catch(err => {
+      document.getElementById('scatter-meta').textContent =
+        `Could not load patient cohort: ${err.message}`;
+    });
+
+    window.addEventListener('resize', renderScatterPlot);
+    window.addEventListener('themechange', renderScatterPlot);
+  })();
+
+  preloadCohortKnowledge();
+</script>
+</body>
+</html>

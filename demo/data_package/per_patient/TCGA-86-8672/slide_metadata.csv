@@ -1,0 +1,2 @@
+file_id,file_name,md5sum,file_size,state,data_format,project_id,case_submitter_id,case_id,sample_type,sample_submitter_id
+95796913-8094-419a-8059-1839b3b6955f,TCGA-86-8672-01Z-00-DX1.94ca1954-921d-4ef6-a078-4e0fcb09157f.svs,1e00e9e9dea37b4df951a05d1dd4dd5d,738199167,released,SVS,TCGA-LUAD,TCGA-86-8672,c0e263eb-1a83-4dc8-8abe-3dd2a59bae1b,Primary Tumor,TCGA-86-8672-01Z

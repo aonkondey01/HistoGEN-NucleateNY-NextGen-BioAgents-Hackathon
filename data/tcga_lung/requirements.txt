@@ -1,0 +1,16 @@
+# Slide IO / rendering for the lung TCGA H&E toolkit.
+#
+# generate_manifest.py and download.py use only the standard library.
+# slide.py (thumbnails / crops / tiling) needs the packages below.
+#
+# NOTE: this tifffile release requires zarr >= 3 (not zarr 2.x).
+numpy>=1.24
+tifffile>=2024.1.1
+imagecodecs>=2024.1.1   # JPEG/JPEG2000 decoding for Aperio .svs
+zarr>=3.0               # windowed (lazy) region reads without loading full slide
+pillow>=10.0
+
+# Optional, preferred backend if the system OpenSlide library is installed:
+#   apt-get install openslide-tools  (or: brew install openslide)
+#   pip install openslide-python
+# slide.py auto-detects and uses it when present.

@@ -1,0 +1,205 @@
+{
+  "age_at_diagnosis_days": 29445,
+  "age_at_diagnosis_years": 80.62,
+  "ajcc_pathologic_m": "M0",
+  "ajcc_pathologic_n": "N0",
+  "ajcc_pathologic_stage": "Stage IA",
+  "ajcc_pathologic_t": "T1",
+  "alcohol_history": null,
+  "case_id": "b09e872a-e837-49ec-8a27-84dcdcabf347",
+  "case_submitter_id": "TCGA-18-3409",
+  "cigarettes_per_day": null,
+  "days_to_birth": -27154,
+  "days_to_death": null,
+  "days_to_diagnosis": -27,
+  "days_to_last_follow_up": 3747,
+  "days_to_last_known_disease_status": null,
+  "days_to_progression": null,
+  "days_to_treatment_end": null,
+  "days_to_treatment_start": 0,
+  "diagnoses": [
+    {
+      "age_at_diagnosis": 29445,
+      "days_to_diagnosis": 2291,
+      "primary_diagnosis": "Not Reported",
+      "prior_treatment": "Yes",
+      "treatments": [
+        {
+          "initial_disease_status": "Initial Diagnosis",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "initial_disease_status": "Initial Diagnosis",
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Radiation Therapy, NOS"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": null,
+      "primary_diagnosis": "Basal cell carcinoma, NOS",
+      "treatments": [
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 27154,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IA",
+      "ajcc_pathologic_t": "T1",
+      "days_to_diagnosis": 0,
+      "days_to_last_follow_up": 3747.0,
+      "days_to_last_known_disease_status": null,
+      "primary_diagnosis": "Basaloid squamous cell carcinoma",
+      "prior_malignancy": "yes",
+      "prior_treatment": "No",
+      "synchronous_malignancy": "No",
+      "treatments": [
+        {
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "therapeutic_agents": null,
+          "treatment_intent_type": "Adjuvant",
+          "treatment_or_therapy": "no",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        }
+      ]
+    },
+    {
+      "age_at_diagnosis": 27127,
+      "ajcc_pathologic_m": "M0",
+      "ajcc_pathologic_n": "N0",
+      "ajcc_pathologic_stage": "Stage IA",
+      "ajcc_pathologic_t": "T1",
+      "days_to_diagnosis": -27,
+      "primary_diagnosis": "Basaloid squamous cell carcinoma",
+      "treatments": [
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Pharmaceutical Therapy, NOS"
+        },
+        {
+          "treatment_or_therapy": "no",
+          "treatment_type": "Radiation Therapy, NOS"
+        },
+        {
+          "days_to_treatment_start": 0,
+          "treatment_or_therapy": "yes",
+          "treatment_type": "Surgery, NOS"
+        }
+      ]
+    }
+  ],
+  "diagnosis_count": 4,
+  "disease_response": "TF-Tumor Free",
+  "ethnicity": "not hispanic or latino",
+  "exposures": [
+    {
+      "alcohol_history": null,
+      "cigarettes_per_day": null,
+      "pack_years_smoked": 20,
+      "tobacco_smoking_status": "Current Reformed Smoker for > 15 yrs"
+    }
+  ],
+  "expression_file_count": 1,
+  "follow_up_count": 3,
+  "follow_ups": [
+    {
+      "days_to_follow_up": 3747,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 2417,
+      "disease_response": "TF-Tumor Free"
+    },
+    {
+      "days_to_follow_up": 3747,
+      "disease_response": "TF-Tumor Free"
+    }
+  ],
+  "initial_disease_status": "Initial Diagnosis",
+  "last_follow_up_days": 3747,
+  "mutation_file_count": 1,
+  "pack_years_smoked": 20,
+  "primary_diagnosis": "Basal cell carcinoma, NOS; Basaloid squamous cell carcinoma",
+  "prior_malignancy": "yes",
+  "prior_treatment": "Yes; No",
+  "progression_or_recurrence": null,
+  "project_id": "TCGA-LUSC",
+  "race": "white",
+  "regimen_or_line_of_therapy": null,
+  "sex": "male",
+  "slide_count": 1,
+  "slide_sample_submitter_ids": "TCGA-18-3409-01Z",
+  "slide_sample_types": "Primary Tumor",
+  "survival_event": 0,
+  "survival_time_days": 3747,
+  "synchronous_malignancy": "No",
+  "therapeutic_agents": null,
+  "tobacco_smoking_onset_year": null,
+  "tobacco_smoking_status": "Current Reformed Smoker for > 15 yrs",
+  "treatment_intent_types": "Adjuvant",
+  "treatment_or_therapy": "yes; no",
+  "treatment_outcomes": null,
+  "treatment_types": "Pharmaceutical Therapy, NOS; Radiation Therapy, NOS; Surgery, NOS",
+  "treatments": [
+    {
+      "initial_disease_status": "Initial Diagnosis",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "initial_disease_status": "Initial Diagnosis",
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "therapeutic_agents": null,
+      "treatment_intent_type": "Adjuvant",
+      "treatment_or_therapy": "no",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Pharmaceutical Therapy, NOS"
+    },
+    {
+      "treatment_or_therapy": "no",
+      "treatment_type": "Radiation Therapy, NOS"
+    },
+    {
+      "days_to_treatment_start": 0,
+      "treatment_or_therapy": "yes",
+      "treatment_type": "Surgery, NOS"
+    }
+  ],
+  "tumor_stage": null,
+  "vital_status": "Alive",
+  "year_of_birth": null,
+  "years_smoked": null
+}
