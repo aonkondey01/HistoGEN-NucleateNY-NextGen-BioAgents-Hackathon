@@ -22,7 +22,7 @@
 | PHOENIX atlas | `scripts/demo/fetch_phoenix.py` → `demo/phoenix/` | `data/phoenix/fetch.py` |
 | GigaTIME | `scripts/demo/run_gigatime.py` (GPU) | fetch weights only in `data/gigatime/` |
 | Haiku embeddings | `scripts/demo/run_haiku.py` → `demo/haiku/` | N/A (mock in UI) |
-| UI JSON | `demo/ui/` | `ui/haiku-patient-explorer/scripts/generate_demo_data.py` (~956) |
+| Cohort figures | `demo/visual_report/` | — |
 | Per-patient bundles | `demo/data_package/per_patient/` | — |
 
 Path module: `demo/paths.py`. Config: `demo/config.json`.
@@ -58,8 +58,7 @@ Read the relevant skill before working in that area:
 
 ```bash
 bash scripts/demo/build_all.sh
-bash scripts/run_ui.sh          # dashboard :8080, /demo static mount
-bash scripts/run_haiku_ui.sh    # explorer :5173
+bash scripts/run_ui.sh          # HistoGEN Advisor :8080
 ```
 
 ### TCGA lung slides (general)
@@ -89,14 +88,14 @@ python scripts/demo/run_gigatime.py           # GPU inference on demo WSIs
 
 ### UI
 
-- **Primary UI:** Taylor's patient explorer — `ui/haiku-patient-explorer/` (branch `cursor/treatment-benefit-ui-5384`)
-- **Do not refactor** unless the user asks.
-- Run: `bash scripts/run_haiku_ui.sh` → port **5173**
-- Data: `ui/haiku-patient-explorer/public/data/patients_embedding.json` (~956 patients)
-- Optional: `ui/index.html` static dashboard prototype
+- **Only UI:** HistoGEN Advisor dashboard — `ui/index.html` + `ui/protein_server.py`
+- Run: `bash scripts/run_ui.sh` → port **8080**
+- Chat embeds **protein structures** (`/api/protein/structure`) and **cohort figures** (`/api/agent/cohort-figures`)
+- Demo data: `demo/` (20 patients, PHOENIX bundles, `demo_cache/gigatime_structures/`)
+- **Removed:** `ui/haiku-patient-explorer/` (Taylor/Emma Vite alternates)
 
 ```bash
-bash scripts/run_haiku_ui.sh
+bash scripts/run_ui.sh
 ```
 
 ## UI content generation (agent reference)
@@ -113,11 +112,9 @@ bash scripts/run_haiku_ui.sh
 | `--green` | `#3ecf8e` |
 | Font | Inter |
 
-**Dashboard grid:** 300px agent | 1fr viewer | 340px clinical.
+**Dashboard grid:** 300px HistoGen Advisor chat | 1fr H&E/RNA/Protein viewer | 340px cluster + clinical.
 
-**Explorer grid:** recurrence predictions | H&E | UMAP + patient card stack.
-
-No logo image files — text brand **HistoGEN** only (logos removed from `docs/assets/`).
+Chat embeds **protein structure cards** (ESM Atlas cache) and **cohort figure plots** (visual report PNGs).
 
 ### Demo patient (dashboard default)
 
@@ -136,18 +133,10 @@ Set `?demo=0` on the dashboard URL to enable SVS drag-drop upload.
 | RNA | PHOENIX | enabled |
 | Protein | GigaTIME | enabled |
 
-### Regenerate explorer JSON (20 patients)
+### Regenerate demo UI assets (20 patients)
 
 ```bash
-python ui/haiku-patient-explorer/scripts/generate_representative_ui_data.py
 python scripts/demo/build_ui_assets.py --skip-download
-```
-
-### Regenerate full-cohort explorer JSON (~956)
-
-```bash
-cd ui/haiku-patient-explorer
-python scripts/generate_demo_data.py
 ```
 
 ## Gotchas

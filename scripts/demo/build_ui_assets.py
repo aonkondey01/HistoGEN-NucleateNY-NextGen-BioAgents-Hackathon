@@ -208,11 +208,6 @@ def main() -> int:
     UI_DATA.mkdir(parents=True, exist_ok=True)
     (UI_DATA / "representative_assets_summary.json").write_text(json.dumps(results, indent=2))
 
-    # Regenerate explorer embedding JSON
-    gen = ROOT / "ui" / "haiku-patient-explorer" / "scripts" / "generate_representative_ui_data.py"
-    if gen.is_file():
-        _run([sys.executable, str(gen)])
-
     print(f"\nWrote UI assets under {UI_DATA}")
     return 0
 

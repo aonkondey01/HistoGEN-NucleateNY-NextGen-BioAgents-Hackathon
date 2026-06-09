@@ -25,26 +25,23 @@ data/
   gigatime/        GigaTIME weights fetch helper (gated HF)
 scripts/demo/      One-command demo pipeline (GPU)
 ui/
-  index.html              HistoGEN 4-panel dashboard prototype
-  haiku-patient-explorer/ Vite app — recurrence therapy predictions
-  CURSOR_PROMPT.md        UI iteration brief for agents
+  index.html              HistoGEN Advisor dashboard (only UI)
+  protein_server.py       FastAPI: static UI + /api protein + PHOENIX + cohort figures
 docs/slides/     Pitch deck assets (static .pptx + speaker notes)
 ```
 
 ## Quick start
 
-### HistoGEN UI (single app)
+### HistoGEN UI
 
 ```bash
-bash scripts/run_haiku_ui.sh
-# → http://localhost:5173
+bash scripts/run_ui.sh
+# → http://localhost:8080
 ```
 
-One Vite app: 20 TCGA patients, **PHOENIX spatial RNA** heatmap, H&E thumbnails, UMAP.
+One app: **HistoGen Advisor** chat (protein structures + cohort figure plots), PHOENIX RNA viewer, 20-patient cluster graph. Demo data in `demo/`.
 
-If localhost port forwarding fails: `bash scripts/start_public_ui.sh` (one public URL).
-
-`ui/index.html` is a legacy prototype — not the primary UI.
+Public tunnel if needed: `bash scripts/start_public_ui.sh`
 
 The bundled demo uses a stratified subset of **20 open-access TCGA lung diagnostic
 H&E slides** (LUAD + LUSC). See `demo/README.md`.
