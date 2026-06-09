@@ -33,16 +33,18 @@ docs/slides/     Pitch deck assets (static .pptx + speaker notes)
 
 ## Quick start
 
-### HistoGEN UI (Taylor patient explorer)
-
-Primary UI — Vite app with recurrence therapy predictions and UMAP (~956 patients):
+### HistoGEN UI (single app)
 
 ```bash
 bash scripts/run_haiku_ui.sh
 # → http://localhost:5173
 ```
 
-Optional static dashboard: `ui/index.html` (4-panel prototype, no build step).
+One Vite app: 20 TCGA patients, **PHOENIX spatial RNA** heatmap, H&E thumbnails, UMAP.
+
+If localhost port forwarding fails: `bash scripts/start_public_ui.sh` (one public URL).
+
+`ui/index.html` is a legacy prototype — not the primary UI.
 
 The bundled demo uses a stratified subset of **20 open-access TCGA lung diagnostic
 H&E slides** (LUAD + LUSC). See `demo/README.md`.

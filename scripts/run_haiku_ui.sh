@@ -6,12 +6,13 @@ if [[ ! -d node_modules ]]; then
   npm install
 fi
 if [[ ! -f public/data/patients_embedding.json ]]; then
-  echo "Generating patient data (first run only, ~30s)…"
-  python3 scripts/generate_demo_data.py
+  echo "Generating 20-patient demo data…"
+  python3 scripts/generate_representative_ui_data.py
 fi
 echo ""
 echo "=============================================="
-echo "  HistoGen  →  http://localhost:5173"
+echo "  HistoGEN  →  http://localhost:5173"
+echo "  PHOENIX spatial RNA · H&E · 20 patients"
 echo "=============================================="
 echo ""
 echo "HOW TO OPEN:"
