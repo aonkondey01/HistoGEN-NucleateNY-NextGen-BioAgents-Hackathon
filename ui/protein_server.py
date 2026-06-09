@@ -19,6 +19,7 @@ UI_DIR = Path(__file__).resolve().parent
 REPO_ROOT = UI_DIR.parent
 DATA_DIR = REPO_ROOT / "data"
 DEMO_DIR = REPO_ROOT / "demo"
+EXPLORER_DIST = UI_DIR / "haiku-patient-explorer" / "dist"
 DEMO_MODE = os.getenv("DEMO_MODE", "1").strip().lower() not in {"0", "false", "no"}
 load_dotenv(UI_DIR / ".env")
 
@@ -280,11 +281,30 @@ async def phoenix_heatmap(case_id: str):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-if DATA_DIR.is_dir():
-    app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
+@app.get("/health")
+async def health():
+    """Quick check that the UI server is reachable (use from Cursor Ports or curl)."""
+    return {
+        "status": "ok",
+        "demo_mode": DEMO_MODE,
+        "explorer_built": EXPLORER_DIST.is_dir(),
+        "endpoints": {
+            "dashboard": "/",
+            "explorer": "/explorer/" if EXPLORER_DIST.is_dir() else None,
+            "demo_assets": "/demo/",
+            "api": "/api/patients/cohort",
+        },
+    }
+
 
 if DEMO_DIR.is_dir():
     app.mount("/demo", StaticFiles(directory=str(DEMO_DIR)), name="demo")
+
+if EXPLORER_DIST.is_dir():
+    app.mount("/explorer", StaticFiles(directory=str(EXPLORER_DIST), html=True), name="explorer")
+
+if DATA_DIR.is_dir():
+    app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
 
 app.mount("/", StaticFiles(directory=str(UI_DIR), html=True), name="ui")
 
@@ -302,4 +322,7 @@ if __name__ == "__main__":
 
     if DEMO_MODE:
         print("Demo mode ON — serving demo/ assets at /demo (set DEMO_MODE=0 to disable banner)")
-    uvicorn.run("protein_server:app", host="127.0.0.1", port=8080, reload=True)
+    host = os.getenv("UI_HOST", "0.0.0.0")
+    port = int(os.getenv("UI_PORT", "8080"))
+    print(f"HistoGEN UI → http://{host}:{port}")
+    uvicorn.run("protein_server:app", host=host, port=port, reload=True)

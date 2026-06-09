@@ -4,10 +4,11 @@ import { defineConfig } from "vite";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const demoDir = path.resolve(rootDir, "../../../demo");
+const base = process.env.EXPLORER_BASE || "/";
 
 export default defineConfig({
   root: ".",
-  base: "/",
+  base,
   server: {
     port: 5173,
     host: true,

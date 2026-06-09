@@ -43,11 +43,13 @@ H&E slides** (LUAD + LUSC). This is for local research demos only — not the fu
 # Full demo pipeline: WSI download → PHOENIX atlas → GigaTIME → Haiku → UI assets
 bash scripts/demo/build_all.sh
 
-# Launch dashboard (demo assets at /demo, API on :8080)
-bash scripts/run_ui.sh
+# One port for everything (recommended when Cursor Ports forwarding fails):
+bash scripts/run_all_ui.sh
+# → http://localhost:8080/           dashboard
+# → http://localhost:8080/explorer/  patient explorer (static build, no port 5173)
 
-# Launch patient explorer (Vite on :5173, demo JSON symlinked from demo/ui/)
-bash scripts/run_haiku_ui.sh
+# Optional: public tunnel (no localhost / Ports needed)
+# cloudflared tunnel --url http://127.0.0.1:8080
 ```
 
 Demo mode is **on by default** in the UI. The dashboard loads case `TCGA-55-7815`

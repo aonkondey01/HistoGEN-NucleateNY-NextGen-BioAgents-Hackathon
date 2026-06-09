@@ -7,7 +7,7 @@
     "generate-data": "python3 scripts/generate_demo_data.py",
     "generate-representative-data": "python3 scripts/generate_representative_ui_data.py",
     "dev": "vite",
-  "build": "npm run generate-representative-data && vite build",
+    "build": "npm run generate-representative-data && EXPLORER_BASE=/explorer/ vite build",
     "build:pages": "npm run generate-representative-data && vite build",
     "preview": "vite preview"
   },

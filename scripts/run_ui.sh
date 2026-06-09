@@ -6,8 +6,16 @@ UI="$ROOT/ui"
 VENV="$UI/.venv"
 
 if [[ ! -d "$VENV" ]]; then
-  python3 -m venv "$VENV"
-  "$VENV/bin/pip" install -r "$UI/requirements.txt"
+  if python3 -m venv "$VENV" 2>/dev/null; then
+    "$VENV/bin/pip" install -r "$UI/requirements.txt"
+  else
+    echo "Note: python3-venv unavailable — using system Python"
+    VENV=""
+  fi
 fi
 
-exec "$VENV/bin/python" "$UI/protein_server.py"
+if [[ -n "${VENV:-}" && -d "$VENV" ]]; then
+  exec "$VENV/bin/python" "$UI/protein_server.py"
+else
+  exec python3 "$UI/protein_server.py"
+fi
