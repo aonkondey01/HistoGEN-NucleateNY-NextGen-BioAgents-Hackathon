@@ -24,7 +24,7 @@ from coordinate_map import DEFAULT_TCGA_MAP, PhoenixCoordinateMap, slide_dimensi
 
 DATA_DIR = Path(__file__).resolve().parent
 REP_BUNDLE_ROOT = (
-    DATA_DIR.parent / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
+    DATA_DIR.parent / "demo" / "data_package" / "per_patient"
 )
 
 GENE_LABELS = {"PDCD1": "PD-1"}

@@ -35,6 +35,7 @@ GDC_DATA_ENDPOINT = "https://api.gdc.cancer.gov/data"
 CHUNK = 1024 * 1024
 
 DATA_DIR = Path(__file__).resolve().parent
+REPO_ROOT = DATA_DIR.parent.parent
 
 GENOMIC_CATEGORIES = {
     "maf": {
@@ -456,12 +457,12 @@ def main() -> int:
     parser.add_argument(
         "--representative-csv",
         type=Path,
-        default=DATA_DIR / "representative_patients" / "representative_20_patients.csv",
+        default=REPO_ROOT / "demo" / "representative_20_patients.csv",
     )
     parser.add_argument(
         "--out-dir",
         type=Path,
-        default=DATA_DIR / "representative_patients" / "genomic_data",
+        default=REPO_ROOT / "demo" / "genomic_data",
     )
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--skip-download", action="store_true")

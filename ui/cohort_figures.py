@@ -10,11 +10,11 @@ from typing import Any
 from urllib.parse import quote
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-VISUAL_REPORT = REPO_ROOT / "data/tcga_lung/representative_patients/visual_report"
+VISUAL_REPORT = REPO_ROOT / "demo/visual_report"
 SELECTED_DIR = VISUAL_REPORT / "selected figures"
 MANIFEST_PATH = SELECTED_DIR / "manifest.json"
 SUMMARY_PATH = VISUAL_REPORT / "cohort_visual_summary.json"
-DATA_URL_PREFIX = "/data/tcga_lung/representative_patients/visual_report/selected%20figures"
+DATA_URL_PREFIX = "/demo/visual_report/selected%20figures"
 
 FIGURE_KNOWLEDGE: dict[str, dict[str, Any]] = {
     "slide05_age_at_diagnosis_distribution": {

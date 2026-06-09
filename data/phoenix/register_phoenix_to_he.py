@@ -25,7 +25,7 @@ from registration import save_registration_artifacts, register_phoenix_cells
 
 DATA_DIR = Path(__file__).resolve().parent
 REP_BUNDLE_ROOT = (
-    DATA_DIR.parent / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
+    DATA_DIR.parent / "demo" / "data_package" / "per_patient"
 )
 
 

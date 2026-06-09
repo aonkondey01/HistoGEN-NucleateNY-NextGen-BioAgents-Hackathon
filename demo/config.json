@@ -1,0 +1,14 @@
+{
+  "demo_mode": true,
+  "default_case_id": "TCGA-55-7815",
+  "n_patients": 20,
+  "description": "Representative TCGA-LUAD/LUSC lung cohort for HistoGEN demo (non-commercial research only).",
+  "pipeline": {
+    "wsi_dir": "demo/WSI",
+    "phoenix_atlas": "demo/phoenix/tcga-atlas-nest-multi-cell-20x-discrete.h5ad",
+    "gigatime_weights": "data/gigatime",
+    "gigatime_outputs": "demo/gigatime/outputs",
+    "haiku_outputs": "demo/haiku",
+    "ui_assets": "demo/ui"
+  }
+}

@@ -15,3 +15,9 @@ data/**/*.hdf5
 data/**/*.h5ad
 data/gigatime/model.pth
 data/gigatime/config.json
+demo/WSI/
+demo/phoenix/*.h5ad
+demo/phoenix/*.zarr/
+demo/gigatime/outputs/
+demo/haiku/*.json
+demo/haiku/*.npy

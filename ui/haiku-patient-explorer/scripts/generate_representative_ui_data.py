@@ -10,10 +10,10 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
-UI_DATA = Path(__file__).resolve().parents[1] / "public" / "data"
-REP_JSON = ROOT / "data" / "tcga_lung" / "representative_patients" / "representative_20_patients.json"
-REP_CSV = ROOT / "data" / "tcga_lung" / "representative_patients" / "representative_20_patients.csv"
-BUNDLE_ROOT = ROOT / "data" / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
+UI_DATA = ROOT / "demo" / "ui"
+REP_JSON = ROOT / "demo" / "representative_20_patients.json"
+REP_CSV = ROOT / "demo" / "representative_20_patients.csv"
+BUNDLE_ROOT = ROOT / "demo" / "data_package" / "per_patient"
 
 ARCHETYPES = ["Immune Desert", "Immune Inflamed", "Myeloid/Treg-rich", "Stroma-high"]
 SIGNATURES = [
@@ -85,6 +85,11 @@ def _signatures_for_case(case_id: str) -> dict[str, float]:
     return {s: 0.0 for s in SIGNATURES}
 
 
+def _has_slide_preview(case_id: str) -> bool:
+    previews = BUNDLE_ROOT / case_id / "slide_previews"
+    return previews.is_dir() and any(previews.glob(f"{case_id}*.thumbnail.png"))
+
+
 def main() -> int:
     rep = json.loads(REP_JSON.read_text())
     rows = list(csv.DictReader(REP_CSV.open()))
@@ -107,7 +112,8 @@ def main() -> int:
                 "signatures": sig,
                 "stratum": p.get("stratum"),
                 "smoking_group": p.get("smoking_group"),
-                "has_slide_thumb": (UI_DATA / "slides" / f"{case_id}.thumbnail.png").exists(),
+                "has_slide_preview": _has_slide_preview(case_id),
+                "slide_preview_url": f"/demo/data_package/per_patient/{case_id}/slide_previews/{case_id}.thumbnail.png",
                 "has_spatial": (UI_DATA / f"spatial_heatmap_{case_id}.json").exists(),
             }
         )
@@ -122,6 +128,7 @@ def main() -> int:
             "n_patients": len(patients),
             "source": "20 representative TCGA lung patients + PHOENIX spatial RNA signatures",
             "projection": "UMAP (or PCA fallback) on PHOENIX-derived signature matrix",
+            "demo_mode": True,
             "archetypes": ARCHETYPES,
             "color_signatures": SIGNATURES,
         },
@@ -131,9 +138,8 @@ def main() -> int:
     UI_DATA.mkdir(parents=True, exist_ok=True)
     (UI_DATA / "patients_embedding.json").write_text(json.dumps(embedding, indent=2))
 
-    # Index of available spatial heatmaps
     spatial_index = {
-        p["case_id"]: f"/data/spatial_heatmap_{p['case_id']}.json"
+        p["case_id"]: f"/demo/ui/spatial_heatmap_{p['case_id']}.json"
         for p in patients
         if (UI_DATA / f"spatial_heatmap_{p['case_id']}.json").exists()
     }

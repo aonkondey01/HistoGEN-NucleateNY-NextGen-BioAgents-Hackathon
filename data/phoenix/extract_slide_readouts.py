@@ -31,12 +31,11 @@ import numpy as np
 from coordinate_map import DEFAULT_TCGA_MAP
 
 DATA_DIR = Path(__file__).resolve().parent
-DEFAULT_ATLAS = DATA_DIR / "atlas" / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
+DEFAULT_ATLAS = DATA_DIR.parent / "demo" / "phoenix" / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
+LEGACY_ATLAS = DATA_DIR / "atlas" / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
 DEFAULT_DEMO_ZARR = DATA_DIR / "demo" / "demo.zarr"
 SLIDES_META = DATA_DIR.parent / "tcga_lung" / "slides_metadata.tcga_lung.json"
-REP_BUNDLE_ROOT = (
-    DATA_DIR.parent / "tcga_lung" / "representative_patients" / "data_package" / "per_patient"
-)
+REP_BUNDLE_ROOT = DATA_DIR.parent / "demo" / "data_package" / "per_patient"
 TILE_SIZE = 512
 SIGNATURES = ["Treg", "Effector_cells", "Macrophages", "CAF"]
 
@@ -316,6 +315,8 @@ def main() -> int:
         help="Directory with slide PNG previews to copy into bundle",
     )
     args = p.parse_args()
+    if not args.atlas.exists() and args.atlas == DEFAULT_ATLAS and LEGACY_ATLAS.exists():
+        args.atlas = LEGACY_ATLAS
 
     if not args.case and not args.slide_id and not args.zarr:
         raise SystemExit("Provide --case, --slide-id, or --zarr")

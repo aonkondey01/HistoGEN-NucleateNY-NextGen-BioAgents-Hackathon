@@ -357,11 +357,12 @@ def compare_selected_to_cohort(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     data_dir = Path(__file__).resolve().parent
+    repo_root = data_dir.parent.parent
     parser.add_argument("--data-dir", type=Path, default=data_dir)
     parser.add_argument(
         "--out-dir",
         type=Path,
-        default=data_dir / "representative_patients",
+        default=repo_root / "demo",
     )
     args = parser.parse_args()
 

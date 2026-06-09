@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-PATIENTS_JSON = REPO_ROOT / "data/tcga_lung/representative_patients/representative_20_patients.json"
+PATIENTS_JSON = REPO_ROOT / "demo/representative_20_patients.json"
 
 STRATUM_LAYOUT: dict[str, dict[str, Any]] = {
     "TCGA-LUAD|non_smoker": {

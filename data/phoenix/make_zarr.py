@@ -14,7 +14,7 @@ memory.
 
 Usage:
     pip install -r requirements.txt
-    python make_zarr.py                         # default cohort -> cohort.zarr
+    python make_zarr.py                         # default cohort -> demo/phoenix/cohort.zarr
     python make_zarr.py --patients TCGA-44-2661 TCGA-55-7815 ...
     python make_zarr.py --patients-file patients.txt --out my_cohort.zarr
     python make_zarr.py --zarr-format 2         # max viewer compatibility (default)
@@ -35,6 +35,12 @@ DEFAULT_PATIENTS = [
 ]
 
 DEFAULT_H5AD = (
+    Path(__file__).resolve().parent.parent
+    / "demo"
+    / "phoenix"
+    / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
+)
+LEGACY_H5AD = (
     Path(__file__).resolve().parent
     / "atlas"
     / "tcga-atlas-nest-multi-cell-20x-discrete.h5ad"
@@ -44,7 +50,7 @@ DEFAULT_H5AD = (
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--in", dest="in_path", type=Path, default=DEFAULT_H5AD)
-    parser.add_argument("--out", type=Path, default=Path(__file__).resolve().parent / "cohort.zarr")
+    parser.add_argument("--out", type=Path, default=Path(__file__).resolve().parent.parent / "demo" / "phoenix" / "cohort.zarr")
     parser.add_argument("--patients", nargs="*", help="patient barcodes (default: built-in 20)")
     parser.add_argument("--patients-file", type=Path, help="file with one barcode per line")
     parser.add_argument("--row-chunk", type=int, default=4096, help="rows per chunk for X")
@@ -52,9 +58,12 @@ def main() -> int:
                         help="Zarr format version (2 = broadest viewer compatibility)")
     args = parser.parse_args()
 
-    if not args.in_path.exists():
-        print(f"ERROR: input h5ad not found: {args.in_path}\n"
-              f"  Fetch it first: python fetch.py", file=sys.stderr)
+    in_path = args.in_path
+    if not in_path.exists() and in_path == DEFAULT_H5AD and LEGACY_H5AD.exists():
+        in_path = LEGACY_H5AD
+    if not in_path.exists():
+        print(f"ERROR: input h5ad not found: {in_path}\n"
+              f"  Fetch demo atlas: python scripts/demo/fetch_phoenix.py", file=sys.stderr)
         return 2
 
     if args.patients_file:
@@ -67,8 +76,8 @@ def main() -> int:
     import numpy as np
     import zarr
 
-    print(f"Opening (backed) {args.in_path.name} ...")
-    adata = ad.read_h5ad(args.in_path, backed="r")
+    print(f"Opening (backed) {in_path.name} ...")
+    adata = ad.read_h5ad(in_path, backed="r")
     slide = adata.obs["slide"].astype(str)
     present = [p for p in patients if (slide == p).any()]
     missing = [p for p in patients if p not in present]

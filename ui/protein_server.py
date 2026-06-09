@@ -18,6 +18,8 @@ from fastapi.staticfiles import StaticFiles
 UI_DIR = Path(__file__).resolve().parent
 REPO_ROOT = UI_DIR.parent
 DATA_DIR = REPO_ROOT / "data"
+DEMO_DIR = REPO_ROOT / "demo"
+DEMO_MODE = os.getenv("DEMO_MODE", "1").strip().lower() not in {"0", "false", "no"}
 load_dotenv(UI_DIR / ".env")
 
 from cohort_figures import has_cohort_figures, list_figures, match_figure
@@ -268,8 +270,8 @@ async def phoenix_heatmap(case_id: str):
     if not has_phoenix_bundle(case_id):
         raise HTTPException(status_code=404, detail=f"No PHOENIX bundle for {case_id!r}")
     path = (
-        REPO_ROOT
-        / "data/tcga_lung/representative_patients/data_package/per_patient"
+        DEMO_DIR
+        / "data_package/per_patient"
         / case_id
         / "phoenix_spatial_heatmap.json"
     )
@@ -280,6 +282,9 @@ async def phoenix_heatmap(case_id: str):
 
 if DATA_DIR.is_dir():
     app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
+
+if DEMO_DIR.is_dir():
+    app.mount("/demo", StaticFiles(directory=str(DEMO_DIR)), name="demo")
 
 app.mount("/", StaticFiles(directory=str(UI_DIR), html=True), name="ui")
 
@@ -295,4 +300,6 @@ if __name__ == "__main__":
         cached = sum(1 for row in list_demo_genes() if row["cached"])
         print(f"Protein demo cache: {cached}/20 GigaTIME markers on disk")
 
+    if DEMO_MODE:
+        print("Demo mode ON — serving demo/ assets at /demo (set DEMO_MODE=0 to disable banner)")
     uvicorn.run("protein_server:app", host="127.0.0.1", port=8080, reload=True)

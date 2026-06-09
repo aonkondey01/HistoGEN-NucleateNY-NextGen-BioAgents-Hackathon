@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BUNDLE_ROOT = REPO_ROOT / "data/tcga_lung/representative_patients/data_package/per_patient"
+BUNDLE_ROOT = REPO_ROOT / "demo/data_package/per_patient"
 PHOENIX_DIR = REPO_ROOT / "data/phoenix"
+DEMO_WSI = REPO_ROOT / "demo/WSI"
 
 COORD_SKIP = {
     "cell_id",
@@ -141,10 +142,17 @@ def _phoenix_to_thumbnail(x_phx: float, y_phx: float, case_id: str) -> tuple[flo
             )})
 
     slide_name = summary.get("slide") or summary.get("gdc_slide", {}).get("file_name", "")
-    wsi_root = REPO_ROOT / "data/tcga_lung/WSI"
-    matches = sorted(wsi_root.rglob(f"*{case_id}*.svs"))
+    matches = sorted(DEMO_WSI.rglob(f"*{case_id}*.svs"))
+    if not matches:
+        legacy = REPO_ROOT / "data/tcga_lung/WSI"
+        if legacy.is_dir():
+            matches = sorted(legacy.rglob(f"*{case_id}*.svs"))
     if not matches and slide_name:
-        matches = sorted(wsi_root.rglob(f"*{slide_name}*"))
+        matches = sorted(DEMO_WSI.rglob(f"*{slide_name}*"))
+        if not matches:
+            legacy = REPO_ROOT / "data/tcga_lung/WSI"
+            if legacy.is_dir():
+                matches = sorted(legacy.rglob(f"*{slide_name}*"))
     if not matches:
         raise FileNotFoundError(f"No WSI found for {case_id!r}; run registration or provide SVS")
     slide_wh = slide_dimensions(matches[0])
@@ -198,7 +206,7 @@ def bundle_manifest(case_id: str) -> dict[str, Any]:
     crop = _preview_path(case_id, "tissue_crop")
     thumb = _preview_path(case_id, "thumbnail")
     registration = summary.get("registration") or {}
-    asset_base = f"/data/tcga_lung/representative_patients/data_package/per_patient/{case_id}/slide_previews"
+    asset_base = f"/demo/data_package/per_patient/{case_id}/slide_previews"
 
     return {
         "caseId": case_id,

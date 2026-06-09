@@ -2,7 +2,7 @@
 
 ## Source
 
-Path: `data/tcga_lung/representative_patients/visual_report/selected figures/`  
+Path: `demo/visual_report/selected figures/`
 PowerPoint: `Representative_20_Patients_Summary.pptx`
 
 Seven figures are exported as PNG + SVG and loaded into the advisor knowledge base at demo time.
