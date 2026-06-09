@@ -17,10 +17,10 @@ lives on **`main`**.
 
 | Layer | Tool | Role |
 |-------|------|------|
-| Virtual spatial transcriptomics | [PHOENIX](https://huggingface.co/peng-lab/phoenix) | Virtual spatial RNA **inference** on your H&E (flow-matching model) |
+| Virtual spatial transcriptomics | [PHOENIX](https://huggingface.co/peng-lab/phoenix) | Virtual spatial RNA **inference** on your H&E |
 | Virtual multiplex protein (mIF) | [GigaTIME](https://huggingface.co/prov-gigatime/GigaTIME) | H&E → 21-channel virtual mIF for TME phenotyping |
 | Patient similarity | **Haiku** | Joint encoder of H&E + clinical text → embeddings, cluster assignment, nearest-neighbor search |
-| Clinical agent chat | **HistoGen Advisor** (LLM) | Conversational interface; demo uses mock replies (not the Haiku encoder) |
+| Clinical agent chat | **HistoGen Advisor** (LLM) | Conversational interface; demo uses mock replies |
 
 ## Repository layout
 
