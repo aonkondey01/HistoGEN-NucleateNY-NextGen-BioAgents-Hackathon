@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HistoGEN — Pathology Embedding & Analysis Tool</title>
+  <title>SpatialMTB — Pathology Embedding & Analysis Tool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -424,12 +424,12 @@
 
   <!-- ── Top Bar ── -->
   <header id="topbar">
-    <div class="logo">HistoGEN</div>
+    <div class="logo">SpatialMTB</div>
 
     <!-- Patient code + hover card (5 fields + H&E thumbnail) -->
     <div id="patient-identity">
       <div class="patient-code">
-        Patient <span id="patient-case-id">TCGA-55-7815</span>
+        Patient <span id="patient-case-id">TCGA-55-8512</span>
         <span class="chevron">▾</span>
       </div>
       <div class="patient-subline"><em id="patient-subtype-inline">LUAD</em> · hover for case details</div>
@@ -440,7 +440,7 @@
           <div class="phc-fields">
             <div class="phc-row">
               <span class="phc-label">TCGA case ID</span>
-              <span class="phc-value" id="phc-case-id">TCGA-55-7815</span>
+              <span class="phc-value" id="phc-case-id">TCGA-55-8512</span>
             </div>
             <div class="phc-row">
               <span class="phc-label">Cancer subtype</span>
@@ -631,7 +631,7 @@
           <circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.2"/>
           <path d="M6 4v3M6 8.5v.5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
-        Powered by Haiku · embedding similarity search
+        Powered by Claude Haiku · embedding similarity search
       </div>
 
       <!-- Similar patients -->
@@ -696,17 +696,14 @@
 </div><!-- end #app -->
 
 <script>
-  // Demo mode loads the bundled 20-patient TCGA cohort instead of prompting for SVS upload.
-  const DEMO_MODE = new URLSearchParams(location.search).get('demo') !== '0';
-  const DEMO_CASE_ID = 'TCGA-55-7815';
-
   // ── Patient hover card (150 ms delay) ─────────────────────────────
-  let patientSummary = {
-    caseId: DEMO_CASE_ID,
+  // TODO: populate from API — GET /patients/:caseId/summary
+  const patientSummary = {
+    caseId: 'TCGA-55-8512',
     subtype: 'LUAD',
-    driverMutation: 'EGFR',
-    tmeArchetype: 'Immune Inflamed',
-    overallSurvival: '—',
+    driverMutation: 'EGFR exon 19 del',
+    tmeArchetype: 'Inflamed',
+    overallSurvival: '24.3 months (deceased)',
   };
 
   (function initPatientHoverCard() {
@@ -822,7 +819,7 @@
       colorbar.style.display = 'none';
       geneSelect.disabled = true;
       geneSelect.style.opacity = '.4';
-      placeholder.textContent = 'Load a whole-slide image or enable demo mode (?demo=0 to upload)';
+      placeholder.textContent = 'Load a whole-slide image or select a tile from data/';
     } else {
       colorbar.style.display = 'flex';
       geneSelect.disabled = false;
@@ -863,82 +860,31 @@
 
   // ── Drag-drop placeholder ─────────────────────────────────────────
   const wrap = document.getElementById('he-canvas-wrap');
-  if (!DEMO_MODE) {
-    wrap.addEventListener('dragover', e => { e.preventDefault(); wrap.style.outline = '2px dashed #4f8ef7'; });
-    wrap.addEventListener('dragleave', () => { wrap.style.outline = ''; });
-    wrap.addEventListener('drop', e => {
-      e.preventDefault(); wrap.style.outline = '';
-      const file = e.dataTransfer.files[0];
-      if (!file) return;
-      const ph = document.getElementById('he-placeholder');
-      const canvas = document.getElementById('he-canvas');
-      if (file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = () => {
-          canvas.width = wrap.clientWidth;
-          canvas.height = wrap.clientHeight;
-          const ctx = canvas.getContext('2d');
-          const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
-          const w = img.width * ratio, h = img.height * ratio;
-          ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
-          ph.style.display = 'none';
-        };
-        img.src = url;
-      } else {
-        ph.querySelector('p').textContent = `Loaded: ${file.name} — render pipeline needed for WSI format`;
-      }
-    });
-  }
-
-  async function loadDemoPatient() {
-    if (!DEMO_MODE) return;
-    try {
-      const res = await fetch(`/api/patients/${DEMO_CASE_ID}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const p = data.patient || {};
-      patientSummary = {
-        caseId: p.caseId || DEMO_CASE_ID,
-        subtype: (p.projectId || 'TCGA-LUAD').replace('TCGA-', ''),
-        driverMutation: p.driverMutation || p.driver || '—',
-        tmeArchetype: p.tmeArchetype || p.archetype || '—',
-        overallSurvival: p.overallSurvival || '—',
+  wrap.addEventListener('dragover', e => { e.preventDefault(); wrap.style.outline = '2px dashed #4f8ef7'; });
+  wrap.addEventListener('dragleave', () => { wrap.style.outline = ''; });
+  wrap.addEventListener('drop', e => {
+    e.preventDefault(); wrap.style.outline = '';
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const ph = document.getElementById('he-placeholder');
+    const canvas = document.getElementById('he-canvas');
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        canvas.width = wrap.clientWidth;
+        canvas.height = wrap.clientHeight;
+        const ctx = canvas.getContext('2d');
+        const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+        const w = img.width * ratio, h = img.height * ratio;
+        ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+        ph.style.display = 'none';
       };
-      document.getElementById('patient-case-id').textContent = patientSummary.caseId;
-      document.getElementById('phc-case-id').textContent = patientSummary.caseId;
-      document.getElementById('phc-subtype').textContent = patientSummary.subtype;
-      document.getElementById('patient-subtype-inline').textContent = patientSummary.subtype;
-      document.getElementById('phc-mutation').textContent = patientSummary.driverMutation;
-      document.getElementById('phc-archetype').textContent = patientSummary.tmeArchetype;
-      document.getElementById('phc-os').textContent = patientSummary.overallSurvival;
-
-      const manifest = data.phoenixManifest || {};
-      const thumbUrl = manifest.assets && manifest.assets.thumbnail;
-      if (thumbUrl) {
-        const ph = document.getElementById('he-placeholder');
-        const canvas = document.getElementById('he-canvas');
-        const img = new Image();
-        img.onload = () => {
-          canvas.width = wrap.clientWidth;
-          canvas.height = wrap.clientHeight;
-          const ctx = canvas.getContext('2d');
-          const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
-          const w = img.width * ratio, h = img.height * ratio;
-          ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
-          ph.style.display = 'none';
-          document.getElementById('placeholder-label').textContent = `Demo H&E · ${patientSummary.caseId}`;
-        };
-        img.src = thumbUrl;
-      }
-    } catch (err) {
-      console.warn('Demo patient load failed — start scripts/run_ui.sh for API', err);
-      document.getElementById('placeholder-label').textContent =
-        `Demo mode: run bash scripts/run_ui.sh then reload (or add ?demo=0 to upload)`;
+      img.src = url;
+    } else {
+      ph.querySelector('p').textContent = `Loaded: ${file.name} — render pipeline needed for WSI format`;
     }
-  }
-
-  loadDemoPatient();
+  });
 </script>
 </body>
 </html>

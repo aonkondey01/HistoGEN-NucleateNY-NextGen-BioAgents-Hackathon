@@ -2,7 +2,6 @@ import "./styles.css";
 import { buildEmbeddingPlot } from "./embedding.js";
 
 const DATA_URL = `${import.meta.env.BASE_URL}data/patients_embedding.json`;
-const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== "0";
 
 const SIGNATURES = [
   "Treg",
@@ -31,8 +30,9 @@ const app = document.querySelector("#app");
 app.innerHTML = `
   <header class="top-bar">
     <div class="brand">
+      <img src="${import.meta.env.BASE_URL}logo.png" alt="" class="brand-logo" width="40" height="40" />
       <div>
-      <h1>HistoGEN</h1>
+      <h1>HistoGen</h1>
       <p>Lung TME · predict targeted / immunotherapy benefit if disease recurs</p>
       </div>
     </div>
@@ -66,13 +66,13 @@ app.innerHTML = `
     <section class="panel he-panel">
       <div class="panel-head">
         <h2>H&amp;E slide</h2>
-        <span class="chip muted">${DEMO_MODE ? "Demo WSI" : "WSI placeholder"}</span>
+        <span class="chip muted">WSI placeholder</span>
       </div>
       <div class="he-viewport" id="he-viewport">
         <div class="he-placeholder">
           <div class="he-grid"></div>
           <p>Whole-slide image viewer</p>
-          <p class="muted">${DEMO_MODE ? "Loading demo H&amp;E preview…" : "Connect OpenSlide tile server for live H&amp;E"}</p>
+          <p class="muted">Connect HistoTME tile server or OpenSlide for live H&amp;E</p>
         </div>
       </div>
     </section>
@@ -282,7 +282,7 @@ function renderTreatmentPanel(patient) {
       </div>
     </div>
 
-    <p class="disclaimer muted">Demo heuristic: driver mutation + TME archetype + PHOENIX signatures. Predicts benefit at recurrence, not current adjuvant therapy. Not clinical advice.</p>
+    <p class="disclaimer muted">Demo heuristic: driver mutation + TME archetype + HistoTME signatures. Predicts benefit at recurrence, not current adjuvant therapy. Not clinical advice.</p>
   `;
 }
 
@@ -374,30 +374,6 @@ function renderSurvival(patient) {
   `;
 }
 
-function renderHeSlide(patient) {
-  const host = document.getElementById("he-viewport");
-  if (!patient) {
-    host.innerHTML = `<div class="he-placeholder"><p class="muted">Select a patient.</p></div>`;
-    return;
-  }
-
-  if (DEMO_MODE && patient.has_slide_preview && patient.slide_preview_url) {
-    host.innerHTML = `
-      <img class="he-demo-image" src="${patient.slide_preview_url}" alt="H&amp;E preview ${patient.patient_id}" />
-      <p class="muted he-caption">Demo H&amp;E thumbnail · ${patient.patient_id}</p>
-    `;
-    return;
-  }
-
-  host.innerHTML = `
-    <div class="he-placeholder">
-      <div class="he-grid"></div>
-      <p>Whole-slide image viewer</p>
-      <p class="muted">Drop an .svs / .png or run the demo pipeline to fetch WSIs</p>
-    </div>
-  `;
-}
-
 function selectPatient(id) {
   if (!id || !getPatient(id)) return;
   selectedId = id;
@@ -406,7 +382,6 @@ function selectPatient(id) {
   renderPatientCard(patient);
   renderImmuneBars(patient);
   renderSurvival(patient);
-  renderHeSlide(patient);
   refreshEmbedding();
 }
 

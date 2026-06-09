@@ -33,30 +33,23 @@ docs/slides/     Pitch deck assets (static .pptx + speaker notes)
 
 ## Quick start
 
-### Demo mode (20 patients, GPU recommended)
+### HistoGEN UI (Taylor patient explorer)
 
-The bundled demo uses a stratified subset of **20 open-access TCGA lung diagnostic
-H&E slides** (LUAD + LUSC). This is for local research demos only — not the full
-~824 GB cohort.
+Primary UI — Vite app with recurrence therapy predictions and UMAP (~956 patients):
 
 ```bash
-# Full demo pipeline: WSI download → PHOENIX atlas → GigaTIME → Haiku → UI assets
-bash scripts/demo/build_all.sh
-
-# One port for everything (recommended when Cursor Ports forwarding fails):
-bash scripts/run_all_ui.sh
-# → http://localhost:8080/           dashboard
-# → http://localhost:8080/explorer/  patient explorer (static build, no port 5173)
-
-# Optional: public tunnel (no localhost / Ports needed)
-# cloudflared tunnel --url http://127.0.0.1:8080
+bash scripts/run_haiku_ui.sh
+# → http://localhost:5173
 ```
 
-Demo mode is **on by default** in the UI. The dashboard loads case `TCGA-55-7815`
-from the demo bundle instead of prompting for an SVS upload. Append `?demo=0` to
-upload your own slide.
+Optional static dashboard: `ui/index.html` (4-panel prototype, no build step).
 
-### General (full-cohort) scripts
+The bundled demo uses a stratified subset of **20 open-access TCGA lung diagnostic
+H&E slides** (LUAD + LUSC). See `demo/README.md`.
+
+```bash
+bash scripts/demo/build_all.sh
+```
 
 **TCGA lung H&E** — manifests and download for all ~1,053 diagnostic slides:
 
@@ -86,8 +79,7 @@ python fetch.py
 ## Agents
 
 Cloud and Cursor agents should read **`AGENTS.md`** first. It documents demo vs
-general paths, required secrets, GPU assumptions, and agent skills under
-`ui/skills/`.
+general paths, required secrets, and GPU assumptions.
 
 ## License notes
 

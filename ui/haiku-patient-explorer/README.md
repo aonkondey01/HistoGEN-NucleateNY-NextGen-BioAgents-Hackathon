@@ -1,6 +1,6 @@
-# HistoGEN Explorer
+# HistoGen Explorer
 
-Three-column UI for the HistoGEN lung TME platform:
+Three-column UI for the HistoGen lung TME platform:
 
 | Panel | Component |
 |-------|-----------|

@@ -89,13 +89,13 @@ python scripts/demo/run_gigatime.py           # GPU inference on demo WSIs
 
 ### UI
 
+- **Primary UI:** Taylor's patient explorer — `ui/haiku-patient-explorer/` (branch `cursor/treatment-benefit-ui-5384`)
 - **Do not refactor** unless the user asks.
-- `ui/index.html` — single-file dashboard; **demo mode ON by default** (`DEMO_MODE=1`).
-- `ui/haiku-patient-explorer/` — Vite explorer; data from `demo/ui/`.
-- Read `ui/CURSOR_PROMPT.md` for layout, brand colors, iteration priorities.
+- Run: `bash scripts/run_haiku_ui.sh` → port **5173**
+- Data: `ui/haiku-patient-explorer/public/data/patients_embedding.json` (~956 patients)
+- Optional: `ui/index.html` static dashboard prototype
 
 ```bash
-bash scripts/run_ui.sh
 bash scripts/run_haiku_ui.sh
 ```
 
